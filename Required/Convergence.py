@@ -7,12 +7,12 @@ Created on Tue Mar 24 18:20:27 2026
 """
 import sys
 import os
+import numpy as np
 sys.path.insert(0, '/Users/raminpahnabi/Documents/BYU/sweeps/build/src/api')
 sys.path.append(os.path.join(os.getcwd(), 'HWs'))
 sys.path.append(os.path.join(os.getcwd(), 'Required'))
 
 import splines as spline
-import numpy as np
 import matplotlib.pyplot as plt
 import StokesFlow_Solver as ss
 

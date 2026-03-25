@@ -8,11 +8,11 @@ Created on Tue Mar 24 14:41:09 2026
 
 import sys
 import os
+import numpy as np
 sys.path.insert(0, '/Users/raminpahnabi/Documents/BYU/sweeps/build/src/api')
 sys.path.append(os.path.join(os.getcwd(), '../HWs'))
 sys.path.append(os.path.join(os.getcwd(), 'Required'))
 
-import numpy as np
 import matplotlib.pyplot as plt
 import CommonFuncs as cf
 

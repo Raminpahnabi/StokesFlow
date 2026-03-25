@@ -8,10 +8,10 @@ Created on Tue Mar 24 14:39:29 2026
 
 import sys
 import os
+import numpy as np
 sys.path.insert(0, '/Users/raminpahnabi/Documents/BYU/sweeps/build/src/api')
 sys.path.append(os.path.join(os.getcwd(), '../HWs'))
 
-import numpy as np
 import Quadrature_Operations_Solutions_boundary as gq_bc
 import CommonFuncs as cf
 

@@ -1,27 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Export Stokes flow solution to VTK format for ParaView visualization.
+Created on Wed Mar 25 10:47:20 2026
 
-Run this script (same working directory as StokesFlow_problem.py).
-It produces  stokes_solution.vtk  which you can open directly in ParaView.
-
-Each IGA element is sampled on a uniform N_SAMPLE x N_SAMPLE grid in
-parametric space.  The quads are written as VTK_QUAD cells so ParaView
-renders a smooth surface.  Point-data arrays exported:
-  - velocity  (vector, 3-component)
-  - pressure  (scalar)
-  - velocity_magnitude (scalar, convenient for colour-mapping)
+@author: raminpahnabi
 """
 
 import sys
 import os
+import numpy as np
 sys.path.insert(0, '/Users/raminpahnabi/Documents/BYU/sweeps/build/src/api')
 sys.path.append(os.path.join(os.getcwd(), 'HWs'))
 sys.path.append(os.path.join(os.getcwd(), 'Required'))
 
 import splines as spline
-import numpy as np
 import Gaussian_Quadrature_2D_Solution as gq_nD
 import StokesFlow_Solver as ss
 import CommonFuncs as cf

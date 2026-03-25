@@ -8,12 +8,12 @@ Created on Thu Dec 18 13:40:03 2025
 
 import sys
 import os
+import numpy as np
 sys.path.insert(0, '/Users/raminpahnabi/Documents/BYU/sweeps/build/src/api')
 # sys.path.append('HWs')
 sys.path.append(os.path.join(os.getcwd(), '../HWs'))
 sys.path.append(os.path.join(os.getcwd(), 'Required'))
 
-import numpy as np
 import LocalAssembly as la
 import Nitsche as ni
 import CommonFuncs as cf
@@ -33,8 +33,6 @@ def Stokes(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions
         n_l2 = basis.L2.numTotalFunctions()
         n_total_funcs = n_hdiv + n_l2
     
-        # K = np.zeros((n_total_funcs, n_total_funcs))
-        # F = np.zeros(n_total_funcs)
         
         boundary_dofs = bc.GetBoundaryDOFs(basis)
         all_tangential = boundary_dofs['all_tangential']
