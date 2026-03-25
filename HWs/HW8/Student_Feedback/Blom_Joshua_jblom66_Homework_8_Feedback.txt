@@ -1,0 +1,42 @@
+======================
+Feedback on Homework 8
+======================
+------------------
+Problem1 : 
+------------------
+
+Completion of Lagrange basis function derivative code in LagrangeBasisParamDervEvaluation:
+1/2 pt
+
+ (If students used the recursion formula of Eq 2, give 1.5 pt because it is unstable and was specifically not requested by the homework prompt).:
+
+
+
+Problem2 : :
+
+Correct code transferring single index into multi-index:
+0.2/ 0.5 pt
+Completion of Python code for partial derivative of multidimensional Lagrange basis function:
+0.3/ 1 pt
+
+
+Problem 3 : :
+
+Correct plot for degree two basis functions in one dimension:
+0.25/ 0.5 pt
+
+
+Problem 4 : :
+
+Correct multidimensional basis function plots for all degree 2 basis functions with partial derivative in the ksi (0) direction:
+0.4/ 0.5 pt
+Correct multidimensional basis function plots for all degree 2 basis functions with partial derivative in the eta (1) direction:
+0.4/ 0.5 pt
+
+Total:
+2.55/5
+
+
+******************
+Total Score: 2.55/5 Pts
+******************

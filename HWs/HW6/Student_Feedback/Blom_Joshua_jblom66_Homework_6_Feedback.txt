@@ -1,0 +1,49 @@
+======================
+Feedback on Homework 6
+======================
+------------------
+Multidimensional Basis Functions
+------------------
+
+Python code to compute the value of a tensor-product basis function using multi-indices:
+2/2 pt
+Python code to convert a single index into a multi-index:
+2/2 pt
+Python code to evaluate a single index tensor-product basis function:
+1/1 pt
+
+Plots of 2D basis functions for the following polynomial degrees. Students need only submit one plot for each of the polynomial degrees, though they could submit more:
+
+1x1 polynomials:
+0.5/0.5 pt
+2x1 polynomials:
+0.5/0.5 pt
+2x2 polynomials:
+0.5/0.5 pt
+3x3 polynomials:
+0.5/0.5 pt
+
+
+Unidimensional Parent to Spatial Mapping:
+
+Complete XMap Python code:
+2/2 pt
+
+Submit information about which of the following are (a) linear, and (b) valid (i.e. linear). Plots would be nice but were not requested and so are unnecessary, though plots can inform which transformations are linear:
+
+p =1, {x} = {0,1}, {ksi} = {-1,1}:
+0.5/0.5 pt
+p =2, {x} = {0.5,1,1.5}, {ksi} = {-1,0,1}:
+0.5/0.5 pt
+p =2, {x} = {0.5,.7,1.5}, {ksi} = {-1,-0.6,1}:
+0.5/0.5 pt
+p =2, {x} = {0.5,.7,1.5}, {ksi} = {-1,0,1}:
+0.5/0.5 pt
+
+Total:
+11/11
+
+
+******************
+Total Score: 11/11 Pts
+******************

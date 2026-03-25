@@ -1,0 +1,21 @@
+﻿Completion of Lagrange basis function derivative code in LagrangeBasisParamDervEvaluation,First Name,,Ronald Wayne,Isaac,Jakob,Joshua,Nathan,Ethan,Hayden,Josh,Amelia,Kevin,Josh,James,Sarah,Heidi,Jordan,Christian,Ben
+,Last Name,,Acker,Averett,Bates,Blom,Chesnut,Cluff,Emmertson,Fenwick,Hilterbrand,Lunt,Nelson,Niedens,Partington Cluff,Richards,Sheppard,Valencia Narva,Varela
+,net id,,rwa34,ia258,jakob499,jblom66,nchesnut,ec383,haydene,jjf67,ah683,klunt217,jn374,jamesrn6,sparting,lynnhi,jsheppa2,chrisvn,bvarela2
+Problem1 : ,Potential,,,,,,,,,,,,,,,,,,
+Completion of Lagrange basis function derivative code in LagrangeBasisParamDervEvaluation,2 pt,,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,2,2
+" (If students used the recursion formula of Eq 2, give 1.5 pt because it is unstable and was specifically not requested by the homework prompt).",,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,
+Problem2 : ,,,,,,,,,,,,,,,,,,,
+Correct code transferring single index into multi-index, 0.5 pt,,0.5,0.5,0.5,0.2,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5
+Completion of Python code for partial derivative of multidimensional Lagrange basis function, 1 pt,,1,1,1,0.3,1,1,1,1,1,1,1,1,1,1,1,1,1
+,,,,,,,,,,,,,,,,,,,
+Problem 3 : ,,,,,,,,,,,,,,,,,,,
+Correct plot for degree two basis functions in one dimension, 0.5 pt,,0.5,0.5,0.5,0.25,0.5,0.5,0.5,0.5,0,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5
+,,,,,,,,,,,,,,,,,,,
+Problem 4 : ,,,,,,,,,,,,,,,,,,,
+Correct multidimensional basis function plots for all degree 2 basis functions with partial derivative in the ksi (0) direction, 0.5 pt,,0.5,0,0.5,0.4,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5
+Correct multidimensional basis function plots for all degree 2 basis functions with partial derivative in the eta (1) direction, 0.5 pt,,0.5,0,0.5,0.4,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5
+,,,,,,,,,,,,,,,,,,,
+Total,5,,5,4,5,2.55,5,5,5,5,4.5,5,5,5,5,5,5,5,5
+,,,,,,,,,,,,,,,,,,,
+Total,5 Pts,,5,4,5,2.55,5,5,5,5,4.5,5,5,5,5,5,5,5,5

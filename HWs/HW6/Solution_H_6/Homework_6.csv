@@ -1,0 +1,24 @@
+﻿,First Name,,Ronald Wayne,Isaac,Jakob,Joshua,Nathan,Ethan,Hayden,Josh,Amelia,Kevin,Josh,James,Sarah,Heidi,Jordan,Christian,Ben
+,Last Name,,Acker,Averett,Bates,Blom,Chesnut,Cluff,Emmertson,Fenwick,Hilterbrand,Lunt,Nelson,Niedens,Partington Cluff,Richards,Sheppard,Valencia Narva,Varela
+,net id,,rwa34,ia258,jakob499,jblom66,nchesnut,ec383,haydene,jjf67,ah683,klunt217,jn374,jamesrn6,sparting,lynnhi,jsheppa2,chrisvn,bvarela2
+Multidimensional Basis Functions,Potential,,,,,,,,,,,,,,,,,,
+Python code to compute the value of a tensor-product basis function using multi-indices,2 pt,,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
+Python code to convert a single index into a multi-index,2 pt,,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
+Python code to evaluate a single index tensor-product basis function,1 pt,,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+"Plots of 2D basis functions for the following polynomial degrees. Students need only submit one plot for each of the polynomial degrees, though they could submit more",,,,,,,,,,,,,,,,,,,
+ 1x1 polynomials,0.5 pt,,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5
+ 2x1 polynomials,0.5 pt,,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5
+2x2 polynomials,0.5 pt,,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5
+ 3x3 polynomials,0.5 pt,,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5
+,,,,,,,,,,,,,,,,,,,
+Unidimensional Parent to Spatial Mapping,,,,,,,,,,,,,,,,,,,
+Complete XMap Python code,2 pt,,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
+"Submit information about which of the following are (a) linear, and (b) valid (i.e. linear). Plots would be nice but were not requested and so are unnecessary, though plots can inform which transformations are linear",,,,,,,,,,,,,,,,,,,
+"p =1, {x} = {0,1}, {ksi} = {-1,1}",0.5 pt,,0.4,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.4,0.5,0.4,0.5,0.5,0.5
+"p =2, {x} = {0.5,1,1.5}, {ksi} = {-1,0,1}",0.5 pt,,0.4,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.4,0.5,0.4,0.5,0.5,0.5
+"p =2, {x} = {0.5,.7,1.5}, {ksi} = {-1,-0.6,1}",0.5 pt,,0.4,0.5,0.5,0.5,0.5,0.5,0.2,0.5,0.5,0.5,0.5,0.4,0.5,0.4,0.5,0.5,0.5
+"p =2, {x} = {0.5,.7,1.5}, {ksi} = {-1,0,1}",0.5 pt,,0.4,0.5,0.5,0.5,0.5,0.5,0.2,0.5,0.4,0.5,0.5,0.4,0.5,0.4,0.5,0.5,0.5
+,,,,,,,,,,,,,,,,,,,
+Total,11,,10.6,11,11,11,11,11,10.4,11,10.9,11,11,10.6,11,10.6,11,11,11
+,,,,,,,,,,,,,,,,,,,
+Total,11 Pts,,10.6,11,11,11,11,11,10.4,11,10.9,11,11,10.6,11,10.6,11,11,11
