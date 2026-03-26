@@ -9,6 +9,8 @@ Created on Thu Dec 18 13:40:03 2025
 import sys
 import os
 import numpy as np
+from scipy.sparse import lil_matrix
+from scipy.sparse.linalg import spsolve
 sys.path.insert(0, '/Users/raminpahnabi/Documents/BYU/sweeps/build/src/api')
 # sys.path.append('HWs')
 sys.path.append(os.path.join(os.getcwd(), '../HWs'))
@@ -25,7 +27,9 @@ KINEMATIC_VISCOSITY = 1
 ################################     Stokes_Flow_div_free     ###################################
 #################################################################################################
 def Stokes(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions,boundary_value_function,ifID=True):
+    
     if ifID:
+        
         n_hdiv_1_comp = cf.GetNumberH1FirstComponent(basis)[0]
         n_hdiv_2_comp = cf.GetNumberH1FirstComponent(basis)[1]
         n_hdiv = n_hdiv_1_comp + n_hdiv_2_comp
@@ -35,8 +39,8 @@ def Stokes(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions
     
         
         boundary_dofs = bc.GetBoundaryDOFs(basis)
-        all_tangential = boundary_dofs['all_tangential']
-        all_normal = boundary_dofs['all_normal']
+        all_tangential = set(boundary_dofs['all_tangential'])
+        all_normal = set(boundary_dofs['all_normal'])
         
         # Compute prescribed values for normal DOFs
         prescribed = bc.ComputePrescribedNormalDOFValues(basis, boundary_dofs, boundary_value_function, quad_1D)
@@ -44,8 +48,8 @@ def Stokes(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions
         ID = cf.ID_array(basis.HDIV, basis.L2, boundary_dofs, prescribed)
         
         n = max(ID)+1
-        
-        K = np.zeros((n, n))
+
+        K = lil_matrix((n, n))
         F = np.zeros(n)
         
         
@@ -106,11 +110,12 @@ def Stokes(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions
                     K[Q, P] += ke[b + n_local_hdiv, a]
                     
         
-        d_reduced = np.linalg.solve(K,F)
-        
+        d_reduced = spsolve(K.tocsr(), F)
+
         d_total = cf.ExtractTotalD(ID, d_reduced, prescribed, n_hdiv, n_l2)
     
     elif not ifID:
+        
         n_hdiv_1_comp = cf.GetNumberH1FirstComponent(basis)[0]
         n_hdiv_2_comp = cf.GetNumberH1FirstComponent(basis)[1]
         n_hdiv = n_hdiv_1_comp + n_hdiv_2_comp
@@ -118,7 +123,7 @@ def Stokes(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions
         n_l2 = basis.L2.numTotalFunctions()
         n_total_funcs = n_hdiv + n_l2
 
-        K = np.zeros((n_total_funcs, n_total_funcs))
+        K = lil_matrix((n_total_funcs, n_total_funcs))
         F = np.zeros(n_total_funcs)
 
         for e in basis.elements():  
@@ -156,7 +161,7 @@ def Stokes(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions
                     K[A,B] += ke_Nitsche[a, b + n_local_hdiv]
                     K[B,A] += ke_Nitsche[b + n_local_hdiv, a]
             
-        d_total = np.linalg.solve(K,F)
+        d_total = spsolve(K.tocsr(), F)
     
     return d_total
 

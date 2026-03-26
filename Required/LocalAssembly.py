@@ -61,24 +61,18 @@ def LocalStiffnessStokes(basis, deg, quad, quad_1D, elem, boundary_condition, pa
         transformed_basis_L2 = basis.piolaTransformedL2()
         gradient_basis = basis.piolaTransformedHDIVFirstDerivatives()
        
-        gradient_basis_transpose = np.array([[row[0], row[2], row[1], row[3]] for row in gradient_basis])
-        sym_gradients = (gradient_basis + gradient_basis_transpose)/2 
-        
-        # Viscous and pressure contributions
-        for a in range(n_local_hdiv):
-            grad_a = sym_gradients[a]
-            for b in range(n_local_hdiv):
-                grad_b = sym_gradients[b]
+        gradient_basis_transpose = gradient_basis[:, [0, 2, 1, 3]]
+        sym_gradients = (gradient_basis + gradient_basis_transpose) / 2
 
-                term1 = 2 * kinematic_viscosity * np.dot(grad_a, grad_b)
+        # Viscous contributions (vectorized)
+        scale = 2 * kinematic_viscosity * jac_det * weight * quad_jacobian
+        ke[:n_local_hdiv, :n_local_hdiv] += scale * (sym_gradients @ sym_gradients.T)
 
-                ke[a, b] += term1 * jac_det * weight * quad_jacobian
-
-        # Pressure coupling
-        for a in range(n_local_hdiv):
-            trace_grad = gradient_basis[a][0] + gradient_basis[a][3]
-            for b in range(n_local_L2):
-                ke[a, b + n_local_hdiv] -= trace_grad * transformed_basis_L2[b] * jac_det * weight * quad_jacobian
-                ke[b + n_local_hdiv, a] = ke[a, b + n_local_hdiv] 
+        # Pressure coupling (vectorized)
+        trace_grad = gradient_basis[:, 0] + gradient_basis[:, 3]
+        scale_p = jac_det * weight * quad_jacobian
+        block = np.outer(trace_grad, transformed_basis_L2) * scale_p
+        ke[:n_local_hdiv, n_local_hdiv:] -= block
+        ke[n_local_hdiv:, :n_local_hdiv] = -ke[:n_local_hdiv, n_local_hdiv:].T
     
     return ke

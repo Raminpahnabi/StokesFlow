@@ -6,6 +6,7 @@ Created on Wed Oct 23 13:31:53 2024
 @author: kendrickshepherd
 """
 
+import os
 import sys
 import numpy as np
 import math
@@ -14,6 +15,7 @@ from matplotlib import pyplot as plt
 
 # sys.path.append("../HW10/")
 # sys.path.append('../HW16/')
+sys.path.append(os.path.join(os.getcwd(), './HWs'))
 
 import Gaussian_Quadrature_2D_Solution as gq
 import MultidimensionalSpatialParametricGradient_Solutions as bf

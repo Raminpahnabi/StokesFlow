@@ -8,12 +8,12 @@ Created on Tue Mar 24 14:44:23 2026
 
 import sys
 import os
+import numpy as np
 sys.path.insert(0, '/Users/raminpahnabi/Documents/BYU/sweeps/build/src/api')
 sys.path.append(os.path.join(os.getcwd(), 'HWs'))
 sys.path.append(os.path.join(os.getcwd(), 'Required'))
 
 import splines as spline
-import numpy as np
 import Gaussian_Quadrature_2D_Solution as gq_nD
 import StokesFlow_Solver as ss
 import Plotting as p
@@ -139,9 +139,9 @@ dtotal = ss.Stokes(refined_basis, degs, quad, quad_1D, gamma,
 
 
 p.PlotSolution(refined_basis, dtotal, quad_plus, quad_1D, gamma,
-             forcing_function, nelem1*2, exact_solution, exact_solution_l2)
+              forcing_function, nelem1*2, exact_solution, exact_solution_l2)
 
-num_iterations = 3
+num_iterations = 2
 cn.run_convergence_study(num_iterations, basis, degs, quad, quad_1D, gamma,
                       forcing_function, exact_solution, exact_solution_l2,
                       boundary_value_function,nelem1,nelem2)
