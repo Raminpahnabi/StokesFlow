@@ -14,8 +14,8 @@ from matplotlib import pyplot as plt
 
 # sys.path.append('HW6/')
 # sys.path.append('HW8/')
-sys.path.append(os.path.join(os.getcwd(), 'HW6/'))
-sys.path.append(os.path.join(os.getcwd(), 'HW8/'))
+sys.path.append(os.path.join(os.getcwd(), './HWs/HW6/'))
+sys.path.append(os.path.join(os.getcwd(), './HWs/HW8/'))
 
 # import HW6_MultiDimensionalBasisFunctions_Solutions as basis
 import CE_ME_507_MultiDimensionalBasisFunctions_Solutions as basis

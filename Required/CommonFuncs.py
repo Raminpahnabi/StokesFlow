@@ -96,9 +96,9 @@ def ID_array(HDiv, L2, boundary_dofs, prescribed):
 
     # Assign indices to L2 space functions
     # Mark first pressure DOF as fixed to avoid singularity
-    # ID[total_basis_functions_HDIV] = -1  # First pressure DOF
+    ID[total_basis_functions_HDIV] = -1  # First pressure DOF
     
-    for i in range(total_basis_functions_HDIV + 0, total_basis):
+    for i in range(total_basis_functions_HDIV + 1, total_basis):
         ID[i] = counter
         counter += 1
 

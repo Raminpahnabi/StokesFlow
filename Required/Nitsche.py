@@ -74,40 +74,23 @@ def LocalForceVector_Nitsche_IGA_2D(basis, deg, quad,quad_1D, gamma, elem, forci
             n1, n2 = normal_unit[0], normal_unit[1]
             
             gradient_basis_bc = basis.piolaTransformedHDIVFirstDerivatives()
-            
-            # gradient_basis structure: [du1/dx, du1/dy, du2/dx, du2/dy]
-            # Transpose: [du1/dx, du2/dx, du1/dy, du2/dy] = [row[0], row[2], row[1], row[3]]
-            gradient_basis_transpose_bc = np.array([[row[0], row[2], row[1], row[3]] for row in gradient_basis_bc])
-            sym_gradients_bc = (gradient_basis_bc + gradient_basis_transpose_bc) / 2.0
-            
-            # sym_gradients_bc structure: [eps11, eps12, eps21, eps22] where:
-            # eps11 = du1/dx, eps12 = eps21 = (du1/dy + du2/dx)/2, eps22 = du2/dy
-            # To compute (2ν∇^s u)·n, we form the matrix-vector product:
-            # [eps11  eps12] [n1]   [eps11*n1 + eps12*n2]
-            # [eps21  eps22] [n2] = [eps21*n1 + eps22*n2]
-            
-            # Compute (2*kinematic*sym_grad).n for each basis function
-            sym_grad_basis_dot_n = []
-            for sym_grad in sym_gradients_bc:
-                sym_grad_dot_n = 2 * kinematic_viscosity * np.array([
-                    sym_grad[0] * n1 + sym_grad[1] * n2, 
-                    sym_grad[2] * n1 + sym_grad[3] * n2   
-                ])
-                sym_grad_basis_dot_n.append(sym_grad_dot_n)
-            
-            quad_wt_1d = quad_1D.quad_wts[g]
-            
 
-            # velocity-velocity coupling terms
-            for a in range(n_local_hdiv):
-                phi_a = transformed_basis_bc[a]
-                sym_grad_a_dot_n = sym_grad_basis_dot_n[a]
-                                
-                    
-                consistency_term = -np.dot(sym_grad_a_dot_n, u_val)
-                penalty_term = (gamma * kinematic_viscosity / face_length) * np.dot(phi_a, u_val)
-                
-                fe[a] += (consistency_term + penalty_term) * quad_wt_1d * jac_1d
+            gradient_basis_transpose_bc = gradient_basis_bc[:, [0, 2, 1, 3]]
+            sym_gradients_bc = (gradient_basis_bc + gradient_basis_transpose_bc) / 2.0
+
+            # sigma_n[a] = 2ν * ε(φ_a) · n, shape (n_local_hdiv, 2)
+            sg = sym_gradients_bc.reshape(-1, 2, 2)
+            n_vec = np.array([n1, n2])
+            sigma_n = 2 * kinematic_viscosity * (sg @ n_vec)
+
+            phi = transformed_basis_bc  # (n_local_hdiv, 2)
+            quad_wt_1d = quad_1D.quad_wts[g]
+            scale = quad_wt_1d * jac_1d
+
+            fe[:n_local_hdiv] += scale * (
+                -(sigma_n @ u_val)
+                + (gamma * kinematic_viscosity / face_length) * (phi @ u_val)
+            )
 
     return fe
 
@@ -154,56 +137,27 @@ def LocalStiffnessMatrix_Nitsche_IGA_2D(basis, deg, quad, quad_1D, gamma, elem, 
             transformed_basis_L2_bc = basis.piolaTransformedL2()
             gradient_basis_bc = basis.piolaTransformedHDIVFirstDerivatives()
             
-            # gradient_basis structure: [du1/dx, du1/dy, du2/dx, du2/dy]
-            # Transpose: [du1/dx, du2/dx, du1/dy, du2/dy] = [row[0], row[2], row[1], row[3]]
-            gradient_basis_transpose_bc = np.array([[row[0], row[2], row[1], row[3]] for row in gradient_basis_bc])
+            gradient_basis_transpose_bc = gradient_basis_bc[:, [0, 2, 1, 3]]
             sym_gradients_bc = (gradient_basis_bc + gradient_basis_transpose_bc) / 2.0
-            
-            # sym_gradients_bc structure: [eps11, eps12, eps21, eps22] where:
-            # eps11 = du1/dx, eps12 = eps21 = (du1/dy + du2/dx)/2, eps22 = du2/dy
-            # To compute (2ν∇^s u)·n, we form the matrix-vector product:
-            # [eps11  eps12] [n1]   [eps11*n1 + eps12*n2]
-            # [eps21  eps22] [n2] = [eps21*n1 + eps22*n2]
-            
-            # Compute (2*kinematic*sym_grad).n for each basis function
-            sym_grad_basis_dot_n = []
-            for sym_grad in sym_gradients_bc:
-                sym_grad_dot_n = 2 * kinematic_viscosity * np.array([
-                    sym_grad[0] * n1 + sym_grad[1] * n2, 
-                    sym_grad[2] * n1 + sym_grad[3] * n2   
-                ])
-                sym_grad_basis_dot_n.append(sym_grad_dot_n)
-            
+
+            # sigma_n[a] = 2ν * ε(φ_a) · n, shape (n_local_hdiv, 2)
+            sg = sym_gradients_bc.reshape(-1, 2, 2)
+            n_vec = np.array([n1, n2])
+            sigma_n = 2 * kinematic_viscosity * (sg @ n_vec)
+
+            phi = transformed_basis_bc  # (n_local_hdiv, 2)
             quad_wt_1d = quad_1D.quad_wts[g]
-            
+            scale = quad_wt_1d * jac_1d
 
-            # velocity-velocity coupling terms
-            for a in range(n_local_hdiv):
-                phi_a = transformed_basis_bc[a]
-                sym_grad_a_dot_n = sym_grad_basis_dot_n[a]
-                
-                for b in range(n_local_hdiv):
-                    phi_b = transformed_basis_bc[b]
-                    sym_grad_b_dot_n = sym_grad_basis_dot_n[b]
-                    
-                    consistency_term = -np.dot(sym_grad_a_dot_n, phi_b)
-                    
-                    symmetry_term = -np.dot(sym_grad_b_dot_n, phi_a)
-                    
-                    penalty_term = (gamma * 2 * kinematic_viscosity / face_length) * np.dot(phi_a, phi_b)
-                    
-                    # penalty_term = (gamma * kinematic_viscosity / face_length) * np.dot(phi_a, tangent_unit) * np.dot(phi_b, tangent_unit)
-                    # consistency_term = -np.dot(sym_grad_a_dot_n, tangent_unit) * np.dot(phi_b, tangent_unit)
-                    # symmetry_term    = -np.dot(sym_grad_b_dot_n, tangent_unit) * np.dot(phi_a, tangent_unit)
-                    
-                    ke[a, b] += (consistency_term + symmetry_term + penalty_term) * quad_wt_1d * jac_1d
+            # velocity-velocity coupling (vectorized)
+            ke[:n_local_hdiv, :n_local_hdiv] += scale * (
+                -(sigma_n @ phi.T)                                                # consistency
+                -(phi @ sigma_n.T)                                                # symmetry
+                + (gamma * kinematic_viscosity / face_length) * (phi @ phi.T)    # penalty
+            )
 
-
-            # for a in range(n_local_hdiv):
-            #     phi_a_dot_n = np.dot(transformed_basis_bc[a], normal_unit)
-            #     for b in range(n_local_L2):
-            #         phi_p = transformed_basis_L2_bc[b]
-            #         ke[a, b + n_local_hdiv] += phi_p * phi_a_dot_n * quad_wt_1d * jac_1d 
-            #         # ke[b + n_local_hdiv, a] += -phi_p * phi_a_dot_n * quad_wt_1d * jac_1d  #TODO: should I cinsider this sym section? Symmetric part with negative sign
+            # pressure-velocity coupling (vectorized)
+            phi_dot_n = phi @ normal_unit  # (n_local_hdiv,)
+            ke[:n_local_hdiv, n_local_hdiv:] += scale * np.outer(phi_dot_n, transformed_basis_L2_bc)
 
     return ke
