@@ -43,7 +43,6 @@ exact_solution_l2       = inp.exact_solution_l2
 boundary_value_function = inp.boundary_value_function
 ifID                    = inp.ifID
 
-
  
 basis = spline.NavierStokesTPDiscretization( kv1, kv2, degree1, degree2, cpts)
 
