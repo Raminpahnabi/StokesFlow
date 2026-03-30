@@ -180,7 +180,13 @@ def export_as_vtk(basis, dtotal, true_velocity = None, true_pressure = None):
 
 
 # -----------------------------------------------------------------------
-# Solver setup  (mirror of StokesFlow_problem.py)
+# Switch:  True  -> trig manufactured solution (zero pressure, square domain)
+#          False -> exponential manufactured solution 
+# -----------------------------------------------------------------------
+USE_TRIG = False
+
+# -----------------------------------------------------------------------
+# Exponential manufactured solution  (Option 4)
 # -----------------------------------------------------------------------
 KINEMATIC_VISCOSITY = 1
 
@@ -205,49 +211,118 @@ def exact_solution(x, y):
 
 def exact_solution_l2(x, y):
     p = (-424 + 156*np.exp(1)
-         + (-y + y**2) * (-456 + np.exp(x) * (
-             456 + x**2*(228 - 5*(-y+y**2))
-             + 2*x*(-228 + (-y+y**2))
-             + 2*x**3*(-36 + (-y+y**2))
-             + x**4*(12 + (-y+y**2)))))
+          + (-y + y**2) * (-456 + np.exp(x) * (
+              456 + x**2*(228 - 5*(-y+y**2))
+              + 2*x*(-228 + (-y+y**2))
+              + 2*x**3*(-36 + (-y+y**2))
+              + x**4*(12 + (-y+y**2)))))
     return p
 
 def boundary_value_function(x, y):
     return exact_solution(x, y)
 
-max_knot = 1
-min_knot = 0
-degree1  = 2
-degree2  = 2
-nelem1   = 2
-nelem2   = 2
-degs     = [degree1, degree2]
+# -----------------------------------------------------------------------
+# Trig manufactured solution  (zero pressure, zero boundary values)
+# -----------------------------------------------------------------------
+def trig_exact_solution(x, y):
+    u1 =  np.pi * np.sin(np.pi * x)**2 * np.sin(2 * np.pi * y)
+    u2 = -np.pi * np.sin(2 * np.pi * x) * np.sin(np.pi * y)**2
+    return u1, u2
 
-kv1_init = list(np.linspace(0, max_knot, nelem1+1))
-kv2_init = list(np.linspace(0, max_knot, nelem2+1))
-kv1 = spline.KnotVector([0]*degree1 + kv1_init + [max_knot]*degree1, 1e-9)
-kv2 = spline.KnotVector([0]*degree2 + kv2_init + [max_knot]*degree2, 1e-9)
+def trig_forcing_function(x, y):
+    f1 = 2 * np.pi**3 * (4 * np.sin(np.pi * x)**2 - 1) * np.sin(2 * np.pi * y)
+    f2 = 2 * np.pi**3 * np.sin(2 * np.pi * x) * (1 - 4 * np.sin(np.pi * y)**2)
+    return f1, f2
 
-cpts  = spline.grevillePoints(kv1, kv2, degree1, degree2)
-basis = spline.NavierStokesTPDiscretization(kv1, kv2, degree1, degree2, cpts)
+def trig_boundary_value(x, y):
+    return 0.0, 0.0
 
-n_quad   = max(degree1, degree2) + 1
+def trig_exact_pressure(x, y):
+    return 0.0
+
+# -----------------------------------------------------------------------
+# Solver setup
+# -----------------------------------------------------------------------
 interval = [0, 1]
-quad     = gq_nD.GaussQuadrature2D(n_quad, n_quad, interval, interval)
-quad_1D  = gq_nD.GaussQuadrature1D(n_quad, start_pt=interval[0], end_pt=interval[1])
-gamma    = 20 * max(degree1, degree2)**2
-ifID     = True
 
-nref = 2**3
-refined_basis = spline.globallyHRefine(basis, nelem1*nelem2*nref, parametric_tolerance=1e-5)
+if USE_TRIG:
+    USE_CURVED  = True   # True → curved domain cpts  |  False → unit square
+    degree      = 2 if USE_CURVED else 3   # curved cpts is 3×3 → requires degree 2
+    n_div       = 16     # elements per direction → 16×16 mesh, h = 1/16
 
-print("Solving Stokes system ...")
-dtotal = ss.Stokes(refined_basis, degs, quad, quad_1D, gamma,
-                   forcing_function, exact_solution,
-                   boundary_conditions=None,
-                   boundary_value_function=boundary_value_function,
-                   ifID=ifID)
-print("Solver done.")
+    n_quad  = degree + 1
+    quad    = gq_nD.GaussQuadrature2D(n_quad, n_quad, interval, interval)
+    quad_1D = gq_nD.GaussQuadrature1D(n_quad, start_pt=interval[0], end_pt=interval[1])
+    gamma   = 20 * degree**3
 
-export_as_vtk(refined_basis, dtotal, exact_solution, exact_solution_l2)
+    kv1 = spline.KnotVector([0]*degree + [0, 1] + [1]*degree, 1e-9)
+    kv2 = spline.KnotVector([0]*degree + [0, 1] + [1]*degree, 1e-9)
+
+    if USE_CURVED:
+        # Curved physical domain — u_trig is NOT zero on this boundary,
+        # so we pass trig_exact_solution as the boundary value function.
+        cpts = np.array([
+            [0.5, 0.5, 1.0,   0.25, 0.25, 1.0,   0.0, 0.0, 1.0],
+            [0.0, 0.5, 0.5,   0.0,  0.75, 0.75,  0.0, 1.0, 1.0]
+        ])
+        bvf = trig_exact_solution
+        domain_label = "curved"
+    else:
+        # Unit square — u_trig is exactly zero on the boundary.
+        cpts = spline.grevillePoints(kv1, kv2, degree, degree)
+        bvf = trig_boundary_value
+        domain_label = "square"
+
+    basis = spline.NavierStokesTPDiscretization(kv1, kv2, degree, degree, cpts)
+    refined_basis = spline.globallyHRefine(basis, n_div, parametric_tolerance=1e-5)
+
+    print(f"Solving Stokes system — TRIG/{domain_label} (degree={degree}, n_div={n_div}) ...")
+    dtotal = ss.Stokes(refined_basis, [degree, degree], quad, quad_1D, gamma,
+                       trig_forcing_function, trig_exact_solution,
+                       boundary_conditions=None,
+                       boundary_value_function=bvf,
+                       ifID=True)
+    print("Solver done.")
+
+    export_as_vtk(refined_basis, dtotal,
+                  true_velocity=trig_exact_solution,
+                  true_pressure=trig_exact_pressure)
+
+else:
+    degree1 = 2
+    degree2 = 2
+    nelem1  = 2
+    nelem2  = 2
+    degs    = [degree1, degree2]
+
+    n_quad  = max(degree1, degree2) + 1
+    quad    = gq_nD.GaussQuadrature2D(n_quad, n_quad, interval, interval)
+    quad_1D = gq_nD.GaussQuadrature1D(n_quad, start_pt=interval[0], end_pt=interval[1])
+    gamma   = 20 * max(degree1, degree2)**2
+
+    kv1_init = list(np.linspace(0, 1, nelem1+1))
+    kv2_init = list(np.linspace(0, 1, nelem2+1))
+    kv1 = spline.KnotVector([0]*degree1 + kv1_init + [1]*degree1, 1e-9)
+    kv2 = spline.KnotVector([0]*degree2 + kv2_init + [1]*degree2, 1e-9)
+    cpts = spline.grevillePoints(kv1, kv2, degree1, degree2)
+    # cpts = np.array([
+    #     [0.5, 0.5, 1.0,   0.25, 0.25, 1.0,   0.0, 0.0, 1.0],
+    #     [0.0, 0.5, 0.5,   0.0,  0.75, 0.75,  0.0, 1.0, 1.0]
+    # ])
+    basis = spline.NavierStokesTPDiscretization(kv1, kv2, degree1, degree2, cpts)
+
+    nref = 2**3
+    refined_basis = spline.globallyHRefine(basis, nelem1*nelem2*nref, parametric_tolerance=1e-5)
+
+    print(f"Solving Stokes system — EXPONENTIAL solution (degree={degree1}) ...")
+    dtotal = ss.Stokes(refined_basis, degs, quad, quad_1D, gamma,
+                       forcing_function, exact_solution,
+                       boundary_conditions=None,
+                       boundary_value_function=boundary_value_function,
+                       ifID=True)
+    print("Solver done.")
+
+    export_as_vtk(refined_basis, dtotal,
+                  true_velocity=exact_solution,
+                  true_pressure=exact_solution_l2)
 

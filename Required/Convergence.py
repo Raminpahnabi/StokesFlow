@@ -15,6 +15,7 @@ sys.path.append(os.path.join(os.getcwd(), 'Required'))
 import splines as spline
 import matplotlib.pyplot as plt
 import StokesFlow_Solver as ss
+import CommonFuncs as cf
 
 KINEMATIC_VISCOSITY = 1
 
@@ -32,7 +33,7 @@ def EvaluateSolution_2D_Hdiv(basis, elem, xi, eta, dtotal):
     transformed_basis = basis.piolaTransformedHDIVBasis()
    
     uh_val = np.zeros(2)
-    for a in range(0, n_local_hdiv):
+    for a in range(0, n_local_hdiv): # 12
         A = local_IEN_hdiv[a]
         dA_hdiv = dtotal[A]
         uh_val += dA_hdiv * transformed_basis[a]
@@ -44,6 +45,8 @@ def EvaluateSolution_2D_L2(basis, elem, xi, eta, dtotal):
     n_local_L2 = len(local_IEN_L2)
     local_IEN_hdiv = basis.HDIV.connectivity(elem)
     n_local_hdiv = len(local_IEN_hdiv)
+    
+    n_hdiv_total = cf.GetNumberH1FirstComponent(basis)[0] + cf.GetNumberH1FirstComponent(basis)[1]
 
     basis.localizeElement(elem)
     basis.localizePoint([xi, eta])
@@ -52,7 +55,7 @@ def EvaluateSolution_2D_L2(basis, elem, xi, eta, dtotal):
     
     p_val = 0
     for b in range(0,n_local_L2):
-        B = local_IEN_L2[b] + n_local_hdiv
+        B = local_IEN_L2[b] + n_hdiv_total
         dA_L2 = dtotal[B]
         p_val += dA_L2 * phi_L2[b]
         
@@ -163,8 +166,11 @@ def plot_error_vs_log_h(refined_basis_list, deg, quad, quad_1D, gamma, forcing_f
 
     errors = []
     h_values = []
+    #NEW CODE: collect and print level-by-level diagnostics for convergence sanity checks
+    print("\n[Convergence diagnostics]")  #NEW CODE
+    print("level | n_elem | n_hdiv_total | h | error")  #NEW CODE
     
-    for refined_basis in refined_basis_list:
+    for ilevel, refined_basis in enumerate(refined_basis_list):  #NEW CODE
         # Solve Stokes equations
         d_coeffs = ss.Stokes(refined_basis, deg, quad, quad_1D, gamma, forcing_function, exact_solution,
                         boundary_conditions=None, boundary_value_function=boundary_value_function)
@@ -176,6 +182,11 @@ def plot_error_vs_log_h(refined_basis_list, deg, quad, quad_1D, gamma, forcing_f
         # Compute the square root of the largest element's area to get h
         h = np.sqrt(compute_largest_element_area(refined_basis, quad))
         h_values.append(h)
+        
+        #NEW CODE: per-level metadata for debugging non-monotone convergence
+        n_elem = len(list(refined_basis.elements()))  #NEW CODE
+        n_hdiv_total = cf.GetNumberH1FirstComponent(refined_basis)[0] + cf.GetNumberH1FirstComponent(refined_basis)[1]  #NEW CODE
+        print(f"{ilevel:5d} | {n_elem:6d} | {n_hdiv_total:12d} | {h:.8e} | {total_error:.8e}")  #NEW CODE
 
     log_h_values = np.log(h_values)
     log_errors = np.log(errors)

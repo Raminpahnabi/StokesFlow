@@ -1,1 +1,6 @@
 *.vtk
+*.mplconfig/
+*.pdf_build_lib/
+*.png
+*.pdf
+*.tex
