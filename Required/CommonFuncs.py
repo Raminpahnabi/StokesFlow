@@ -72,7 +72,7 @@ def compute_face_length(basis, xi_vals, quad_1D, bdry_face):
         jac_1d = np.linalg.norm(diff_vect)        # np.sqrt(dx/dxi**2 + dy/dxi**2)
         quad_wt_1d = quad_1D.quad_wts[g]
         
-        length += quad_wt_1d * jac_1d
+        length += quad_1D.jacobian * quad_wt_1d * jac_1d
         
     return length
 

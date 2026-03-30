@@ -54,22 +54,23 @@ def Stokes(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions
         
         
         
-        for e in basis.elements():  
+        for e_idx, e in enumerate(basis.elements()):  # NEWCODE: enumerate for parametric boundary detection
             basis.localizeElement(e)
-            
+
             # print("HDIV connectivity elem 0:", basis.HDIV.connectivity(e))
             # break
-        
+
             ke = la.LocalStiffnessStokes(basis, deg, gaussian, quad_1D, e, boundary_conditions)
             fe = la.LocalForceStokes(basis, deg, gaussian, quad_1D, gamma, e,f)
-            ke_Nitsche = ni.LocalStiffnessMatrix_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e)
-            fe_Nitsche = ni.LocalForceVector_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e, f, u_exact,boundary_value_function)
-    
+            ke_Nitsche = ni.LocalStiffnessMatrix_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e)  # NEWCODE
+            fe_Nitsche = ni.LocalForceVector_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e, f, u_exact,boundary_value_function)  # NEWCODE
+                            
+
             local_IEN_HDIV = basis.HDIV.connectivity(e)
             n_local_hdiv = len(local_IEN_HDIV)
             local_IEN_L2 = basis.L2.connectivity(e)
             n_local_L2 = len(local_IEN_L2)
-            
+
             for a in range(0,n_local_hdiv):
                 A = local_IEN_HDIV[a]
                 P = ID[A]
@@ -77,24 +78,22 @@ def Stokes(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions
                 if P == -1:
                     continue
                 F[P] += fe[a]
-                if A in all_tangential:
-                    F[P] += fe_Nitsche[a]
-                
-                
+                F[P] += fe_Nitsche[a]
+
+
                 for b in range(0, n_local_hdiv):
                     B = local_IEN_HDIV[b]
                     Q = ID[B]
-                    
+
                     if Q == -1:
                         u_B = prescribed.get(B, 0.0)
                         F[P] -= ke[a, b] * u_B
                         F[P] -= ke_Nitsche[a, b] * u_B
-                        
+
                         continue
-                    
+
                     K[P, Q] += ke[a, b]
-                    if A in all_tangential and B in all_tangential:
-                        K[P, Q] += ke_Nitsche[a, b]
+                    K[P, Q] += ke_Nitsche[a, b]
         
                     
                 for b in range(0, n_local_L2):
@@ -126,22 +125,22 @@ def Stokes(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions
         K = lil_matrix((n_total_funcs, n_total_funcs))
         F = np.zeros(n_total_funcs)
 
-        for e in basis.elements():  
+        for e_idx, e in enumerate(basis.elements()):  # NEWCODE: enumerate for parametric boundary detection
             basis.localizeElement(e)
-            
+
             # print("HDIV connectivity elem 0:", basis.HDIV.connectivity(e))
             # break
-        
+
             ke = la.LocalStiffnessStokes(basis, deg, gaussian, quad_1D, e, boundary_conditions)
             fe = la.LocalForceStokes(basis, deg, gaussian, quad_1D, gamma, e,f)
-            ke_Nitsche = ni.LocalStiffnessMatrix_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e)
-            fe_Nitsche = ni.LocalForceVector_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e, f, u_exact,boundary_value_function)
+            ke_Nitsche = ni.LocalStiffnessMatrix_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e, e_idx)  # NEWCODE
+            fe_Nitsche = ni.LocalForceVector_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e, e_idx, f, u_exact,boundary_value_function)  # NEWCODE
 
             local_IEN_HDIV = basis.HDIV.connectivity(e)
             n_local_hdiv = len(local_IEN_HDIV)
             local_IEN_L2 = basis.L2.connectivity(e)
             n_local_L2 = len(local_IEN_L2)
-            
+
             for a in range(0,n_local_hdiv):
                 A = local_IEN_HDIV[a]
                 F[A] += fe[a]
