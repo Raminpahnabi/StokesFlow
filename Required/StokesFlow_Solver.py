@@ -52,7 +52,7 @@ def Stokes(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions
         
         
         
-        for e_idx, e in enumerate(basis.elements()):  # NEWCODE: enumerate for parametric boundary detection
+        for e in basis.elements():
             basis.localizeElement(e)
 
             # print("HDIV connectivity elem 0:", basis.HDIV.connectivity(e))
@@ -60,8 +60,8 @@ def Stokes(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions
 
             ke = la.LocalStiffnessStokes(basis, deg, gaussian, quad_1D, e, boundary_conditions)
             fe = la.LocalForceStokes(basis, deg, gaussian, quad_1D, gamma, e,f)
-            ke_Nitsche = ni.LocalStiffnessMatrix_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e)  # NEWCODE
-            fe_Nitsche = ni.LocalForceVector_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e, f, u_exact,boundary_value_function)  # NEWCODE
+            ke_Nitsche = ni.LocalStiffnessMatrix_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e)
+            fe_Nitsche = ni.LocalForceVector_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e, f, u_exact, boundary_value_function)
                             
 
             local_IEN_HDIV = basis.HDIV.connectivity(e)
@@ -123,7 +123,7 @@ def Stokes(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions
         K = lil_matrix((n_total_funcs, n_total_funcs))
         F = np.zeros(n_total_funcs)
 
-        for e_idx, e in enumerate(basis.elements()):  # NEWCODE: enumerate for parametric boundary detection
+        for e in basis.elements():
             basis.localizeElement(e)
 
             # print("HDIV connectivity elem 0:", basis.HDIV.connectivity(e))
@@ -131,8 +131,8 @@ def Stokes(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions
 
             ke = la.LocalStiffnessStokes(basis, deg, gaussian, quad_1D, e, boundary_conditions)
             fe = la.LocalForceStokes(basis, deg, gaussian, quad_1D, gamma, e,f)
-            ke_Nitsche = ni.LocalStiffnessMatrix_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e, e_idx)  # NEWCODE
-            fe_Nitsche = ni.LocalForceVector_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e, e_idx, f, u_exact,boundary_value_function)  # NEWCODE
+            ke_Nitsche = ni.LocalStiffnessMatrix_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e)
+            fe_Nitsche = ni.LocalForceVector_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e, f, u_exact, boundary_value_function)
 
             local_IEN_HDIV = basis.HDIV.connectivity(e)
             n_local_hdiv = len(local_IEN_HDIV)
