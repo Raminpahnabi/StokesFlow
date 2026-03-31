@@ -16,9 +16,6 @@ sys.path.append(os.path.join(os.getcwd(), 'Required'))
 import splines as spline
 import Gaussian_Quadrature_2D_Solution as gq_nD
 
-
-KINEMATIC_VISCOSITY = 1
-
 ############################## Option No.1 ################################
 # def forcing_function( x, y):
 #     return y,x
@@ -78,7 +75,7 @@ def exact_solution_l2(x, y):
     p = -424+156*np.exp(1)+(-y+y**2)*(-456+np.exp(x)*(456+x**2*(228-5*(-y+y**2))+2*x*(-228+(-y+y**2))+2*x**3*(-36+(-y+y**2))+x**4*(12+(-y+y**2))))
     return p
 
-######################################### Option No.5, STOKES ################################
+######################################### Option No.5 ################################
 # def forcing_function(x, y):
 
 #     f1 = -((4 - 24*x + 24*x**2)*y*(1-y)*(1-2*y)
@@ -130,6 +127,8 @@ def exact_solution_l2(x, y):
     
 #     return u_r, u_theta
 
+def boundary_value_function(x, y):
+    return exact_solution(x, y)
 
 max_knot = 1
 min_knot = 0
@@ -158,6 +157,3 @@ quad     = gq_nD.GaussQuadrature2D(n_quad, n_quad, interval, interval)
 quad_1D  = gq_nD.GaussQuadrature1D(n_quad, start_pt=interval[0], end_pt=interval[1])
 gamma    =  20 * max(degree1, degree2)**3
 ifID = True
-
-def boundary_value_function(x, y):
-    return exact_solution(x, y)

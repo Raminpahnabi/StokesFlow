@@ -16,8 +16,6 @@ sys.path.append(os.path.join(os.getcwd(), 'Required'))
 import matplotlib.pyplot as plt
 import CommonFuncs as cf
 
-KINEMATIC_VISCOSITY = 1
-
 ###########################################################################
 ##############################     Plotting     ###########################
 ###########################################################################

@@ -13,12 +13,9 @@ sys.path.append(os.path.join(os.getcwd(), 'HWs'))
 sys.path.append(os.path.join(os.getcwd(), 'Required'))
 
 import splines as spline
-import Gaussian_Quadrature_2D_Solution as gq_nD
 import StokesFlow_Solver as ss
 import CommonFuncs as cf
 import Inputfile as inp
-
-KINEMATIC_VISCOSITY = 1
 
 def export_as_vtk(basis, dtotal, true_velocity = None, true_pressure = None):        
     
@@ -179,8 +176,6 @@ def export_as_vtk(basis, dtotal, true_velocity = None, true_pressure = None):
         
     
     print(f"Done.  Open  {os.path.abspath(vtk_path)}  in ParaView.")
-
-
 
 max_knot                = inp.max_knot
 min_knot                = inp.min_knot

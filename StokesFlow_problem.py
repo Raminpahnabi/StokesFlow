@@ -16,13 +16,10 @@ sys.path.append(os.path.join(os.getcwd(), 'Required'))
 import splines as spline
 import Gaussian_Quadrature_2D_Solution as gq_nD
 import StokesFlow_Solver as ss
-import Plotting as p
+import Plotting as pl
 import Convergence as cn
 import matplotlib.pyplot as plt  
 import Inputfile as inp
-
-KINEMATIC_VISCOSITY = 1
-
 
 max_knot                = inp.max_knot
 min_knot                = inp.min_knot
@@ -43,15 +40,12 @@ exact_solution_l2       = inp.exact_solution_l2
 boundary_value_function = inp.boundary_value_function
 ifID                    = inp.ifID
 
- 
 basis = spline.NavierStokesTPDiscretization( kv1, kv2, degree1, degree2, cpts)
-
 
 # Quick check
 example_d = ss.Stokes(basis, degree1, quad, quad_1D, gamma,
                    forcing_function, exact_solution,
-                   boundary_conditions=None,
-                   boundary_value_function=boundary_value_function,ifID=ifID)
+                   boundary_conditions=None, boundary_value_function=boundary_value_function, ifID=ifID)
 print("example_d:", example_d)
 
 nref = 3
@@ -61,8 +55,7 @@ dtotal = ss.Stokes(refined_basis, degs, quad, quad_1D, gamma,
                 boundary_conditions=None,
                 boundary_value_function=boundary_value_function,ifID=ifID)
 
-# p.PlotSolution(refined_basis, dtotal, quad, quad_1D, gamma, forcing_function, nelem1*2, exact_solution, exact_solution_l2)
-
+# pl.PlotSolution(refined_basis, dtotal, quad, quad_1D, gamma, forcing_function, nelem1*2, exact_solution, exact_solution_l2)
 
 def manufactured_sol_degrees_clean():  #NEWCODE
     degrees = [2,3]  
@@ -125,6 +118,5 @@ def manufactured_sol_degrees_clean():  #NEWCODE
     plt.legend()  
     plt.grid(True)  
     plt.show()  
-
 
 manufactured_sol_degrees_clean()  

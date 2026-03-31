@@ -15,8 +15,6 @@ sys.path.append(os.path.join(os.getcwd(), '../HWs'))
 import Quadrature_Operations_Solutions_boundary as gq_bc
 import CommonFuncs as cf
 
-KINEMATIC_VISCOSITY = 1
-
 def GetBoundaryDOFs(basis):
     """
     Returns a dict of global DOF index sets for each face, split by role.

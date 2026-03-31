@@ -12,9 +12,6 @@ sys.path.append(os.path.join(os.getcwd(), 'Required'))
 
 import Quadrature_Operations_Solutions_boundary as gq_bc
 
-KINEMATIC_VISCOSITY = 1
-
-
 def GetSplineDegree(basis):
     degs = []
     for knotvec in basis.knotVectors():
