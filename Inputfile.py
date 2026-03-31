@@ -51,30 +51,68 @@ import Gaussian_Quadrature_2D_Solution as gq_nD
 #     return np.sin(np.pi * x)* np.sin(np.pi * y) - (4/((np.pi)**2))
 
 ############################## Option No.4 ################################
-def forcing_function(x, y):
-    f1 = np.exp(x) * (2 * y * (-2 + 7 * y - 6 * y * y + y * y * y) 
-                      - 8 * x * y * (-2 + 7 * y - 6 * y * y + y * y * y) 
-                      + x * x * (12 - 36 * y + 13 * y * y - 2 * y * y * y + y * y * y * y) 
-                      + x * x * x * x * (12 - 36 * y + 13 * y * y - 2 * y * y * y + y * y * y * y) 
-                      + x * x * x * (-24 + 56 * y + 30 * y * y - 44 * y * y * y + 6 * y * y * y * y))
+def forcing_function(x, y, nu = 1, sigma = 0):
+    """
+    Force vector for the manufactured Stokes/Brinkman solution.
 
+    Parameters
+    ----------
+    x, y : float
+        Spatial coordinates.
+    nu : float or callable
+        Kinematic viscosity. If callable, use nu(x, y).
+    sigma : float or callable
+        Darcy coefficient. If callable, use sigma(x, y).
 
-    f2 = 2 * (228 - 456 * y + np.exp(x) * (x * x * x * x * (-5 + 7 * y + 3 * y * y + 2 * y * y * y) 
-                                            + 2 * x * (115 - 233 * y + y * y + 6 * y * y * y - 2 * y * y * y * y) 
-                                            - 3 * (76 - 152 * y + y * y - 2 * y * y * y + y * y * y * y) 
-                                            + 2 * x * x * x * (19 - 41 * y + 5 * y * y - 2 * y * y * y + 2 * y * y * y * y) 
-                                            + x * x * (-119 + 253 * y - 3 * y * y - 34 * y * y * y + 12 * y * y * y * y)))    
+    Returns
+    -------
+    (f1, f2) : tuple of floats
+    """
+
+    nu_val = nu(x, y) if callable(nu) else nu
+    sigma_val = sigma(x, y) if callable(sigma) else sigma
+
+    f1 = np.exp(x) * (
+        (y - 1) * y * (
+            2 * (y - 1) * y
+            - 8 * x * (y - 1) * y
+            + 6 * x**3 * (-4 - y + y**2)
+            + x**2 * (12 - y + y**2)
+            + x**4 * (12 - y + y**2)
+        )
+        - 2 * (
+            2 * y * (1 - 3 * y + 2 * y**2)
+            - 8 * x * y * (1 - 3 * y + 2 * y**2)
+            + 6 * x**3 * (2 - 3 * y - 3 * y**2 + 2 * y**3)
+            + x**2 * (-6 + 13 * y - 3 * y**2 + 2 * y**3)
+            + x**4 * (-6 + 13 * y - 3 * y**2 + 2 * y**3)
+        ) * nu_val
+        + 2 * (x - 1)**2 * x**2 * (y - 1) * y * (2 * y - 1) * sigma_val
+    )
+
+    f2 = (
+        np.exp(x) * x * (2 - 5 * x + 2 * x**2 + x**3) * (y - 1) * y * (2 * y - 1)
+        + (2 * y - 1) * (
+            -456
+            + np.exp(x) * (
+                456
+                + x**2 * (228 + 5 * y - 5 * y**2)
+                + 2 * x * (-228 - y + y**2)
+                + 2 * x**3 * (-36 - y + y**2)
+                + x**4 * (12 - y + y**2)
+            )
+        )
+        + np.exp(x) * (
+            -6 * (y - 1)**2 * y**2
+            + x * (4 - 24 * y + 18 * y**2 + 12 * y**3 - 6 * y**4)
+            + x**4 * (2 - 12 * y + 13 * y**2 - 2 * y**3 + y**4)
+            + 2 * x**3 * (2 - 12 * y + 17 * y**2 - 10 * y**3 + 5 * y**4)
+            + x**2 * (-10 + 60 * y - 41 * y**2 - 38 * y**3 + 19 * y**4)
+        ) * nu_val
+        - np.exp(x) * (x - 1) * x * (-2 + x * (3 + x)) * (y - 1)**2 * y**2 * sigma_val
+    )
+
     return f1, f2
-
-def exact_solution(x, y):
-    u1 = 2 * np.exp(x) * (-1 + x)*(-1 + x)* x**2 * (y**2 - y) * (-1 + 2 * y)
-    u2 = -np.exp(x) * (-1 + x) * x * (-2 + x * (3 + x)) * (-1 + y)**2 * y**2
-    return u1, u2
-
-def exact_solution_l2(x, y):
-    p = -424+156*np.exp(1)+(-y+y**2)*(-456+np.exp(x)*(456+x**2*(228-5*(-y+y**2))+2*x*(-228+(-y+y**2))+2*x**3*(-36+(-y+y**2))+x**4*(12+(-y+y**2))))
-    return p
-
 ######################################### Option No.5, Stokes ################################
 def forcing_function(x, y):
 
