@@ -204,4 +204,4 @@ interval = [0, 1]
 quad     = gq_nD.GaussQuadrature2D(n_quad, n_quad, interval, interval)
 quad_1D  = gq_nD.GaussQuadrature1D(n_quad, start_pt=interval[0], end_pt=interval[1])
 gamma    =  20 * max(degree1, degree2)**3
-ifID = True
+ifID = False
