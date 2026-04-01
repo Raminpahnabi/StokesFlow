@@ -50,8 +50,8 @@ example_d_check = ss.Stokes(basis, degree1, quad, quad_1D, gamma,
 print("example_d:", example_d_check)
 ########### START of NORMALIZING Pressure
 n_l2       = basis.L2.numTotalFunctions()                                   
-alpha      = npre.EvaluateAveragePressure(basis, example_d_check, quad)      #(α = ∫_Ω p_h dΩ)
-area_value = sum(cn.compute_all_element_areas(basis, quad))                  #(vol = ∫_Ω dΩ)
+alpha      = npre.EvaluateAveragePressure(basis, example_d_check, quad)      #(α = int_Ω p_h dΩ)
+area_value = sum(cn.compute_all_element_areas(basis, quad))                  #(vol = int_Ω dΩ)
 print("avg pressure before normalization:", alpha)                          
 example_d_check[-n_l2:] -= alpha / area_value                                #(d_n = d_p - α/vol)
 average_pressure_after = npre.EvaluateAveragePressure(basis, example_d_check, quad)  
@@ -67,10 +67,10 @@ dtotal = ss.Stokes(refined_basis, degs, quad, quad_1D, gamma,
                 boundary_value_function=boundary_value_function,ifID=ifID)
 
 n_l2       = refined_basis.L2.numTotalFunctions()                               
-alpha      = npre.EvaluateAveragePressure(refined_basis, dtotal, quad)      #(α = ∫_Ω p_h dΩ)
-area_value = sum(cn.compute_all_element_areas(refined_basis, quad))         #(vol = ∫_Ω dΩ)
+alpha      = npre.EvaluateAveragePressure(refined_basis, dtotal, quad)     
+area_value = sum(cn.compute_all_element_areas(refined_basis, quad))        
 print("avg pressure before normalization:", alpha)                            
-dtotal[-n_l2:] -= alpha / area_value                                        #(d_n = d_p - α/vol)
+dtotal[-n_l2:] -= alpha / area_value                                       
 average_pressure_after = npre.EvaluateAveragePressure(refined_basis, dtotal, quad)  
 print("avg pressure after  normalization:", average_pressure_after)         
 
@@ -121,9 +121,9 @@ def manufactured_sol_degrees_clean():
             
             ########### START of NORMALIZING Pressure
             n_l2_rb       = rb.L2.numTotalFunctions()                                  
-            alpha_rb      = npre.EvaluateAveragePressure(rb, d, quad_d)               #(α = ∫_Ω p_h dΩ)
-            area_value_rb = sum(cn.compute_all_element_areas(rb, quad_d))             #(vol = ∫_Ω dΩ)
-            d[-n_l2_rb:] -= alpha_rb / area_value_rb                                  #(d_n = d_p - α/vol)
+            alpha_rb      = npre.EvaluateAveragePressure(rb, d, quad_d)               
+            area_value_rb = sum(cn.compute_all_element_areas(rb, quad_d))             
+            d[-n_l2_rb:] -= alpha_rb / area_value_rb                                  
             ########### END of NORMALIZING Pressure
 
             e_p = cn.compute_pressure_convergence_error(rb, d, quad_d, exact_solution_l2)  
