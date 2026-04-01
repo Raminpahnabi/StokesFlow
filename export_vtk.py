@@ -16,6 +16,8 @@ import splines as spline
 import StokesFlow_Solver as ss
 import CommonFuncs as cf
 import Inputfile as inp
+import Convergence as cn
+import NormalizedPressure as npre
 
 def export_as_vtk(basis, dtotal, true_velocity = None, true_pressure = None):        
     
@@ -207,6 +209,13 @@ dtotal = ss.Stokes(refined_basis, degs, quad, quad_1D, gamma,
                    boundary_conditions=None,
                    boundary_value_function=boundary_value_function,
                    ifID=True)
+n_l2       = refined_basis.L2.numTotalFunctions()                                    #NEWCODE
+alpha      = npre.EvaluateAveragePressure(refined_basis, dtotal, quad)      #NEWCODE  (α = ∫_Ω p_h dΩ)
+area_value = sum(cn.compute_all_element_areas(refined_basis, quad))                  #NEWCODE  (vol = ∫_Ω dΩ)
+print("avg pressure before normalization:", alpha)                            #NEWCODE
+dtotal[-n_l2:] -= alpha / area_value                                #NEWCODE  (d_n = d_p - α/vol)
+average_pressure_after = npre.EvaluateAveragePressure(refined_basis, dtotal, quad)  #NEWCODE
+print("avg pressure after  normalization:", average_pressure_after) 
 print("Solver done.")
 
 export_as_vtk(refined_basis, dtotal, true_velocity=exact_solution, true_pressure=exact_solution_l2)
