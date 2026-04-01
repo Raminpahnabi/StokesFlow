@@ -49,13 +49,13 @@ example_d_check = ss.Stokes(basis, degree1, quad, quad_1D, gamma,
                    boundary_conditions=None, boundary_value_function=boundary_value_function, ifID=ifID)
 print("example_d:", example_d_check)
 ########### START of NORMALIZING Pressure
-n_l2       = basis.L2.numTotalFunctions()                                    #NEWCODE
-alpha      = npre.EvaluateAveragePressure(basis, example_d_check, quad)      #NEWCODE  (α = ∫_Ω p_h dΩ)
-area_value = sum(cn.compute_all_element_areas(basis, quad))                  #NEWCODE  (vol = ∫_Ω dΩ)
-print("avg pressure before normalization:", alpha)                            #NEWCODE
-example_d_check[-n_l2:] -= alpha / area_value                                #NEWCODE  (d_n = d_p - α/vol)
-average_pressure_after = npre.EvaluateAveragePressure(basis, example_d_check, quad)  #NEWCODE
-print("avg pressure after  normalization:", average_pressure_after)           #NEWCODE
+n_l2       = basis.L2.numTotalFunctions()                                   
+alpha      = npre.EvaluateAveragePressure(basis, example_d_check, quad)      #(α = ∫_Ω p_h dΩ)
+area_value = sum(cn.compute_all_element_areas(basis, quad))                  #(vol = ∫_Ω dΩ)
+print("avg pressure before normalization:", alpha)                          
+example_d_check[-n_l2:] -= alpha / area_value                                #(d_n = d_p - α/vol)
+average_pressure_after = npre.EvaluateAveragePressure(basis, example_d_check, quad)  
+print("avg pressure after  normalization:", average_pressure_after)          
 ########### END of NORMALIZING Pressure
 pl.PlotSolution(basis, example_d_check, quad, quad_1D, gamma, forcing_function, nelem1*2, exact_solution, exact_solution_l2)
 
@@ -66,17 +66,17 @@ dtotal = ss.Stokes(refined_basis, degs, quad, quad_1D, gamma,
                 boundary_conditions=None,
                 boundary_value_function=boundary_value_function,ifID=ifID)
 
-n_l2       = refined_basis.L2.numTotalFunctions()                                    #NEWCODE
-alpha      = npre.EvaluateAveragePressure(refined_basis, dtotal, quad)      #NEWCODE  (α = ∫_Ω p_h dΩ)
-area_value = sum(cn.compute_all_element_areas(refined_basis, quad))                  #NEWCODE  (vol = ∫_Ω dΩ)
-print("avg pressure before normalization:", alpha)                            #NEWCODE
-dtotal[-n_l2:] -= alpha / area_value                                #NEWCODE  (d_n = d_p - α/vol)
-average_pressure_after = npre.EvaluateAveragePressure(refined_basis, dtotal, quad)  #NEWCODE
-print("avg pressure after  normalization:", average_pressure_after)           #NEWCODE
+n_l2       = refined_basis.L2.numTotalFunctions()                               
+alpha      = npre.EvaluateAveragePressure(refined_basis, dtotal, quad)      #(α = ∫_Ω p_h dΩ)
+area_value = sum(cn.compute_all_element_areas(refined_basis, quad))         #(vol = ∫_Ω dΩ)
+print("avg pressure before normalization:", alpha)                            
+dtotal[-n_l2:] -= alpha / area_value                                        #(d_n = d_p - α/vol)
+average_pressure_after = npre.EvaluateAveragePressure(refined_basis, dtotal, quad)  
+print("avg pressure after  normalization:", average_pressure_after)         
 
 pl.PlotSolution(refined_basis, dtotal, quad, quad_1D, gamma, forcing_function, nelem1*2, exact_solution, exact_solution_l2)
 
-def manufactured_sol_degrees_clean():  #NEWCODE
+def manufactured_sol_degrees_clean():  
     degrees = [2,3,4]  
     colors  = ['b', 'g', 'r', 'c']  
     refinement_levels = [8, 16, 32, 64]  
@@ -84,7 +84,7 @@ def manufactured_sol_degrees_clean():  #NEWCODE
     max_knot_d = 1  
 
     plt.figure(figsize=(8, 6))
-    fig_pres, ax_pres = plt.subplots(figsize=(8, 6))  #NEWCODE
+    fig_pres, ax_pres = plt.subplots(figsize=(8, 6)) 
 
     for idx, deg in enumerate(degrees): 
         print(f"\n{'='*60}")  
@@ -104,7 +104,7 @@ def manufactured_sol_degrees_clean():  #NEWCODE
         basis_d = spline.NavierStokesTPDiscretization(kv1_d, kv2_d, deg, deg, cpts_d)  
 
         errors   = []
-        errors_p = []  #NEWCODE
+        errors_p = []  
         h_values = []
 
         print("level | n_divisions | h           | error")  
@@ -126,27 +126,27 @@ def manufactured_sol_degrees_clean():  #NEWCODE
             d[-n_l2_rb:] -= alpha_rb / area_value_rb                                  #(d_n = d_p - α/vol)
             ########### END of NORMALIZING Pressure
 
-            e_p = cn.compute_pressure_convergence_error(rb, d, quad_d, exact_solution_l2)  #NEWCODE
+            e_p = cn.compute_pressure_convergence_error(rb, d, quad_d, exact_solution_l2)  
 
             h = np.sqrt(cn.compute_largest_element_area(rb, quad_d))
             errors.append(e)
-            errors_p.append(e_p)  #NEWCODE
+            errors_p.append(e_p)  
             h_values.append(h)
-            print(f"{ilevel:5d} | {n_div:11d} | {h:.6e} | vel {e:.6e} | pres {e_p:.6e}")  #NEWCODE
+            print(f"{ilevel:5d} | {n_div:11d} | {h:.6e} | vel {e:.6e} | pres {e_p:.6e}")  
 
         log_h = np.log(h_values)
         log_e = np.log(errors)
-        log_e_p = np.log(errors_p)  #NEWCODE
+        log_e_p = np.log(errors_p)  
         slope, _ = np.polyfit(log_h, log_e, 1)  # least-squares fit through all 4 points
-        slope_p, _ = np.polyfit(log_h, log_e_p, 1)  #NEWCODE
-        print(f"Degree {deg}: velocity slope = {slope:.4f} | pressure slope = {slope_p:.4f}")  #NEWCODE
+        slope_p, _ = np.polyfit(log_h, log_e_p, 1)  
+        print(f"Degree {deg}: velocity slope = {slope:.4f} | pressure slope = {slope_p:.4f}")  
 
         plt.plot(log_h, log_e, marker='o', linestyle='--',
                  color=colors[idx],
                  label=f'Degree {deg} (slope ≈ {round(slope)})')
-        ax_pres.plot(log_h, log_e_p, marker='s', linestyle='--',  #NEWCODE
-                     color=colors[idx],                             #NEWCODE
-                     label=f'Degree {deg} (slope_p ≈ {round(slope_p)})')  #NEWCODE
+        ax_pres.plot(log_h, log_e_p, marker='s', linestyle='--',  
+                     color=colors[idx],                             
+                     label=f'Degree {deg} (slope_p ≈ {round(slope_p)})')  
 
     plt.xlabel(r'$\log(h)$')
     plt.ylabel(r'$\log(\|e\|_0)$')
@@ -155,12 +155,12 @@ def manufactured_sol_degrees_clean():  #NEWCODE
     plt.grid(True)
     plt.show()
 
-    ax_pres.set_xlabel(r'$\log(h)$')                                                   #NEWCODE
-    ax_pres.set_ylabel(r'$\log(\|e_p\|_0)$')                                          #NEWCODE
-    ax_pres.set_title(r'Pressure Convergence: $\|e_p\|_0$ vs $\log(h)$ for Degrees 2–5')  #NEWCODE
-    ax_pres.legend()                                                                    #NEWCODE
-    ax_pres.grid(True)                                                                  #NEWCODE
-    fig_pres.show()                                                                     #NEWCODE
+    ax_pres.set_xlabel(r'$\log(h)$')                                                  
+    ax_pres.set_ylabel(r'$\log(\|e_p\|_0)$')                                         
+    ax_pres.set_title(r'Pressure Convergence: $\|e_p\|_0$ vs $\log(h)$ for Degrees 2–5') 
+    ax_pres.legend()                                                                    
+    ax_pres.grid(True)                                                                
+    fig_pres.show()                                                                   
 
 manufactured_sol_degrees_clean()
 
