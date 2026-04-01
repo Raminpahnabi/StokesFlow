@@ -154,9 +154,30 @@ def compute_convergence_error(basis, d_coeffs, quad, exact_solution, isHDIV=True
                 total_error += error_squared * jac_det * weight * quad.jacobian
 
     total_error = np.sqrt(total_error)
-    
+
     return total_error
 
+
+def compute_pressure_convergence_error(basis, d_coeffs, quad, exact_solution_l2):  #NEWCODE
+    # Assumes pressure DOFs in d_coeffs are already mean-normalized (d_n = d_p - alpha/vol)  
+    total_error = 0.0                                                                          
+    for elem in basis.elements():                                                             
+        basis.localizeElement(elem)                                                           
+        
+        for iqpt in range(len(quad.quad_wts)):                                               
+            weight  = quad.quad_wts[iqpt]                                                    
+            qpt     = quad.quad_pts[iqpt]                                                    
+            basis.localizePoint(qpt)                                                         
+            jac_det = basis.jacobianDeterminant()                                             
+            
+            qpt_mapped = basis.mapping()                                                      
+            x_g, y_g   = qpt_mapped[0], qpt_mapped[1]                                        
+            p_exact = exact_solution_l2(x_g, y_g)                                            
+            
+            p_h     = float(EvaluateSolution_2D_L2(basis, elem, qpt[0], qpt[1], d_coeffs))    
+            total_error += (p_exact - p_h)**2 * jac_det * weight * quad.jacobian            
+    
+    return float(np.sqrt(total_error))                                                       
 
 
 def plot_error_vs_log_h(refined_basis_list, deg, quad, quad_1D, gamma, forcing_function, 
@@ -210,39 +231,39 @@ def plot_error_vs_log_h(refined_basis_list, deg, quad, quad_1D, gamma, forcing_f
     return slopes, h_values, errors
 
 
-def run_convergence_study(num_iterations, basis_init, deg, quad, quad_1D, gamma, 
-                         forcing_function, exact_solution_velocity, exact_solution_pressure,
-                         boundary_value_function,nelem1,nelem2):
+# def run_convergence_study(num_iterations, basis_init, deg, quad, quad_1D, gamma, 
+#                          forcing_function, exact_solution_velocity, exact_solution_pressure,
+#                          boundary_value_function,nelem1,nelem2):
 
-    refined_basis_list = []
-    for i in range(0, num_iterations):
-        num_divisions = nelem1 * nelem2 * (2**i)
-        refined_basis = spline.globallyHRefine(basis_init, num_divisions, parametric_tolerance=1e-5)
-        refined_basis_list.append(refined_basis)
+#     refined_basis_list = []
+#     for i in range(0, num_iterations):
+#         num_divisions = nelem1 * nelem2 * (2**i)
+#         refined_basis = spline.globallyHRefine(basis_init, num_divisions, parametric_tolerance=1e-5)
+#         refined_basis_list.append(refined_basis)
     
-    # Velocity convergence
-    print("\n" + "="*60)
-    print("Computing velocity convergence...")
-    print("="*60)
-    iHDIV = True
-    slope_vel, h_vals_vel, errors_vel = plot_error_vs_log_h(refined_basis_list, deg, quad, quad_1D, gamma, 
-                                                             forcing_function, exact_solution_velocity, 
-                                                             boundary_value_function, iHDIV)
-    print("Velocity convergence rates: ", slope_vel)
-    # print(f"  h values: {h_vals_vel}")
-    # print(f"  errors: {errors_vel}")
+#     # Velocity convergence
+#     print("\n" + "="*60)
+#     print("Computing velocity convergence...")
+#     print("="*60)
+#     iHDIV = True
+#     slope_vel, h_vals_vel, errors_vel = plot_error_vs_log_h(refined_basis_list, deg, quad, quad_1D, gamma, 
+#                                                              forcing_function, exact_solution_velocity, 
+#                                                              boundary_value_function, iHDIV)
+#     print("Velocity convergence rates: ", slope_vel)
+#     # print(f"  h values: {h_vals_vel}")
+#     # print(f"  errors: {errors_vel}")
     
-    # # Pressure convergence
-    # print("\n" + "="*60)
-    # print("Computing pressure convergence...")
-    # print("="*60)
-    # iHDIV = False
-    # slope_pres, h_vals_pres, errors_pres = plot_error_vs_log_h(refined_basis_list, deg, quad, quad_1D, gamma, 
-    #                                                             forcing_function, exact_solution_pressure, 
-    #                                                             boundary_value_function, iHDIV)
-    # # print(f"Pressure convergence rate: {slope_pres:.4f}")
-    # print("Pressure convergence rates: ", slope_pres)
-    # print(f"  h values: {h_vals_pres}")
-    # print(f"  errors: {errors_pres}")
+#     # # Pressure convergence
+#     # print("\n" + "="*60)
+#     # print("Computing pressure convergence...")
+#     # print("="*60)
+#     # iHDIV = False
+#     # slope_pres, h_vals_pres, errors_pres = plot_error_vs_log_h(refined_basis_list, deg, quad, quad_1D, gamma, 
+#     #                                                             forcing_function, exact_solution_pressure, 
+#     #                                                             boundary_value_function, iHDIV)
+#     # # print(f"Pressure convergence rate: {slope_pres:.4f}")
+#     # print("Pressure convergence rates: ", slope_pres)
+#     # print(f"  h values: {h_vals_pres}")
+#     # print(f"  errors: {errors_pres}")
     
-    return slope_vel#, slope_pres
+#     return slope_vel#, slope_pres
