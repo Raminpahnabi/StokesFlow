@@ -8,9 +8,28 @@ Created on Tue Mar 31 10:21:01 2026
 import sys
 import os
 import numpy as np
-sys.path.insert(0, '/Users/raminpahnabi/Documents/BYU/sweeps/build/src/api')
-sys.path.append(os.path.join(os.getcwd(), 'HWs'))
-sys.path.append(os.path.join(os.getcwd(), 'Required'))
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+sys.path.append(str(PROJECT_ROOT))
+from sweeps_path import ensure_sweeps_api_on_path
+
+ensure_sweeps_api_on_path()
+sys.path.append(str(PROJECT_ROOT / 'HWs'))
+sys.path.append(str(PROJECT_ROOT / 'Required'))
+
+
+def _domain_area(basis, quad):
+    area = 0.0
+    for elem in basis.elements():
+        basis.localizeElement(elem)
+        for iqpt in range(len(quad.quad_wts)):
+            weight = quad.quad_wts[iqpt]
+            qpt = quad.quad_pts[iqpt]
+            basis.localizePoint(qpt)
+            jac_det = basis.jacobianDeterminant()
+            area += jac_det * weight * quad.jacobian
+    return area
 
 def EvaluateAveragePressure(basis, d_coeffs, quad):
     n_l2 = basis.L2.numTotalFunctions()
@@ -33,6 +52,13 @@ def EvaluateAveragePressure(basis, d_coeffs, quad):
             average_pressure += ph * weight * jac_det * quad.jacobian
             
     return average_pressure
+
+
+def EvaluateMeanPressure(basis, d_coeffs, quad):
+    area = _domain_area(basis, quad)
+    if area <= 0:
+        return 0.0
+    return float(EvaluateAveragePressure(basis, d_coeffs, quad) / area)
 
 def EvalLocalL2forcepressure(basis,deg, quad, quad_1D, elem, alpha, boundary_conditions=None):
     # Connectivity for HDIV and L2 spaces
@@ -101,3 +127,20 @@ def L2PressureSolver(basis, deg, quad, quad_1D, alpha, boundary_conditions=None)
     d = np.linalg.solve(K,F)
     
     return d
+
+
+def NormalizePressureCoefficients(basis, d_coeffs, deg, quad, quad_1D):
+    n_l2 = basis.L2.numTotalFunctions()
+    mean_pressure = EvaluateMeanPressure(basis, d_coeffs, quad)
+    constant_projection = L2PressureSolver(
+        basis,
+        deg,
+        quad,
+        quad_1D,
+        lambda _x, _y, value=mean_pressure: value,
+        boundary_conditions=None,
+    )
+
+    d_normalized = np.array(d_coeffs, copy=True)
+    d_normalized[-n_l2:] -= constant_projection
+    return d_normalized

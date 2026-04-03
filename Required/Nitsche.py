@@ -8,14 +8,52 @@ Created on Tue Mar 24 14:21:18 2026
 import sys
 import os
 import numpy as np
-sys.path.insert(0, '/Users/raminpahnabi/Documents/BYU/sweeps/build/src/api')
-sys.path.append(os.path.join(os.getcwd(), '../HWs'))
-sys.path.append(os.path.join(os.getcwd(), 'Required'))
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+sys.path.append(str(PROJECT_ROOT))
+from sweeps_path import ensure_sweeps_api_on_path
+
+ensure_sweeps_api_on_path()
+sys.path.append(str(PROJECT_ROOT / 'HWs'))
+sys.path.append(str(PROJECT_ROOT / 'Required'))
 
 import Quadrature_Operations_Solutions_boundary as gq_bc
 import CommonFuncs as cf
 
 KINEMATIC_VISCOSITY = 1
+
+
+def _physical_domain_bounds(basis):
+    control_points = np.asarray(basis.control_points)
+    x_min = float(np.min(control_points[0]))
+    x_max = float(np.max(control_points[0]))
+    y_min = float(np.min(control_points[1]))
+    y_max = float(np.max(control_points[1]))
+    return x_min, x_max, y_min, y_max
+
+
+def _is_boundary_face(basis, elem, bdry, quad_1D, bounds):
+    xi_vals = gq_bc.GetFaceQuadraturePoints(quad_1D, bdry)
+    face_midpoint = xi_vals[len(xi_vals) // 2]
+
+    basis.localizeElement(elem)
+    basis.localizePoint(face_midpoint)
+    x_f, y_f = basis.mapping()[:2]
+
+    x_min, x_max, y_min, y_max = bounds
+    span = max(x_max - x_min, y_max - y_min, 1.0)
+    tol = 1e-10 * span
+
+    if bdry == gq_bc.BoundaryFace.BOTTOM:
+        return abs(y_f - y_min) <= tol
+    if bdry == gq_bc.BoundaryFace.TOP:
+        return abs(y_f - y_max) <= tol
+    if bdry == gq_bc.BoundaryFace.LEFT:
+        return abs(x_f - x_min) <= tol
+    if bdry == gq_bc.BoundaryFace.RIGHT:
+        return abs(x_f - x_max) <= tol
+    return False
 
 # ===========================================================================
 #   Nitsche functions modified to act ONLY on TANGENTIAL DOFs
@@ -32,30 +70,14 @@ def LocalForceVector_Nitsche_IGA_2D(basis, deg, quad,quad_1D, gamma, elem, forci
     fe = np.zeros(n_local_total)
 
     bdries = [gq_bc.BoundaryFace.BOTTOM,gq_bc.BoundaryFace.TOP,gq_bc.BoundaryFace.LEFT,gq_bc.BoundaryFace.RIGHT]
+    bounds = _physical_domain_bounds(basis)
 
     for bdry in bdries:
         xi_vals = gq_bc.GetFaceQuadraturePoints(quad_1D, bdry)
+        if not _is_boundary_face(basis, elem, bdry, quad_1D, bounds):
+            continue
 
-        # NEWCODE: skip this face unless the element actually touches the domain boundary.
-        # GetFaceQuadraturePoints uses reference-element coords, so every element (including
-        # interior ones) has a "bottom face" at eta=0 — but only boundary-row elements map
-        # that face to y≈0 in physical space.  Interior elements would add spurious Nitsche
-        # terms at interior faces, creating an O(h) error floor that kills high-degree rates.
-        basis.localizeElement(elem)  # NEWCODE: ensure element context before face check
-        basis.localizePoint(xi_vals[len(xi_vals) // 2])  # NEWCODE: midpoint of the face
-        _qpt_check = basis.mapping()  # NEWCODE
-        _x_f, _y_f = _qpt_check[0], _qpt_check[1]  # NEWCODE
-        _tol = 1e-10  # NEWCODE
-        _on_bdry = (  # NEWCODE
-            (bdry == gq_bc.BoundaryFace.BOTTOM and _y_f < quad_1D.start + _tol) or  # NEWCODE
-            (bdry == gq_bc.BoundaryFace.TOP    and _y_f > quad_1D.end   - _tol) or  # NEWCODE
-            (bdry == gq_bc.BoundaryFace.LEFT   and _x_f < quad_1D.start + _tol) or  # NEWCODE
-            (bdry == gq_bc.BoundaryFace.RIGHT  and _x_f > quad_1D.end   - _tol)     # NEWCODE
-        )  # NEWCODE
-        if not _on_bdry:  # NEWCODE
-            continue  # NEWCODE
-
-        basis.localizeElement(elem)  # NEWCODE: restore element context after the face check
+        basis.localizeElement(elem)
         face_length = cf.compute_face_length(basis, xi_vals, quad_1D, bdry)
         for g in range(len(xi_vals)):
             quad_pts = xi_vals[g]
@@ -130,26 +152,14 @@ def LocalStiffnessMatrix_Nitsche_IGA_2D(basis, deg, quad, quad_1D, gamma, elem, 
 
     bdries = [gq_bc.BoundaryFace.BOTTOM, gq_bc.BoundaryFace.TOP,
               gq_bc.BoundaryFace.LEFT, gq_bc.BoundaryFace.RIGHT]
+    bounds = _physical_domain_bounds(basis)
 
     for bdry in bdries:
         xi_vals = gq_bc.GetFaceQuadraturePoints(quad_1D, bdry)
+        if not _is_boundary_face(basis, elem, bdry, quad_1D, bounds):
+            continue
 
-        # NEWCODE: skip interior element faces — only compute Nitsche on domain boundaries.
-        basis.localizeElement(elem)  # NEWCODE
-        basis.localizePoint(xi_vals[len(xi_vals) // 2])  # NEWCODE
-        _qpt_check = basis.mapping()  # NEWCODE
-        _x_f, _y_f = _qpt_check[0], _qpt_check[1]  # NEWCODE
-        _tol = 1e-10  # NEWCODE
-        _on_bdry = (  # NEWCODE
-            (bdry == gq_bc.BoundaryFace.BOTTOM and _y_f < quad_1D.start + _tol) or  # NEWCODE
-            (bdry == gq_bc.BoundaryFace.TOP    and _y_f > quad_1D.end   - _tol) or  # NEWCODE
-            (bdry == gq_bc.BoundaryFace.LEFT   and _x_f < quad_1D.start + _tol) or  # NEWCODE
-            (bdry == gq_bc.BoundaryFace.RIGHT  and _x_f > quad_1D.end   - _tol)     # NEWCODE
-        )  # NEWCODE
-        if not _on_bdry:  # NEWCODE
-            continue  # NEWCODE
-
-        basis.localizeElement(elem)  # NEWCODE: restore element context
+        basis.localizeElement(elem)
         face_length = cf.compute_face_length(basis, xi_vals, quad_1D, bdry)
 
         for g in range(len(xi_vals)):

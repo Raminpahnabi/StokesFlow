@@ -5,13 +5,18 @@ Created on Tue Mar 24 14:44:23 2026
 
 @author: raminpahnabi
 """
+import Inputfile as inp
+
 
 import sys
 import os
 import numpy as np
-sys.path.insert(0, '/Users/raminpahnabi/Documents/BYU/sweeps/build/src/api')
-sys.path.append(os.path.join(os.getcwd(), 'HWs'))
-sys.path.append(os.path.join(os.getcwd(), 'Required'))
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, inp.sweepspath)
+sys.path.append(str(PROJECT_ROOT / 'HWs'))
+sys.path.append(str(PROJECT_ROOT / 'Required'))
 
 import splines as spline
 import Gaussian_Quadrature_2D_Solution as gq_nD
@@ -19,10 +24,10 @@ import StokesFlow_Solver as ss
 import Plotting as pl
 import Convergence as cn
 import matplotlib.pyplot as plt  
-import Inputfile as inp
 import NormalizedPressure as npre
 
-max_knot                = inp.max_knot
+max_knot_xi             = inp.max_knot_xi
+max_knot_eta            = inp.max_knot_eta
 min_knot                = inp.min_knot
 degree1                 = inp.degree1
 degree2                 = inp.degree2
@@ -49,15 +54,13 @@ example_d_check = ss.Stokes(basis, degree1, quad, quad_1D, gamma,
                    boundary_conditions=None, boundary_value_function=boundary_value_function, ifID=ifID)
 print("example_d:", example_d_check)
 ########### START of NORMALIZING Pressure
-n_l2       = basis.L2.numTotalFunctions()                                   
 alpha      = npre.EvaluateAveragePressure(basis, example_d_check, quad)      #(α = int_Ω p_h dΩ)
-area_value = sum(cn.compute_all_element_areas(basis, quad))                  #(vol = int_Ω dΩ)
 print("avg pressure before normalization:", alpha)                          
-example_d_check[-n_l2:] -= alpha / area_value                                #(d_n = d_p - α/vol)
+example_d_check = npre.NormalizePressureCoefficients(basis, example_d_check, degree1, quad, quad_1D)
 average_pressure_after = npre.EvaluateAveragePressure(basis, example_d_check, quad)  
 print("avg pressure after  normalization:", average_pressure_after)          
 ########### END of NORMALIZING Pressure
-pl.PlotSolution(basis, example_d_check, quad, quad_1D, gamma, forcing_function, nelem1*2, exact_solution, exact_solution_l2)
+# pl.PlotSolution(basis, example_d_check, quad, quad_1D, gamma, forcing_function, nelem1*2, exact_solution, exact_solution_l2)
 
 nref = 3
 refined_basis = spline.globallyHRefine(basis, nelem1*nelem2*nref, parametric_tolerance=1e-5)
@@ -66,22 +69,21 @@ dtotal = ss.Stokes(refined_basis, degs, quad, quad_1D, gamma,
                 boundary_conditions=None,
                 boundary_value_function=boundary_value_function,ifID=ifID)
 
-n_l2       = refined_basis.L2.numTotalFunctions()                               
 alpha      = npre.EvaluateAveragePressure(refined_basis, dtotal, quad)     
-area_value = sum(cn.compute_all_element_areas(refined_basis, quad))        
 print("avg pressure before normalization:", alpha)                            
-dtotal[-n_l2:] -= alpha / area_value                                       
+dtotal = npre.NormalizePressureCoefficients(refined_basis, dtotal, degs, quad, quad_1D)
 average_pressure_after = npre.EvaluateAveragePressure(refined_basis, dtotal, quad)  
 print("avg pressure after  normalization:", average_pressure_after)         
 
-pl.PlotSolution(refined_basis, dtotal, quad, quad_1D, gamma, forcing_function, nelem1*2, exact_solution, exact_solution_l2)
+# pl.PlotSolution(refined_basis, dtotal, quad, quad_1D, gamma, forcing_function, nelem1*2, exact_solution, exact_solution_l2)
 
 def manufactured_sol_degrees_clean():  
     degrees = [2,3,4]  
     colors  = ['b', 'g', 'r', 'c']  
-    refinement_levels = [8, 16, 32, 64]  
+    refinement_levels = [8, 16, 32] #, 64]  
     interval_d = [0,1]  
-    max_knot_d = 1  
+    max_knot_d_xi = max_knot_xi  
+    max_knot_d_eta = max_knot_eta 
 
     plt.figure(figsize=(8, 6))
     fig_pres, ax_pres = plt.subplots(figsize=(8, 6)) 
@@ -98,9 +100,11 @@ def manufactured_sol_degrees_clean():
         gamma_d   = 20 * deg**3  
 
         # Build coarsest single-element basis for this degree  
-        kv1_d = spline.KnotVector([0]*deg + [0, max_knot_d] + [max_knot_d]*deg, 1e-9)  
-        kv2_d = spline.KnotVector([0]*deg + [0, max_knot_d] + [max_knot_d]*deg, 1e-9)  
-        cpts_d = spline.grevillePoints(kv1_d, kv2_d, deg, deg)  
+        kv1_d = spline.KnotVector([0]*deg + [0, max_knot_d_xi] + [max_knot_d_xi]*deg, 1e-9)  
+        kv2_d = spline.KnotVector([0]*deg + [0, max_knot_d_eta] + [max_knot_d_eta]*deg, 1e-9)  
+        unitkv1_d = spline.KnotVector([0]*deg + [0, 1] + [1]*deg, 1e-9)
+        unitkv2_d = spline.KnotVector([0]*deg + [0, 1] + [1]*deg, 1e-9)
+        cpts_d = spline.grevillePoints(unitkv1_d, unitkv2_d, deg, deg)  
         basis_d = spline.NavierStokesTPDiscretization(kv1_d, kv2_d, deg, deg, cpts_d)  
 
         errors   = []
@@ -120,10 +124,8 @@ def manufactured_sol_degrees_clean():
             e = cn.compute_convergence_error(rb, d, quad_d, exact_solution, isHDIV=True)  
             
             ########### START of NORMALIZING Pressure
-            n_l2_rb       = rb.L2.numTotalFunctions()                                  
             alpha_rb      = npre.EvaluateAveragePressure(rb, d, quad_d)               
-            area_value_rb = sum(cn.compute_all_element_areas(rb, quad_d))             
-            d[-n_l2_rb:] -= alpha_rb / area_value_rb                                  
+            d = npre.NormalizePressureCoefficients(rb, d, [deg, deg], quad_d, quad_1D_d)
             ########### END of NORMALIZING Pressure
 
             e_p = cn.compute_pressure_convergence_error(rb, d, quad_d, exact_solution_l2)  
@@ -163,4 +165,3 @@ def manufactured_sol_degrees_clean():
     fig_pres.show()                                                                   
 
 manufactured_sol_degrees_clean()
-

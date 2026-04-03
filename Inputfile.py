@@ -9,9 +9,13 @@ Created on Mon Mar 30 11:40:17 2026
 import sys
 import os
 import numpy as np
-sys.path.insert(0, '/Users/raminpahnabi/Documents/BYU/sweeps/build/src/api')
-sys.path.append(os.path.join(os.getcwd(), 'HWs'))
-sys.path.append(os.path.join(os.getcwd(), 'Required'))
+from pathlib import Path
+from sweeps_path import ensure_sweeps_api_on_path
+
+PROJECT_ROOT = Path(__file__).resolve().parent
+sweepspath = ensure_sweeps_api_on_path()
+sys.path.append(str(PROJECT_ROOT / 'HWs'))
+sys.path.append(str(PROJECT_ROOT / 'Required'))
 
 import splines as spline
 import Gaussian_Quadrature_2D_Solution as gq_nD
@@ -178,20 +182,27 @@ def exact_solution_l2(x, y):
 def boundary_value_function(x, y):
     return exact_solution(x, y)
 
-max_knot = 1
+max_knot_xi = 0.1
+max_knot_eta = 5
 min_knot = 0
 degree1 = 2
 degree2 = 2
 nelem1 = 2
 nelem2 = 2
 degs = [degree1,degree2]
-kv1_init = list(np.linspace(0,max_knot,nelem1+1))
-kv2_init = list(np.linspace(0,max_knot,nelem2+1))
-kv1 = spline.KnotVector([0]*degree1 + kv1_init + [max_knot]*(degree1), 1e-9)
-kv2 = spline.KnotVector([0]*degree2 + kv2_init + [max_knot]*(degree2), 1e-9)
+kv1_init = list(np.linspace(0,max_knot_xi,nelem1+1))
+kv2_init = list(np.linspace(0,max_knot_eta,nelem2+1))
+kv1 = spline.KnotVector([0]*degree1 + kv1_init + [max_knot_xi]*(degree1), 1e-9)
+kv2 = spline.KnotVector([0]*degree2 + kv2_init + [max_knot_eta]*(degree2), 1e-9)
+
+unitkv1_init = list(np.linspace(0,1,nelem1+1))
+unitkv2_init = list(np.linspace(0,1,nelem2+1))
+unitkv1 = spline.KnotVector([0]*degree1 + unitkv1_init + [1]*(degree1), 1e-9)
+unitkv2 = spline.KnotVector([0]*degree2 + unitkv2_init + [1]*(degree2), 1e-9)
+
 
 ######## Square domain
-cpts = spline.grevillePoints( kv1, kv2, degree1, degree2 )#/ max_knot # make the domain a unit square   
+cpts = spline.grevillePoints( unitkv1, unitkv2, degree1, degree2 )#/ max_knot # make the domain a unit square   
 
 ######## Curve domain
 # cpts = np.array([
@@ -204,4 +215,4 @@ interval = [0, 1]
 quad     = gq_nD.GaussQuadrature2D(n_quad, n_quad, interval, interval)
 quad_1D  = gq_nD.GaussQuadrature1D(n_quad, start_pt=interval[0], end_pt=interval[1])
 gamma    =  20 * max(degree1, degree2)**3
-ifID = False
+ifID = True
