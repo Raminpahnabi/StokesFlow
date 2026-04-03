@@ -11,10 +11,15 @@ import os
 import numpy as np
 from scipy.sparse import lil_matrix
 from scipy.sparse.linalg import spsolve
-sys.path.insert(0, '/Users/raminpahnabi/Documents/BYU/sweeps/build/src/api')
-# sys.path.append('HWs')
-sys.path.append(os.path.join(os.getcwd(), '../HWs'))
-sys.path.append(os.path.join(os.getcwd(), 'Required'))
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+sys.path.append(str(PROJECT_ROOT))
+from sweeps_path import ensure_sweeps_api_on_path
+
+ensure_sweeps_api_on_path()
+sys.path.append(str(PROJECT_ROOT / 'HWs'))
+sys.path.append(str(PROJECT_ROOT / 'Required'))
 
 import LocalAssembly as la
 import Nitsche as ni
@@ -161,5 +166,4 @@ def Stokes(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions
         d_total = spsolve(K.tocsr(), F)
     
     return d_total
-
 

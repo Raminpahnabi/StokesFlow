@@ -9,11 +9,50 @@ Created on Tue Mar 24 14:39:29 2026
 import sys
 import os
 import numpy as np
-sys.path.insert(0, '/Users/raminpahnabi/Documents/BYU/sweeps/build/src/api')
-sys.path.append(os.path.join(os.getcwd(), '../HWs'))
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+sys.path.append(str(PROJECT_ROOT))
+from sweeps_path import ensure_sweeps_api_on_path
+
+ensure_sweeps_api_on_path()
+sys.path.append(str(PROJECT_ROOT / 'HWs'))
 
 import Quadrature_Operations_Solutions_boundary as gq_bc
 import CommonFuncs as cf
+
+
+def _physical_domain_bounds(basis):
+    control_points = np.asarray(basis.control_points)
+    x_min = float(np.min(control_points[0]))
+    x_max = float(np.max(control_points[0]))
+    y_min = float(np.min(control_points[1]))
+    y_max = float(np.max(control_points[1]))
+    return x_min, x_max, y_min, y_max
+
+
+def _is_boundary_face(basis, elem, bdry, quad_1D, bounds):
+    xi_vals = gq_bc.GetFaceQuadraturePoints(quad_1D, bdry)
+    face_midpoint = xi_vals[len(xi_vals) // 2]
+
+    basis.localizeElement(elem)
+    basis.localizePoint(face_midpoint)
+    x_f, y_f = basis.mapping()[:2]
+
+    x_min, x_max, y_min, y_max = bounds
+    span = max(x_max - x_min, y_max - y_min, 1.0)
+    tol = 1e-10 * span
+
+    if bdry == gq_bc.BoundaryFace.BOTTOM:
+        return abs(y_f - y_min) <= tol
+    if bdry == gq_bc.BoundaryFace.TOP:
+        return abs(y_f - y_max) <= tol
+    if bdry == gq_bc.BoundaryFace.LEFT:
+        return abs(x_f - x_min) <= tol
+    if bdry == gq_bc.BoundaryFace.RIGHT:
+        return abs(x_f - x_max) <= tol
+    return False
+
 
 def GetBoundaryDOFs(basis):
     """
@@ -127,6 +166,7 @@ def ComputePrescribedNormalDOFValues(basis, boundary_dofs, boundary_value_functi
         gq_bc.BoundaryFace.LEFT:   boundary_dofs['left']['normal'],
         gq_bc.BoundaryFace.RIGHT:  boundary_dofs['right']['normal'],
     }
+    bounds = _physical_domain_bounds(basis)
 
     for elem in basis.elements():
         basis.localizeElement(elem)
@@ -135,6 +175,8 @@ def ComputePrescribedNormalDOFValues(basis, boundary_dofs, boundary_value_functi
         for bdry, normal_global_dofs in bdry_map.items():
             normal_global_set = set(normal_global_dofs)
             xi_vals = gq_bc.GetFaceQuadraturePoints(quad_1D, bdry)
+            if not _is_boundary_face(basis, elem, bdry, quad_1D, bounds):
+                continue
 
             # rotation matrix for outward normal
             if bdry in (gq_bc.BoundaryFace.TOP, gq_bc.BoundaryFace.LEFT):

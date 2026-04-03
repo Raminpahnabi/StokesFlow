@@ -8,9 +8,13 @@ Created on Mon Mar 30 13:15:18 2026
 import sys
 import os
 import numpy as np
-sys.path.insert(0, '/Users/raminpahnabi/Documents/BYU/sweeps/build/src/api')
-sys.path.append(os.path.join(os.getcwd(), 'HWs'))
-sys.path.append(os.path.join(os.getcwd(), 'Required'))
+from pathlib import Path
+from sweeps_path import ensure_sweeps_api_on_path
+
+PROJECT_ROOT = Path(__file__).resolve().parent
+ensure_sweeps_api_on_path()
+sys.path.append(str(PROJECT_ROOT / 'HWs'))
+sys.path.append(str(PROJECT_ROOT / 'Required'))
 
 import splines as spline
 import StokesFlow_Solver as ss

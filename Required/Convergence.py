@@ -8,14 +8,21 @@ Created on Tue Mar 24 18:20:27 2026
 import sys
 import os
 import numpy as np
-sys.path.insert(0, '/Users/raminpahnabi/Documents/BYU/sweeps/build/src/api')
-sys.path.append(os.path.join(os.getcwd(), 'HWs'))
-sys.path.append(os.path.join(os.getcwd(), 'Required'))
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+sys.path.append(str(PROJECT_ROOT))
+from sweeps_path import ensure_sweeps_api_on_path
+
+ensure_sweeps_api_on_path()
+sys.path.append(str(PROJECT_ROOT / 'HWs'))
+sys.path.append(str(PROJECT_ROOT / 'Required'))
 
 import splines as spline
 import matplotlib.pyplot as plt
 import StokesFlow_Solver as ss
 import CommonFuncs as cf
+import NormalizedPressure as npre
 
 #####################################################################################################
 ##################################################### Convergence Rate  #############################
@@ -159,7 +166,7 @@ def compute_convergence_error(basis, d_coeffs, quad, exact_solution, isHDIV=True
 
 
 def compute_pressure_convergence_error(basis, d_coeffs, quad, exact_solution_l2):  #NEWCODE
-    # Assumes pressure DOFs in d_coeffs are already mean-normalized (d_n = d_p - alpha/vol)  
+    mean_pressure = npre.EvaluateMeanPressure(basis, d_coeffs, quad)
     total_error = 0.0                                                                          
     for elem in basis.elements():                                                             
         basis.localizeElement(elem)                                                           
@@ -174,8 +181,9 @@ def compute_pressure_convergence_error(basis, d_coeffs, quad, exact_solution_l2)
             x_g, y_g   = qpt_mapped[0], qpt_mapped[1]                                        
             p_exact = exact_solution_l2(x_g, y_g)                                            
             
-            p_h     = float(EvaluateSolution_2D_L2(basis, elem, qpt[0], qpt[1], d_coeffs))    
-            total_error += (p_exact - p_h)**2 * jac_det * weight * quad.jacobian            
+            p_h = float(EvaluateSolution_2D_L2(basis, elem, qpt[0], qpt[1], d_coeffs))
+            p_h_normalized = p_h - mean_pressure
+            total_error += (p_exact - p_h_normalized)**2 * jac_det * weight * quad.jacobian            
     
     return float(np.sqrt(total_error))                                                       
 
