@@ -66,44 +66,6 @@ example_d_check = ss.Stokes(basis, degree1, quad, quad_1D, gamma,
 print("Initial_Solu:", example_d_check) # With the Stokes equation(NavierStokes equation with Re<<<1)
 
 
-def LocalAdvectionPicard_new(basis, deg, quad, quad_1D, elem, previous_d_coeffs, boundary_condition):
-    local_IEN_HDIV = basis.HDIV.connectivity(elem)
-    n_local_hdiv = len(local_IEN_HDIV)
-    local_IEN_L2 = basis.L2.connectivity(elem)
-    n_local_L2 = len(local_IEN_L2)
-    n_local_total = n_local_hdiv + n_local_L2
-
-    ke = np.zeros((n_local_total, n_local_total))
-
-    for iqpt in range(len(quad.quad_wts)):
-        weight = quad.quad_wts[iqpt]
-        qpt = quad.quad_pts[iqpt]
-        quad_jacobian = quad.jacobian
-
-        basis.localizePoint(qpt) 
-        jac_det = basis.jacobianDeterminant()
-        transformed_basis = basis.piolaTransformedHDIVBasis()
-        gradient_basis = basis.piolaTransformedHDIVFirstDerivatives()
-
-        wh_x_prev = sum(previous_d_coeffs[local_IEN_HDIV[i]] * transformed_basis[i][0] for i in range(len(transformed_basis)))
-        wh_y_prev = sum(previous_d_coeffs[local_IEN_HDIV[i]] * transformed_basis[i][1] for i in range(len(transformed_basis)))
-        w = [wh_x_prev,wh_y_prev]
-
-        for a in range(n_local_hdiv):
-            x = transformed_basis[a]  # Current transformed basis function
-        
-            for b in range(n_local_hdiv):
-                grad_v = np.reshape(gradient_basis[b], (2, 2))  # Gradient of velocity basis function
-        
-                convective_term = 0
-                for i in range(2):
-                    for j in range(2):
-                        convective_term += w[i] * grad_v[i, j] * x[j]
-        
-                ke[a, b] += convective_term * jac_det * weight * quad_jacobian
-            
-    return ke
-
 #######################################################################
 ##################     NavierStokes_Flow_div_free     #################
 #######################################################################
@@ -152,7 +114,7 @@ def NavierStokes(basis, deg, gaussian, quad_1D, gamma, f, f_ns, u_exact, boundar
             fe_Nitsche = ni.LocalForceVector_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e, f_ns_nu, u_exact, boundary_value_function, nu=nu)  
             
             # ke_adv = LocalAdvectionPicard(basis, gaussian, e, d_prev)
-            ke_adv = LocalAdvectionPicard_new(basis, deg, gaussian, quad_1D, e, d_prev, boundary_conditions)
+            ke_adv = la.LocalAdvectionPicard(basis, deg, gaussian, quad_1D, e, d_prev, boundary_conditions)
 
             local_IEN_HDIV = basis.HDIV.connectivity(e)  
             n_local_hdiv = len(local_IEN_HDIV)  
@@ -214,9 +176,9 @@ print("NavierStokes solution:", d_ns)
 
 
 def manufactured_sol_degrees_clean_ns():  
-    degrees = [2]#,3,4]  
+    degrees = [2,3,4]  
     colors  = ['b', 'g', 'r', 'c']  
-    refinement_levels = [8, 16, 32, 64]  
+    refinement_levels = [8, 16, 32]#, 64]  
     interval_d = [0,1]  
     max_knot_d_xi = max_knot_xi  
     max_knot_d_eta = max_knot_eta 
@@ -298,4 +260,4 @@ def manufactured_sol_degrees_clean_ns():
     ax_pres.grid(True)                                                                
     fig_pres.show()                                                                   
 
-# manufactured_sol_degrees_clean_ns()
+manufactured_sol_degrees_clean_ns()
