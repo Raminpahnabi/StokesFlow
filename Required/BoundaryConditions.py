@@ -215,14 +215,4 @@ def ComputePrescribedNormalDOFValues(basis, boundary_dofs, boundary_value_functi
         else:
             prescribed[A] = 0.0
     
-    # try:
-    #     K_sp = csr_matrix(mass_vec)
-    #     c = spsolve(K_sp, rhs_vec)
-    # except Exception:
-    #     c = np.zeros(len(all_normal))
-
-    # for i, A in enumerate(all_normal):
-    #     prescribed[A] = c[i]
-    
-    # print("prescribed:",prescribed)
     return prescribed

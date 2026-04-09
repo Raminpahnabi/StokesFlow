@@ -29,11 +29,7 @@ def PlotSolution(basis, dtotal, quad, quad_1D,gamma, f_exact, elem_n, u_exact, p
     n_hdiv_1_comp = cf.GetNumberH1FirstComponent(basis)[0]
     n_hdiv_2_comp = cf.GetNumberH1FirstComponent(basis)[1]
     n_hdiv_total = n_hdiv_1_comp + n_hdiv_2_comp
-    # n_hdiv_total = basis.HDIV.numTotalFunctions()
-    
-    # vcoeffs_1 = dtotal[:n_hdiv_1_comp]
-    # vcoeffs_2 = dtotal[n_hdiv_1_comp:n_hdiv_total]
-    # pcoeffs = dtotal[n_hdiv_total:]
+    n_hdiv_total = basis.HDIV.numTotalFunctions()
     
     X, Y, U, V, P = [], [], [], [], []
     

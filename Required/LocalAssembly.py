@@ -8,9 +8,7 @@ Created on Tue Mar 24 14:17:49 2026
 
 import numpy as np
 
-KINEMATIC_VISCOSITY = 1
-
-def LocalForceStokes(basis, deg, quad, quad_1D, gamma, elem, forcing_function):
+def LocalForceStokes(basis, deg, quad, quad_1D, gamma, elem, forcing_function, nu):  
     local_IEN_HDIV = basis.HDIV.connectivity(elem)
     n_local_hdiv = len(local_IEN_HDIV)
     local_IEN_L2 = basis.L2.connectivity(elem)
@@ -31,7 +29,7 @@ def LocalForceStokes(basis, deg, quad, quad_1D, gamma, elem, forcing_function):
         # Mapping from reference space to global space
         qpt_mapped = basis.mapping()
         x_g, y_g = qpt_mapped[0], qpt_mapped[1]
-        force = np.array(forcing_function(x_g, y_g))
+        force = np.array(forcing_function(x_g, y_g, nu))  
 
         for a in range(n_local_hdiv):
             fe[a] += np.dot(transformed_basis[a], force) * jac_det * quad_wts * quad_jacobian
@@ -39,8 +37,8 @@ def LocalForceStokes(basis, deg, quad, quad_1D, gamma, elem, forcing_function):
     return fe
     
     
-def LocalStiffnessStokes(basis, deg, quad, quad_1D, elem, boundary_condition, parent_domain_fudge_factor=1):
-    kinematic_viscosity = KINEMATIC_VISCOSITY
+def LocalStiffnessStokes(basis, deg, quad, quad_1D, elem, boundary_condition, parent_domain_fudge_factor=1, nu=1):  
+    kinematic_viscosity = nu 
 
     local_IEN_HDIV = basis.HDIV.connectivity(elem)
     n_local_hdiv = len(local_IEN_HDIV)

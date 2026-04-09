@@ -21,8 +21,6 @@ sys.path.append(str(PROJECT_ROOT / 'Required'))
 import Quadrature_Operations_Solutions_boundary as gq_bc
 import CommonFuncs as cf
 
-KINEMATIC_VISCOSITY = 1
-
 
 def _physical_domain_bounds(basis):
     control_points = np.asarray(basis.control_points)
@@ -58,8 +56,8 @@ def _is_boundary_face(basis, elem, bdry, quad_1D, bounds):
 # ===========================================================================
 #   Nitsche functions modified to act ONLY on TANGENTIAL DOFs
 # ===========================================================================
-def LocalForceVector_Nitsche_IGA_2D(basis, deg, quad,quad_1D, gamma, elem, forcing_function,u_exact, boundary_value_function):
-    kinematic_viscosity = KINEMATIC_VISCOSITY
+def LocalForceVector_Nitsche_IGA_2D(basis, deg, quad,quad_1D, gamma, elem, forcing_function,u_exact, boundary_value_function, nu=1):  #ns added nu parameter
+    kinematic_viscosity = nu 
 
     local_IEN_HDIV = basis.HDIV.connectivity(elem)
     n_local_hdiv = len(local_IEN_HDIV)
@@ -139,8 +137,8 @@ def LocalForceVector_Nitsche_IGA_2D(basis, deg, quad,quad_1D, gamma, elem, forci
 
 
 
-def LocalStiffnessMatrix_Nitsche_IGA_2D(basis, deg, quad, quad_1D, gamma, elem, boundary_value_function=None):
-    kinematic_viscosity = KINEMATIC_VISCOSITY
+def LocalStiffnessMatrix_Nitsche_IGA_2D(basis, deg, quad, quad_1D, gamma, elem, boundary_value_function=None, nu=1): 
+    kinematic_viscosity = nu  #ns use passed nu instead of hardcoded global
 
     local_IEN_HDIV = basis.HDIV.connectivity(elem)
     n_local_hdiv = len(local_IEN_HDIV)

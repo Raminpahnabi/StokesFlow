@@ -165,27 +165,45 @@ def compute_convergence_error(basis, d_coeffs, quad, exact_solution, isHDIV=True
     return total_error
 
 
-def compute_pressure_convergence_error(basis, d_coeffs, quad, exact_solution_l2):  #NEWCODE
-    mean_pressure = npre.EvaluateMeanPressure(basis, d_coeffs, quad)
-    total_error = 0.0                                                                          
-    for elem in basis.elements():                                                             
-        basis.localizeElement(elem)                                                           
-        
-        for iqpt in range(len(quad.quad_wts)):                                               
-            weight  = quad.quad_wts[iqpt]                                                    
-            qpt     = quad.quad_pts[iqpt]                                                    
-            basis.localizePoint(qpt)                                                         
-            jac_det = basis.jacobianDeterminant()                                             
-            
-            qpt_mapped = basis.mapping()                                                      
-            x_g, y_g   = qpt_mapped[0], qpt_mapped[1]                                        
-            p_exact = exact_solution_l2(x_g, y_g)                                            
-            
+def compute_pressure_convergence_error(basis, d_coeffs, quad, exact_solution_l2):
+    # mean of numerical pressure (should be ~0 after NormalizePressureCoefficients)
+    mean_p_h = npre.EvaluateMeanPressure(basis, d_coeffs, quad)
+
+    # ns: compute mean of the exact pressure so we compare zero-mean quantities on both sides.
+    # Without this, the error includes a constant floor = mean(p_exact) that never converges,
+    # masking good pressure convergence for high degrees (visible as ~1.74e-04 stagnation).
+    total_exact = 0.0
+    total_area  = 0.0
+    for elem in basis.elements():
+        basis.localizeElement(elem)
+        for iqpt in range(len(quad.quad_wts)):
+            weight  = quad.quad_wts[iqpt]
+            qpt     = quad.quad_pts[iqpt]
+            basis.localizePoint(qpt)
+            jac_det = basis.jacobianDeterminant()
+            qpt_mapped = basis.mapping()
+            x_g, y_g = qpt_mapped[0], qpt_mapped[1]
+            dV = jac_det * weight * quad.jacobian
+            total_exact += exact_solution_l2(x_g, y_g) * dV
+            total_area  += dV
+    mean_p_exact = total_exact / total_area  #ns mean of exact pressure over the domain
+
+    total_error = 0.0
+    for elem in basis.elements():
+        basis.localizeElement(elem)
+        for iqpt in range(len(quad.quad_wts)):
+            weight  = quad.quad_wts[iqpt]
+            qpt     = quad.quad_pts[iqpt]
+            basis.localizePoint(qpt)
+            jac_det = basis.jacobianDeterminant()
+            qpt_mapped = basis.mapping()
+            x_g, y_g   = qpt_mapped[0], qpt_mapped[1]
+            p_exact_centered = exact_solution_l2(x_g, y_g) - mean_p_exact  #ns subtract exact mean
             p_h = float(EvaluateSolution_2D_L2(basis, elem, qpt[0], qpt[1], d_coeffs))
-            p_h_normalized = p_h - mean_pressure
-            total_error += (p_exact - p_h_normalized)**2 * jac_det * weight * quad.jacobian            
-    
-    return float(np.sqrt(total_error))                                                       
+            p_h_centered = p_h - mean_p_h                                   #ns subtract numerical mean
+            total_error += (p_exact_centered - p_h_centered)**2 * jac_det * weight * quad.jacobian
+
+    return float(np.sqrt(total_error))
 
 
 def plot_error_vs_log_h(refined_basis_list, deg, quad, quad_1D, gamma, forcing_function, 
@@ -237,41 +255,3 @@ def plot_error_vs_log_h(refined_basis_list, deg, quad, quad_1D, gamma, forcing_f
     plt.show()
 
     return slopes, h_values, errors
-
-
-# def run_convergence_study(num_iterations, basis_init, deg, quad, quad_1D, gamma, 
-#                          forcing_function, exact_solution_velocity, exact_solution_pressure,
-#                          boundary_value_function,nelem1,nelem2):
-
-#     refined_basis_list = []
-#     for i in range(0, num_iterations):
-#         num_divisions = nelem1 * nelem2 * (2**i)
-#         refined_basis = spline.globallyHRefine(basis_init, num_divisions, parametric_tolerance=1e-5)
-#         refined_basis_list.append(refined_basis)
-    
-#     # Velocity convergence
-#     print("\n" + "="*60)
-#     print("Computing velocity convergence...")
-#     print("="*60)
-#     iHDIV = True
-#     slope_vel, h_vals_vel, errors_vel = plot_error_vs_log_h(refined_basis_list, deg, quad, quad_1D, gamma, 
-#                                                              forcing_function, exact_solution_velocity, 
-#                                                              boundary_value_function, iHDIV)
-#     print("Velocity convergence rates: ", slope_vel)
-#     # print(f"  h values: {h_vals_vel}")
-#     # print(f"  errors: {errors_vel}")
-    
-#     # # Pressure convergence
-#     # print("\n" + "="*60)
-#     # print("Computing pressure convergence...")
-#     # print("="*60)
-#     # iHDIV = False
-#     # slope_pres, h_vals_pres, errors_pres = plot_error_vs_log_h(refined_basis_list, deg, quad, quad_1D, gamma, 
-#     #                                                             forcing_function, exact_solution_pressure, 
-#     #                                                             boundary_value_function, iHDIV)
-#     # # print(f"Pressure convergence rate: {slope_pres:.4f}")
-#     # print("Pressure convergence rates: ", slope_pres)
-#     # print(f"  h values: {h_vals_pres}")
-#     # print(f"  errors: {errors_pres}")
-    
-#     return slope_vel#, slope_pres
