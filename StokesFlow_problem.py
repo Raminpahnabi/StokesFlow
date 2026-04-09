@@ -5,9 +5,7 @@ Created on Tue Mar 24 14:44:23 2026
 
 @author: raminpahnabi
 """
-import Inputfile as inp
-
-
+import NS_Inputfile as inp
 import sys
 import os
 import numpy as np
@@ -21,7 +19,6 @@ sys.path.append(str(PROJECT_ROOT / 'Required'))
 import splines as spline
 import Gaussian_Quadrature_2D_Solution as gq_nD
 import StokesFlow_Solver as ss
-import Plotting as pl
 import Convergence as cn
 import matplotlib.pyplot as plt  
 import NormalizedPressure as npre
@@ -45,13 +42,14 @@ exact_solution          = inp.exact_solution
 exact_solution_l2       = inp.exact_solution_l2
 boundary_value_function = inp.boundary_value_function
 ifID                    = inp.ifID
+nu                      = inp.KINEMATIC_VISCOSITY
 
 basis = spline.NavierStokesTPDiscretization( kv1, kv2, degree1, degree2, cpts)
 
 # Quick check
 example_d_check = ss.Stokes(basis, degree1, quad, quad_1D, gamma,
                    forcing_function, exact_solution,
-                   boundary_conditions=None, boundary_value_function=boundary_value_function, ifID=ifID)
+                   boundary_conditions=None, boundary_value_function=boundary_value_function, ifID=ifID,nu=nu)
 print("example_d:", example_d_check)
 ########### START of NORMALIZING Pressure
 alpha      = npre.EvaluateAveragePressure(basis, example_d_check, quad)      #(α = int_Ω p_h dΩ)
@@ -67,9 +65,9 @@ refined_basis = spline.globallyHRefine(basis, nelem1*nelem2*nref, parametric_tol
 dtotal = ss.Stokes(refined_basis, degs, quad, quad_1D, gamma,
                 forcing_function, exact_solution,
                 boundary_conditions=None,
-                boundary_value_function=boundary_value_function,ifID=ifID)
+                boundary_value_function=boundary_value_function,ifID=ifID,nu=nu)
 
-alpha      = npre.EvaluateAveragePressure(refined_basis, dtotal, quad)     
+alpha = npre.EvaluateAveragePressure(refined_basis, dtotal, quad)     
 print("avg pressure before normalization:", alpha)                            
 dtotal = npre.NormalizePressureCoefficients(refined_basis, dtotal, degs, quad, quad_1D)
 average_pressure_after = npre.EvaluateAveragePressure(refined_basis, dtotal, quad)  
@@ -80,7 +78,7 @@ print("avg pressure after  normalization:", average_pressure_after)
 def manufactured_sol_degrees_clean():  
     degrees = [2,3,4]  
     colors  = ['b', 'g', 'r', 'c']  
-    refinement_levels = [8, 16, 32] #, 64]  
+    refinement_levels = [8, 16, 32]#, 64]  
     interval_d = [0,1]  
     max_knot_d_xi = max_knot_xi  
     max_knot_d_eta = max_knot_eta 
@@ -119,7 +117,7 @@ def manufactured_sol_degrees_clean():
                           forcing_function, exact_solution, 
                           boundary_conditions=None,  
                           boundary_value_function=boundary_value_function, 
-                          ifID=True)
+                          ifID=True,nu=nu)
 
             e = cn.compute_convergence_error(rb, d, quad_d, exact_solution, isHDIV=True)  
             

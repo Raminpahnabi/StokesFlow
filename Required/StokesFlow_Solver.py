@@ -29,7 +29,7 @@ import BoundaryConditions as bc
 #################################################################################################
 ################################     Stokes_Flow_div_free     ###################################
 #################################################################################################
-def Stokes(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions,boundary_value_function,ifID=True):
+def Stokes(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions, boundary_value_function, ifID, nu):  #ns added nu so the Stokes solver (used as NS initial guess) uses the correct viscosity throughout
     
     if ifID:
         
@@ -63,11 +63,11 @@ def Stokes(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions
             # print("HDIV connectivity elem 0:", basis.HDIV.connectivity(e))
             # break
 
-            ke = la.LocalStiffnessStokes(basis, deg, gaussian, quad_1D, e, boundary_conditions)
-            fe = la.LocalForceStokes(basis, deg, gaussian, quad_1D, gamma, e,f)
-            ke_Nitsche = ni.LocalStiffnessMatrix_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e)
-            fe_Nitsche = ni.LocalForceVector_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e, f, u_exact, boundary_value_function)
-                            
+            ke = la.LocalStiffnessStokes(basis, deg, gaussian, quad_1D, e, boundary_conditions, nu=nu)  
+            fe = la.LocalForceStokes(basis, deg, gaussian, quad_1D, gamma, e, f,nu)
+            ke_Nitsche = ni.LocalStiffnessMatrix_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e, nu=nu)  
+            fe_Nitsche = ni.LocalForceVector_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e, f, u_exact, boundary_value_function, nu=nu)  
+
 
             local_IEN_HDIV = basis.HDIV.connectivity(e)
             n_local_hdiv = len(local_IEN_HDIV)
@@ -134,10 +134,10 @@ def Stokes(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions
             # print("HDIV connectivity elem 0:", basis.HDIV.connectivity(e))
             # break
 
-            ke = la.LocalStiffnessStokes(basis, deg, gaussian, quad_1D, e, boundary_conditions)
-            fe = la.LocalForceStokes(basis, deg, gaussian, quad_1D, gamma, e,f)
-            ke_Nitsche = ni.LocalStiffnessMatrix_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e)
-            fe_Nitsche = ni.LocalForceVector_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e, f, u_exact, boundary_value_function)
+            ke = la.LocalStiffnessStokes(basis, deg, gaussian, quad_1D, e, boundary_conditions, nu=nu)  
+            fe = la.LocalForceStokes(basis, deg, gaussian, quad_1D, gamma, e, f)
+            ke_Nitsche = ni.LocalStiffnessMatrix_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e, nu=nu) 
+            fe_Nitsche = ni.LocalForceVector_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e, f, u_exact, boundary_value_function, nu=nu)
 
             local_IEN_HDIV = basis.HDIV.connectivity(e)
             n_local_hdiv = len(local_IEN_HDIV)

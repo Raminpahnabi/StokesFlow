@@ -22,6 +22,9 @@ import CommonFuncs as cf
 import Inputfile as inp
 import Convergence as cn
 import NormalizedPressure as npre
+import Nonlinear_NavierStokes as nns
+
+# import NS_Inputfile as inp
 
 def export_as_vtk(basis, dtotal, true_velocity = None, true_pressure = None):        
     
@@ -183,7 +186,8 @@ def export_as_vtk(basis, dtotal, true_velocity = None, true_pressure = None):
     
     print(f"Done.  Open  {os.path.abspath(vtk_path)}  in ParaView.")
 
-max_knot                = inp.max_knot
+max_knot_xi             = inp.max_knot_xi
+max_knot_eta            = inp.max_knot_eta
 min_knot                = inp.min_knot
 degree1                 = inp.degree1
 degree2                 = inp.degree2
@@ -201,25 +205,53 @@ exact_solution          = inp.exact_solution
 exact_solution_l2       = inp.exact_solution_l2
 boundary_value_function = inp.boundary_value_function
 ifID                    = inp.ifID
+f_ns                    = inp.forcing_function_ns
+nu                      = inp.KINEMATIC_VISCOSITY
 
 basis = spline.NavierStokesTPDiscretization(kv1, kv2, degree1, degree2, cpts)
 
 nref = 2**3
 refined_basis = spline.globallyHRefine(basis, nelem1*nelem2*nref, parametric_tolerance=1e-5)
 
+############# Stokes ############
 print(f"Solving Stokes system — EXPONENTIAL solution (degree={degree1}) ...")
 dtotal = ss.Stokes(refined_basis, degs, quad, quad_1D, gamma,
                    forcing_function, exact_solution,
                    boundary_conditions=None,
                    boundary_value_function=boundary_value_function,
-                   ifID=True)
-n_l2       = refined_basis.L2.numTotalFunctions()                                    #NEWCODE
-alpha      = npre.EvaluateAveragePressure(refined_basis, dtotal, quad)      #NEWCODE  (α = ∫_Ω p_h dΩ)
-area_value = sum(cn.compute_all_element_areas(refined_basis, quad))                  #NEWCODE  (vol = ∫_Ω dΩ)
-print("avg pressure before normalization:", alpha)                            #NEWCODE
-dtotal[-n_l2:] -= alpha / area_value                                #NEWCODE  (d_n = d_p - α/vol)
-average_pressure_after = npre.EvaluateAveragePressure(refined_basis, dtotal, quad)  #NEWCODE
+                   ifID=True,nu=nu)
+n_l2       = refined_basis.L2.numTotalFunctions()                                  
+alpha      = npre.EvaluateAveragePressure(refined_basis, dtotal, quad)      #(α = ∫_Ω p_h dΩ)
+# area_value = sum(cn.compute_all_element_areas(refined_basis, quad))       #(vol = ∫_Ω dΩ)
+print("avg pressure before normalization:", alpha)  
+
+alpha_rb      = npre.EvaluateAveragePressure(refined_basis, dtotal, quad)               
+average_pressure_after = npre.NormalizePressureCoefficients(refined_basis, dtotal, degs, quad, quad_1D)
+
+# dtotal[-n_l2:] -= alpha / area_value                                #NEWCODE  (d_n = d_p - α/vol)
+# average_pressure_after = npre.EvaluateAveragePressure(refined_basis, dtotal, quad)  #NEWCODE
 print("avg pressure after  normalization:", average_pressure_after) 
 print("Solver done.")
 
 export_as_vtk(refined_basis, dtotal, true_velocity=exact_solution, true_pressure=exact_solution_l2)
+
+# ############# NavierStokes ############
+# d_ns  = nns.NavierStokes(refined_basis, degs, quad, quad_1D, gamma, forcing_function, f_ns, exact_solution,
+#                     boundary_conditions=None, boundary_value_function=boundary_value_function, ifID=ifID,
+#                     d_initial=dtotal, nu=nu) 
+
+# alpha = npre.EvaluateAveragePressure(refined_basis, d_ns, quad)  
+# print("avg pressure before normalization:", alpha) 
+
+# average_pressure_after = npre.NormalizePressureCoefficients(refined_basis, d_ns, degs, quad, quad_1D)
+# print("avg pressure after  normalization:", average_pressure_after) 
+# print("Solver done.")
+
+# export_as_vtk(refined_basis, dtotal, true_velocity=exact_solution, true_pressure=exact_solution_l2)
+
+
+
+
+
+
+
