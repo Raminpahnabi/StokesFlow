@@ -74,3 +74,39 @@ def LocalStiffnessStokes(basis, deg, quad, quad_1D, elem, boundary_condition, pa
         ke[n_local_hdiv:, :n_local_hdiv] = -ke[:n_local_hdiv, n_local_hdiv:].T
     
     return ke
+
+def LocalAdvectionPicard(basis, deg, quad, quad_1D, elem, previous_d_coeffs, boundary_condition):
+    local_IEN_HDIV = basis.HDIV.connectivity(elem)
+    n_local_hdiv = len(local_IEN_HDIV)
+    local_IEN_L2 = basis.L2.connectivity(elem)
+    n_local_L2 = len(local_IEN_L2)
+    n_local_total = n_local_hdiv + n_local_L2
+
+    ke = np.zeros((n_local_total, n_local_total))
+
+    for iqpt in range(len(quad.quad_wts)):
+        weight = quad.quad_wts[iqpt]
+        qpt = quad.quad_pts[iqpt]
+        quad_jacobian = quad.jacobian
+
+        basis.localizePoint(qpt) 
+        jac_det = basis.jacobianDeterminant()
+        transformed_basis = basis.piolaTransformedHDIVBasis()
+        gradient_basis = basis.piolaTransformedHDIVFirstDerivatives()
+
+        uh_x_prev = sum(previous_d_coeffs[local_IEN_HDIV[i]] * transformed_basis[i][0] for i in range(len(transformed_basis)))
+        uh_y_prev = sum(previous_d_coeffs[local_IEN_HDIV[i]] * transformed_basis[i][1] for i in range(len(transformed_basis)))
+        u = [uh_x_prev,uh_y_prev]
+
+        for a in range(n_local_hdiv):
+            phi_a = transformed_basis[a]  # Current transformed basis function
+        
+            for b in range(n_local_hdiv):
+                grad_v = np.reshape(gradient_basis[b], (2, 2))  # Gradient of velocity basis function
+        
+                convective_term = 0
+                for i in range(2):
+                    for j in range(2):
+                        convective_term += u[i] * grad_v[i, j] * phi_a[j]
+                ke[a, b] += convective_term * jac_det * weight * quad_jacobian
+    return ke
