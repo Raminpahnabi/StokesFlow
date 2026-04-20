@@ -21,13 +21,10 @@ ensure_sweeps_api_on_path()
 sys.path.append(str(PROJECT_ROOT / 'HWs'))
 sys.path.append(str(PROJECT_ROOT / 'Required'))
 
-import LocalAssembly as la
-import Nitsche as ni
-import CommonFuncs as cf
-import BoundaryConditions as bc
 import splines as spline
-import StokesFlow_Solver as ss
-import NS_Inputfile as inp
+import Solver_StokesFlow as ss
+import Inputfile as inp
+import Solver_NonlinearNavierStokes as nss
 
 import Gaussian_Quadrature_2D_Solution as gq_nD
 import Convergence as cn
@@ -48,128 +45,68 @@ cpts                    = inp.cpts
 quad                    = inp.quad
 quad_1D                 = inp.quad_1D
 gamma                   = inp.gamma
-forcing_function        = inp.forcing_function
-exact_solution          = inp.exact_solution
-exact_solution_l2       = inp.exact_solution_l2
-boundary_value_function = inp.boundary_value_function
 ifID                    = inp.ifID
-use_curved_geometry     = inp.USE_CURVED_GEOMETRY
-f_ns                    = inp.forcing_function_ns
+use_curve_geometry      = inp.USE_CURVED_GEOMETRY
 nu                      = inp.KINEMATIC_VISCOSITY
+L2Projection            = inp.is_L2Projection
+Stokes                  = inp.is_Stokes
+NavierStokes            = inp.is_NavierStokes
+option                  = inp.option_number
 
+if L2Projection:
+    if use_curve_geometry   == False:
+        if option == 0:
+            forcing_function        = inp.forcing_function_l2projection_0
+            exact_solution          = inp.exact_solution_0
+            exact_solution_l2       = inp.exact_solution_l2_0
+            boundary_value_function = inp.boundary_value_function_0
+        elif option == 1:
+            forcing_function        = inp.forcing_function_l2projection_1
+            exact_solution          = inp.exact_solution_1
+            exact_solution_l2       = inp.exact_solution_l2_1
+            boundary_value_function = inp.boundary_value_function_1
+    elif use_curve_geometry == True: 
+        if option == 0:
+            forcing_function        = inp.forcing_function_l2projection_0
+            exact_solution          = inp.exact_solution_0
+            exact_solution_l2       = inp.exact_solution_l2_0
+            boundary_value_function = inp.boundary_value_function_0
+
+elif Stokes:
+    if use_curve_geometry   == False:
+        forcing_function        = inp.forcing_function_s_1
+        exact_solution          = inp.exact_solution_1
+        exact_solution_l2       = inp.exact_solution_l2_1
+        boundary_value_function = inp.boundary_value_function_1
+    elif use_curve_geometry == True:
+        forcing_function        = inp.forcing_function_s_1_curve
+        exact_solution          = inp.exact_solution_1_curve
+        exact_solution_l2       = inp.exact_solution_1_l2_curve
+        boundary_value_function = inp.boundary_value_function_1_curve
+
+elif NavierStokes:
+    if use_curve_geometry   == False:
+        forcing_function        = inp.forcing_function_s_1
+        f_ns                    = inp.forcing_function_ns_1
+        exact_solution          = inp.exact_solution_1
+        exact_solution_l2       = inp.exact_solution_l2_1
+        boundary_value_function = inp.boundary_value_function_1
+    elif use_curve_geometry == True:
+        forcing_function        = inp.forcing_function_ns_1_curve
+        exact_solution          = inp.exact_solution_1_curve
+        exact_solution_l2       = inp.exact_solution_l2_1_curve
+        boundary_value_function = inp.boundary_value_function_1_curve
+        
 basis = spline.NavierStokesTPDiscretization( kv1, kv2, degree1, degree2, cpts)
 
 # Initial Solution
-example_d_check = ss.Stokes(basis, degree1, quad, quad_1D, gamma,
+example_d_check = ss.Stokes(basis,degs, quad, quad_1D, gamma,
                     forcing_function, exact_solution,
                     boundary_conditions=None, boundary_value_function=boundary_value_function, ifID=ifID,nu=nu)
 print("Initial_Solu:", example_d_check) # With the Stokes equation(NavierStokes equation with Re<<<1)
 
 
-#######################################################################
-##################     NavierStokes_Flow_div_free     #################
-#######################################################################
-def NavierStokes(basis, deg, gaussian, quad_1D, gamma, f, f_ns, u_exact, boundary_conditions, boundary_value_function,
-           ifID=True, curve_domain=False, geo_map_func=None, d_initial=None, nu=nu):  #ns nu=1 default; override when calling (e.g. nu=0.1)
-
-    n_hdiv_1_comp = cf.GetNumberH1FirstComponent(basis)[0]
-    n_hdiv_2_comp = cf.GetNumberH1FirstComponent(basis)[1]
-    n_hdiv = n_hdiv_1_comp + n_hdiv_2_comp
-    # n_hdiv = basis.HDIV.numTotalFunctions()
-    n_l2 = basis.L2.numTotalFunctions()
-    n_total_funcs = n_hdiv + n_l2
-
-    boundary_dofs = bc.GetBoundaryDOFs(basis)
-    all_tangential = set(boundary_dofs['all_tangential'])
-    all_normal = set(boundary_dofs['all_normal'])
-    
-    # Compute prescribed values for normal DOFs
-    prescribed = bc.ComputePrescribedNormalDOFValues(basis, boundary_dofs, boundary_value_function, quad_1D)
-    # Build ID array (marks normal DOFs as -1)
-    ID = cf.ID_array(basis.HDIV, basis.L2, boundary_dofs, prescribed)
-    
-    n = max(ID)+1
-    
-    f_ns_nu = f_ns  #ns bind nu into the NS forcing so LocalForceStokes gets the right nu
-    f_stokes_nu = f #ns bind nu into the Stokes forcing used for the initial guess
-
-    if d_initial is not None:
-        d_prev = d_initial
-    else:
-        d_prev = ss.Stokes(basis, deg, gaussian, quad_1D, gamma, f_stokes_nu, u_exact,  
-                           boundary_conditions, boundary_value_function, ifID=ifID, nu=nu)
-    
-    max_iter = 40  
-    tol = 1e-8  
-
-    for k in range(max_iter):  
-        K = lil_matrix((n, n))  
-        F = np.zeros(n)  
-
-        for e in basis.elements():  
-            basis.localizeElement(e) 
-            ke = la.LocalStiffnessStokes(basis, deg, gaussian, quad_1D, e, boundary_conditions, nu=nu)  
-            fe = la.LocalForceStokes(basis, deg, gaussian, quad_1D, gamma, e, f_ns_nu, nu=nu)  
-            ke_Nitsche = ni.LocalStiffnessMatrix_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e, nu=nu)  
-            fe_Nitsche = ni.LocalForceVector_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e, f_ns_nu, u_exact, boundary_value_function, nu=nu)  
-            
-            # ke_adv = LocalAdvectionPicard(basis, gaussian, e, d_prev)
-            ke_adv = la.LocalAdvectionPicard(basis, deg, gaussian, quad_1D, e, d_prev, boundary_conditions)
-
-            local_IEN_HDIV = basis.HDIV.connectivity(e)  
-            n_local_hdiv = len(local_IEN_HDIV)  
-            local_IEN_L2 = basis.L2.connectivity(e)  
-            n_local_L2 = len(local_IEN_L2)  
-            
-            # ke_total = ke + ke_Nitsche + ke_adv  
-            # fe_total = fe + fe_Nitsche  
-        
-            ke_total2 = ke + ke_adv  
-
-            for a in range(n_local_hdiv):
-                A = local_IEN_HDIV[a]
-                P = ID[A]
-                if P == -1:
-                    continue
-                F[P] += fe[a] + fe_Nitsche[a]
-
-                for b in range(n_local_hdiv):
-                    B = local_IEN_HDIV[b]
-                    Q = ID[B]
-                    if Q == -1:
-                        u_B = prescribed.get(B, 0.0)
-                        F[P] -= ke_total2[a, b] * u_B       # ke + ke_adv contribution
-                        F[P] -= ke_Nitsche[a, b] * u_B      # Nitsche contribution (matches Stokes)
-                        continue
-                    K[P, Q] += ke_total2[a, b]              # ke + ke_adv
-                    K[P, Q] += ke_Nitsche[a, b]             # Nitsche velocity-velocity
-
-                for b in range(n_local_L2):
-                    B = n_hdiv + local_IEN_L2[b]
-                    Q = ID[B]
-                    if Q == -1:
-                        u_B = prescribed.get(B, 0.0)
-                        F[P] -= ke_total2[a, b + n_local_hdiv] * u_B
-                        continue
-                    K[P, Q] += ke_total2[a, b + n_local_hdiv]   # pressure-velocity (ke only, same as Stokes)
-                    K[Q, P] += ke_total2[b + n_local_hdiv, a]   # symmetric
-
-        d_reduced = spsolve(K.tocsr(), F)  
-        
-        d_picard = cf.ExtractTotalD(ID, d_reduced, prescribed, n_hdiv, n_l2) 
-        d_next = d_picard
-         
-        rel_change = np.linalg.norm(d_next[:n_hdiv] - d_prev[:n_hdiv]) / max(np.linalg.norm(d_next[:n_hdiv]), 1e-14)  
-        print(f"Picard iter {k+1:02d}: rel_change = {rel_change:.3e}")  
-        d_prev = d_next  
-        if rel_change < tol:  
-            print(f"Picard converged in {k+1} iterations.")  
-            break  
-
-    return d_prev  
-
-
-d_ns = NavierStokes(basis, degree1, quad, quad_1D, gamma, forcing_function, f_ns, exact_solution,
+d_ns = nss.NavierStokes(basis, degree1, quad, quad_1D, gamma, forcing_function, f_ns, exact_solution,
                     boundary_conditions=None, boundary_value_function=boundary_value_function, ifID=ifID,
                     d_initial=example_d_check, nu=nu) 
 print("NavierStokes solution:", d_ns)  
@@ -213,7 +150,7 @@ def manufactured_sol_degrees_clean_ns():
         for ilevel, n_div in enumerate(refinement_levels):  
             rb = spline.globallyHRefine(basis_d, n_div, parametric_tolerance=1e-5)  
 
-            d = NavierStokes(rb, [deg,deg], quad_d, quad_1D_d, gamma_d, forcing_function, f_ns, exact_solution, boundary_conditions=None,
+            d = nss.NavierStokes(rb, [deg,deg], quad_d, quad_1D_d, gamma_d, forcing_function, f_ns, exact_solution, boundary_conditions=None,
                              boundary_value_function=boundary_value_function,
                              ifID=True, curve_domain=False, geo_map_func=None, nu=nu)  
 

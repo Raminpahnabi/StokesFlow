@@ -5,7 +5,7 @@ Created on Tue Mar 24 14:44:23 2026
 
 @author: raminpahnabi
 """
-import NS_Inputfile as inp
+import Inputfile as inp
 import sys
 import os
 import numpy as np
@@ -18,7 +18,7 @@ sys.path.append(str(PROJECT_ROOT / 'Required'))
 
 import splines as spline
 import Gaussian_Quadrature_2D_Solution as gq_nD
-import StokesFlow_Solver as ss
+import Solver_StokesFlow as ss
 import Convergence as cn
 import matplotlib.pyplot as plt  
 import NormalizedPressure as npre
