@@ -296,11 +296,11 @@ quad                = gq_nD.GaussQuadrature2D(n_quad, n_quad, interval, interval
 quad_1D             = gq_nD.GaussQuadrature1D(n_quad, start_pt=interval[0], end_pt=interval[1])
 gamma               =  5 * (degree1 + 1) # 20 * max(degree1, degree2)**3
 ifID                = True 
-USE_CURVED_GEOMETRY = True
+USE_CURVED_GEOMETRY = False
 option_number       = 0
-is_L2Projection     = True
+is_L2Projection     = False
 is_Stokes           = False
-is_NavierStokes     = False
+is_NavierStokes     = True
 
 
 ######## Square domain
