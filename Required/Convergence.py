@@ -18,7 +18,7 @@ ensure_sweeps_api_on_path()
 sys.path.append(str(PROJECT_ROOT / 'HWs'))
 sys.path.append(str(PROJECT_ROOT / 'Required'))
 
-import splines as spline
+# import splines as spline
 import matplotlib.pyplot as plt
 import StokesFlow_Solver as ss
 import CommonFuncs as cf
@@ -169,7 +169,7 @@ def compute_pressure_convergence_error(basis, d_coeffs, quad, exact_solution_l2)
     # mean of numerical pressure (should be ~0 after NormalizePressureCoefficients)
     mean_p_h = npre.EvaluateMeanPressure(basis, d_coeffs, quad)
 
-    # ns: compute mean of the exact pressure so we compare zero-mean quantities on both sides.
+    # compute mean of the exact pressure so we compare zero-mean quantities on both sides.
     # Without this, the error includes a constant floor = mean(p_exact) that never converges,
     # masking good pressure convergence for high degrees (visible as ~1.74e-04 stagnation).
     total_exact = 0.0
@@ -211,11 +211,10 @@ def plot_error_vs_log_h(refined_basis_list, deg, quad, quad_1D, gamma, forcing_f
 
     errors = []
     h_values = []
-    #NEW CODE: collect and print level-by-level diagnostics for convergence sanity checks
-    print("\n[Convergence diagnostics]")  #NEW CODE
-    print("level | n_elem | n_hdiv_total | h | error")  #NEW CODE
+    print("\n[Convergence diagnostics]")  
+    print("level | n_elem | n_hdiv_total | h | error")
     
-    for ilevel, refined_basis in enumerate(refined_basis_list):  #NEW CODE
+    for ilevel, refined_basis in enumerate(refined_basis_list):  
         # Solve Stokes equations
         d_coeffs = ss.Stokes(refined_basis, deg, quad, quad_1D, gamma, forcing_function, exact_solution,
                         boundary_conditions=None, boundary_value_function=boundary_value_function)
@@ -228,10 +227,10 @@ def plot_error_vs_log_h(refined_basis_list, deg, quad, quad_1D, gamma, forcing_f
         h = np.sqrt(compute_largest_element_area(refined_basis, quad))
         h_values.append(h)
         
-        #NEW CODE: per-level metadata for debugging non-monotone convergence
-        n_elem = len(list(refined_basis.elements()))  #NEW CODE
-        n_hdiv_total = cf.GetNumberH1FirstComponent(refined_basis)[0] + cf.GetNumberH1FirstComponent(refined_basis)[1]  #NEW CODE
-        print(f"{ilevel:5d} | {n_elem:6d} | {n_hdiv_total:12d} | {h:.8e} | {total_error:.8e}")  #NEW CODE
+        #per-level metadata for debugging non-monotone convergence
+        n_elem = len(list(refined_basis.elements()))  
+        n_hdiv_total = cf.GetNumberH1FirstComponent(refined_basis)[0] + cf.GetNumberH1FirstComponent(refined_basis)[1]  
+        print(f"{ilevel:5d} | {n_elem:6d} | {n_hdiv_total:12d} | {h:.8e} | {total_error:.8e}")  
 
     log_h_values = np.log(h_values)
     log_errors = np.log(errors)

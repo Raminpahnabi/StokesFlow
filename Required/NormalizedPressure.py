@@ -123,7 +123,7 @@ def L2PressureSolver(basis, deg, quad, quad_1D, alpha, boundary_conditions=None)
             for b in range(0,len(local_IEN_L2)):
                 B = local_IEN_L2[b]
                 K[A,B] += k_e[a,b]
-                # K[B,A] +=  k_e[b,a]
+                
     d = np.linalg.solve(K,F)
     
     return d

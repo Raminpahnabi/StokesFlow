@@ -9,6 +9,9 @@ import sys
 import os
 import numpy as np
 from pathlib import Path
+
+os.environ["SWEEPS_API_PATH"] = "/Users/raminpahnabi/Documents/BYU/sweeps/build/src/api"
+
 from sweeps_path import ensure_sweeps_api_on_path
 
 PROJECT_ROOT = Path(__file__).resolve().parent
@@ -17,14 +20,13 @@ sys.path.append(str(PROJECT_ROOT / 'HWs'))
 sys.path.append(str(PROJECT_ROOT / 'Required'))
 
 import splines as spline
-import StokesFlow_Solver as ss
 import CommonFuncs as cf
-import Inputfile as inp
-import Convergence as cn
+import NS_Inputfile as inp
 import NormalizedPressure as npre
-import Nonlinear_NavierStokes as nns
+import L2Projection_solver as ls
+import StokesFlow_Solver as ss
+# import Nonlinear_NavierStokes as nns
 
-# import NS_Inputfile as inp
 
 def export_as_vtk(basis, dtotal, true_velocity = None, true_pressure = None):        
     
@@ -105,8 +107,13 @@ def export_as_vtk(basis, dtotal, true_velocity = None, true_pressure = None):
     # -----------------------------------------------------------------------
     # Write legacy VTK ASCII file
     # -----------------------------------------------------------------------
-    vtk_path = 'stokes_solution.vtk'
-    
+    if L2Projection:
+        vtk_path = 'l2projection_solution.vtk'
+    elif Stokes:
+        vtk_path = 'stokes_solution.vtk'
+    elif NavierStokes:
+        vtk_path = 'navierstokes_solution.vtk'
+        
     print(f"Writing {vtk_path}  ({n_pts} points, {n_cells} quads) ...")
     
     with open(vtk_path, 'w') as f:
@@ -200,26 +207,85 @@ cpts                    = inp.cpts
 quad                    = inp.quad
 quad_1D                 = inp.quad_1D
 gamma                   = inp.gamma
-forcing_function        = inp.forcing_function
-exact_solution          = inp.exact_solution
-exact_solution_l2       = inp.exact_solution_l2
-boundary_value_function = inp.boundary_value_function
 ifID                    = inp.ifID
-f_ns                    = inp.forcing_function_ns
 nu                      = inp.KINEMATIC_VISCOSITY
+use_curve_geometry      = inp.USE_CURVED_GEOMETRY
+L2Projection            = inp.is_L2Projection
+Stokes                  = inp.is_Stokes
+NavierStokes            = inp.is_NavierStokes
+option                  = inp.option_number
+
+if L2Projection:
+    if use_curve_geometry   == False:
+        if option == 0:
+            forcing_function        = inp.forcing_function_l2projection_0
+            exact_solution          = inp.exact_solution_0
+            exact_solution_l2       = inp.exact_solution_l2_0
+            boundary_value_function = inp.boundary_value_function_0
+        elif option == 1:
+            forcing_function        = inp.forcing_function_l2projection_1
+            exact_solution          = inp.exact_solution_1
+            exact_solution_l2       = inp.exact_solution_l2_1
+            boundary_value_function = inp.boundary_value_function_1
+    elif use_curve_geometry == True: # TODO: Are these the same as square?
+        if option == 0:
+            forcing_function        = inp.forcing_function_l2projection_0
+            exact_solution          = inp.exact_solution_0
+            exact_solution_l2       = inp.exact_solution_l2_0
+            boundary_value_function = inp.boundary_value_function_0
+        elif option == 1:
+            forcing_function        = inp.forcing_function_l2projection_1
+            exact_solution          = inp.exact_solution_1
+            exact_solution_l2       = inp.exact_solution_l2_1
+            boundary_value_function = inp.boundary_value_function_1
+
+elif Stokes:
+    if use_curve_geometry   == False:
+        forcing_function        = inp.forcing_function_s_1
+        exact_solution          = inp.exact_solution_1
+        exact_solution_l2       = inp.exact_solution_l2_1
+        boundary_value_function = inp.boundary_value_function_1
+    elif use_curve_geometry == True:
+        forcing_function        = inp.forcing_function_s_1_curve
+        exact_solution          = inp.exact_solution_1_curve
+        exact_solution_l2       = inp.exact_solution_1_l2_curve
+        boundary_value_function = inp.boundary_value_function_1_curve
+
+elif NavierStokes:
+    if use_curve_geometry   == False:
+        forcing_function        = inp.forcing_function_ns_1
+        exact_solution          = inp.exact_solution_1
+        exact_solution_l2       = inp.exact_solution_l2_1
+        boundary_value_function = inp.boundary_value_function_1
+    elif use_curve_geometry == True:
+        forcing_function        = inp.forcing_function_ns_1_curve
+        exact_solution          = inp.exact_solution_1_curve
+        exact_solution_l2       = inp.exact_solution_l2_1_curve
+        boundary_value_function = inp.boundary_value_function_1_curve
+        
 
 basis = spline.NavierStokesTPDiscretization(kv1, kv2, degree1, degree2, cpts)
 
-nref = 2**3
+nref = 2**2
 refined_basis = spline.globallyHRefine(basis, nelem1*nelem2*nref, parametric_tolerance=1e-5)
 
 ############# Stokes ############
-print(f"Solving Stokes system — EXPONENTIAL solution (degree={degree1}) ...")
-dtotal = ss.Stokes(refined_basis, degs, quad, quad_1D, gamma,
-                   forcing_function, exact_solution,
-                   boundary_conditions=None,
-                   boundary_value_function=boundary_value_function,
-                   ifID=True,nu=nu)
+if L2Projection:
+    print(f"Solving L2_Projection system — EXPONENTIAL solution (degree={degree1}) ...")
+    dtotal = ls.L2Projection(refined_basis, degs, quad, quad_1D, gamma,
+                        forcing_function, exact_solution,
+                        boundary_conditions=None, boundary_value_function=boundary_value_function, ifID=ifID,nu=nu,use_curve_geometry =use_curve_geometry)
+elif Stokes:
+    print(f"Solving Stokes system — EXPONENTIAL solution (degree={degree1}) ...")
+    dtotal = ss.Stokes(refined_basis, degs, quad, quad_1D, gamma,
+                               forcing_function, exact_solution,
+                               boundary_conditions=None,
+                               boundary_value_function=boundary_value_function,
+                               ifID=True,nu=nu)
+elif NavierStokes:
+    print("Should be Fixed")
+
+
 n_l2       = refined_basis.L2.numTotalFunctions()                                  
 alpha      = npre.EvaluateAveragePressure(refined_basis, dtotal, quad)      #(α = ∫_Ω p_h dΩ)
 # area_value = sum(cn.compute_all_element_areas(refined_basis, quad))       #(vol = ∫_Ω dΩ)

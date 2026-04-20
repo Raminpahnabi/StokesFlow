@@ -29,7 +29,7 @@ def LocalForceStokes(basis, deg, quad, quad_1D, gamma, elem, forcing_function, n
         # Mapping from reference space to global space
         qpt_mapped = basis.mapping()
         x_g, y_g = qpt_mapped[0], qpt_mapped[1]
-        force = np.array(forcing_function(x_g, y_g, nu))  
+        force = np.array(forcing_function(x_g, y_g, nu))   
 
         for a in range(n_local_hdiv):
             fe[a] += np.dot(transformed_basis[a], force) * jac_det * quad_wts * quad_jacobian
@@ -110,3 +110,76 @@ def LocalAdvectionPicard(basis, deg, quad, quad_1D, elem, previous_d_coeffs, bou
                         convective_term += u[i] * grad_v[i, j] * phi_a[j]
                 ke[a, b] += convective_term * jac_det * weight * quad_jacobian
     return ke
+
+
+def LocalStiffnessL2Projection(basis, deg, quad, quad_1D, elem):
+    """
+    # Local stiffness for L2-projection: u + grad(p) = f, div(u) = 0.
+    # u-u block : mass matrix  ∫ φ_a · φ_b dΩ   (NOT 2ν ε:ε — no viscous term in LP)
+    # u-p block : -∫ (∇·φ_a) ψ_b dΩ             (same divergence coupling as Stokes)
+    # p-u block : skew-symmetric transpose of u-p block
+    """
+    local_IEN_HDIV = basis.HDIV.connectivity(elem)
+    n_local_hdiv = len(local_IEN_HDIV)
+    local_IEN_L2 = basis.L2.connectivity(elem)
+    n_local_L2 = len(local_IEN_L2)
+    n_local_total = n_local_hdiv + n_local_L2
+
+    ke = np.zeros((n_local_total, n_local_total))
+
+    for g in range(len(quad.quad_wts)):
+        quad_wts      = quad.quad_wts[g]
+        quad_pts      = quad.quad_pts[g]
+        quad_jacobian = quad.jacobian
+        basis.localizePoint(quad_pts)
+        jac_det = basis.jacobianDeterminant()
+
+        transformed_basis    = basis.piolaTransformedHDIVBasis()            # (n_local_hdiv, 2) vector
+        transformed_basis_L2 = basis.piolaTransformedL2()                   # (n_local_L2,) scalar
+        gradient_basis       = basis.piolaTransformedHDIVFirstDerivatives() # (n_local_hdiv, 4): [v,xx v,xy v,yx v,yy]
+
+        # u-u block: L2 mass matrix — identity operator on velocity, NO viscosity
+        for a in range(n_local_hdiv):
+            for b in range(n_local_hdiv):
+                ke[a, b] += np.dot(transformed_basis[a], transformed_basis[b]) * jac_det * quad_wts * quad_jacobian
+
+        # u-p block: -∫ (∇·φ_a) ψ_b dΩ  — same divergence coupling as Stokes
+        for a in range(n_local_hdiv):
+            div_phi_a = gradient_basis[a][0] + gradient_basis[a][3]  # div(φ_a) = v,xx + v,yy = trace(∇φ)
+            for b in range(n_local_L2):
+                ke[a, b + n_local_hdiv] -= div_phi_a * transformed_basis_L2[b] * jac_det * quad_wts * quad_jacobian
+
+        # p-u block: skew-symmetric transpose of u-p block
+        for a in range(n_local_L2):
+            for b in range(n_local_hdiv):
+                div_phi_b = gradient_basis[b][0] + gradient_basis[b][3]
+                ke[a + n_local_hdiv, b] += div_phi_b * transformed_basis_L2[a] * jac_det * quad_wts * quad_jacobian
+
+    return ke
+
+def LocalForceStokesL2Projection(basis, deg, quad, quad_1D, gamma, elem, forcing_function, nu, use_curve_geometry):  
+    local_IEN_HDIV = basis.HDIV.connectivity(elem)
+    n_local_hdiv = len(local_IEN_HDIV)
+    local_IEN_L2 = basis.L2.connectivity(elem)
+    n_local_L2 = len(local_IEN_L2)
+    n_local_total = n_local_hdiv + n_local_L2
+
+    fe = np.zeros(n_local_total)
+    
+    for g in range(len(quad.quad_wts)):
+        quad_wts = quad.quad_wts[g]
+        quad_pts = quad.quad_pts[g]
+        quad_jacobian = quad.jacobian
+        basis.localizePoint(quad_pts)
+        jac_det = basis.jacobianDeterminant()
+
+        transformed_basis = basis.piolaTransformedHDIVBasis()
+        
+        qpt_mapped = basis.mapping()
+        x_g, y_g = qpt_mapped[0], qpt_mapped[1]
+        force = np.array(forcing_function(x_g, y_g, nu))  
+
+        for a in range(n_local_hdiv):
+            fe[a] += np.dot(transformed_basis[a], force) * jac_det * quad_wts * quad_jacobian
+    
+    return fe
