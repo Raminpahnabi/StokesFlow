@@ -48,7 +48,7 @@ def Stokes(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions
         # Compute prescribed values for normal DOFs
         prescribed = bc.ComputePrescribedNormalDOFValues(basis, boundary_dofs, boundary_value_function, quad_1D)
         # Build ID array (marks normal DOFs as -1)
-        ID = cf.ID_array(basis.HDIV, basis.L2, boundary_dofs, prescribed)
+        ID = cf.ID_array(basis.HDIV, basis.L2, boundary_dofs)
         
         n = max(ID)+1
 

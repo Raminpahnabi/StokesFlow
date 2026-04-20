@@ -22,27 +22,12 @@ sys.path.append(str(PROJECT_ROOT / 'Required'))
 import splines as spline
 import Gaussian_Quadrature_2D_Solution as gq_nD
 
+import f_stokes_curve as fs
+
 KINEMATIC_VISCOSITY = 0.1
 
-
-# ############################## Option No.4 Stokes ################################
-def forcing_function(x, y, nu, sigma = 0):
-    """
-    Force vector for the manufactured Stokes/Brinkman solution.
-
-    Parameters
-    ----------
-    x, y : float
-        Spatial coordinates.
-    nu : float or callable
-        Kinematic viscosity. If callable, use nu(x, y).
-    sigma : float or callable
-        Darcy coefficient. If callable, use sigma(x, y).
-
-    Returns
-    -------
-    (f1, f2) : tuple of floats
-    """
+# ############################## Stokes ################################
+def forcing_function_s_1(x, y, nu, sigma = 0):
 
     nu_val = nu(x, y) if callable(nu) else nu
     sigma_val = sigma(x, y) if callable(sigma) else sigma
@@ -90,9 +75,8 @@ def forcing_function(x, y, nu, sigma = 0):
     return f1, f2
 
 
-######################## Option No.4_ NavierStokes #####################
-#AI
-def forcing_function_ns(x, y, nu, sigma=0):
+####################### NavierStokes with AI #####################
+def forcing_function_ns_1(x, y, nu, sigma=0):
     ex = np.exp(x)
     e2x = np.exp(2*x)
 
@@ -138,18 +122,151 @@ def forcing_function_ns(x, y, nu, sigma=0):
 
     return f1, f2
 
-def exact_solution(x, y):
+##################### CURVE DOMAIN Section With AI ###########################
+
+forcing_function_stokes_curve = fs.forcing_function_stokes_curve
+
+def exact_solution_curve(xi, eta):
+
+    ex = np.exp(xi)
+
+    # Common geometric term (same as before)
+    G = (
+        -1 + 4*xi**2 - 11*xi**3 + 10*xi**4 - 3*xi**5
+        + eta**3 * (xi - 1)**2 * (1 - 2*xi + 3*xi**2)
+        - 3*eta**2 * (xi - 1)**2 * (1 - 2*xi - xi**2 + xi**3)
+        + eta * (1 - 10*xi - 2*xi**2 + 30*xi**3 - 27*xi**4 + 6*xi**5)
+    )
+
+
+    u1_num = (
+        ex * (eta - 1) * eta * (xi - 1)**2 * xi * (
+            -2 * (-2 + xi) * xi**2
+            + eta**2 * (-2 + xi - 4*xi**2 + xi**3)
+            + eta * (2 - xi - 8*xi**2 + 3*xi**3)
+        )
+    )
+    
+    u1 = u1_num / (3 * G)
+
+
+    u2_num = (
+        ex * (eta - 1) * eta * (xi - 1) * xi**2 * (
+            2 * (xi - 1)**2 * (1 + xi)
+            + eta**4 * (xi - 1)**2 * (-2 - 3*xi + 3*xi**2)
+            - eta**3 * (xi - 1)**2 * (-4 - 15*xi + 9*xi**2)
+            + eta * (-4 + 13*xi - 14*xi**2 + 10*xi**3 - 3*xi**4)
+            + eta**2 * (-4 - 19*xi + 56*xi**2 - 44*xi**3 + 9*xi**4)
+        )
+    )
+
+    u2 = - u2_num / (3 * G)
+
+    return u1, u2
+
+def exact_solution_l2_curve(xi, eta):
+
+    ex = np.exp(xi)
+
+    # Common geometric denominator term (same as before)
+    G = (
+        -1 + 4*xi**2 - 11*xi**3 + 10*xi**4 - 3*xi**5
+        + eta**3 * (xi - 1)**2 * (1 - 2*xi + 3*xi**2)
+        - 3*eta**2 * (xi - 1)**2 * (1 - 2*xi - xi**2 + xi**3)
+        + eta * (1 - 10*xi - 2*xi**2 + 30*xi**3 - 27*xi**4 + 6*xi**5)
+    )
+
+    numerator = (
+        156*np.e
+        - 8*(53 - 57*eta + 57*eta**2)
+        + ex * eta * (
+            -2*eta**2 * xi * (2 - 5*xi + 2*xi**2 + xi**3)
+            + eta**3 * xi * (2 - 5*xi + 2*xi**2 + xi**3)
+            - 12*(38 - 38*xi + 19*xi**2 - 6*xi**3 + xi**4)
+            + eta*(456 - 454*xi + 223*xi**2 - 70*xi**3 + 13*xi**4)
+        )
+    )
+
+    ps = - numerator / (9 * G)
+
+    return ps
+
+################################### From John Evans ###########################################
+def exact_solution_1(x, y):
     u1 = 2 * np.exp(x) * (-1 + x)*(-1 + x)* x**2 * (y**2 - y) * (-1 + 2 * y)
     u2 = -np.exp(x) * (-1 + x) * x * (-2 + x * (3 + x)) * (-1 + y)**2 * y**2
     return u1, u2
 
-def exact_solution_l2(x, y):
+def exact_solution_l2_1(x, y):
     p = -424+156*np.exp(1)+(-y+y**2)*(-456+np.exp(x)*(456+x**2*(228-5*(-y+y**2))+2*x*(-228+(-y+y**2))+2*x**3*(-36+(-y+y**2))+x**4*(12+(-y+y**2))))
     return p
 
+def forcing_function_l2projection_1(x, y, nu=1, sigma=0):
+    """
+    # L2-projection mixed problem: u + grad(p) = f, div(u) = 0.
+    # f = u_exact(x,y) + grad(p_exact(x,y)).
+    """
+    # Step 1: exact velocity contribution
+    u1, u2 = exact_solution_1(x, y)
 
-def boundary_value_function(x, y):
-    return exact_solution(x, y)
+    # Step 2: grad(p_exact) computed analytically from exact_solution_l2.
+    # p = -424 + 156*exp(1) + Q*(-456 + exp(x)*A),  Q = y^2 - y
+    # A = 456 + x^2*(228+5y-5y^2) + 2x*(-228-y+y^2) + 2x^3*(-36-y+y^2) + x^4*(12-y+y^2)
+    ex = np.exp(x)
+    Q  = y**2 - y                 
+
+    A = (456
+          + x**2 * (228 + 5*y - 5*y**2)
+          + 2*x  * (-228 - y + y**2)
+          + 2*x**3 * (-36  - y + y**2)
+          + x**4  * ( 12  - y + y**2))
+
+    dA_dx = (2*x   * (228 + 5*y - 5*y**2)
+              + 2   * (-228 - y + y**2)
+              + 6*x**2 * (-36  - y + y**2)
+              + 4*x**3 * ( 12  - y + y**2))
+
+    dA_dy = (x**2 * (5 - 10*y)
+              + 2*x  * (-1 + 2*y)
+              + 2*x**3 * (-1 + 2*y)
+              + x**4  * (-1 + 2*y))
+
+    # dp/dx = Q * exp(x) * (A + dA/dx)   
+    dp_dx = Q * ex * (A + dA_dx)
+
+    # dp/dy = dQ/dy*(-456 + exp(x)*A) + Q*exp(x)*dA/dy,  dQ/dy = 2y-1
+    dp_dy = (2*y - 1) * (-456 + ex * A) + Q * ex * dA_dy
+
+    # f = u_exact + grad(p_exact)
+    f1 = u1 + dp_dx
+    f2 = u2 + dp_dy
+    return f1, f2
+
+def boundary_value_function_1(x, y):
+    return exact_solution_1(x, y)
+
+
+############################ Easiest one ################################
+def exact_solution_0(x, y):
+    u1 = y
+    u2 = x
+    return u1, u2
+
+def exact_solution_l2_0(x, y):
+    p = 0
+    return p
+
+def forcing_function_l2projection_0(x, y, nu=1, sigma=0):
+    u1, u2 = exact_solution_0(x, y)
+    
+    f1 = u1 
+    f2 = u2 
+    return f1, f2
+
+def boundary_value_function_0(x, y):
+    return exact_solution_0(x, y)
+########################################################################
+
 
 max_knot_xi = 0.1
 max_knot_eta = 5
@@ -169,9 +286,25 @@ unitkv2_init = list(np.linspace(0,1,nelem2+1))
 unitkv1 = spline.KnotVector([0]*degree1 + unitkv1_init + [1]*(degree1), 1e-9)
 unitkv2 = spline.KnotVector([0]*degree2 + unitkv2_init + [1]*(degree2), 1e-9)
 
+unit_max_knot_xi = 1
+unit_max_knot_eta = 1
+
+
+n_quad              = max(degree1+1, degree2+2)+1
+interval            = [0, 1]
+quad                = gq_nD.GaussQuadrature2D(n_quad, n_quad, interval, interval)
+quad_1D             = gq_nD.GaussQuadrature1D(n_quad, start_pt=interval[0], end_pt=interval[1])
+gamma               =  5 * (degree1 + 1) # 20 * max(degree1, degree2)**3
+ifID                = True 
+USE_CURVED_GEOMETRY = True
+option_number       = 0
+is_L2Projection     = True
+is_Stokes           = False
+is_NavierStokes     = False
+
 
 ######## Square domain
-cpts = spline.grevillePoints( unitkv1, unitkv2, degree1, degree2 )#/ max_knot # make the domain a unit square   
+# cpts = spline.grevillePoints( unitkv1, unitkv2, degree1, degree2 )#/ max_knot # make the domain a unit square   
 
 ######## Curve domain
 # cpts = np.array([
@@ -179,48 +312,34 @@ cpts = spline.grevillePoints( unitkv1, unitkv2, degree1, degree2 )#/ max_knot # 
 #     [0.0, 0.5, 0.5,   0.0, 0.75, 0.75,   0.0, 1.0, 1.0 ]
 # ])
 
-n_quad   = max(degree1+1, degree2+2)+1
-interval = [0, 1]
-quad     = gq_nD.GaussQuadrature2D(n_quad, n_quad, interval, interval)
-quad_1D  = gq_nD.GaussQuadrature1D(n_quad, start_pt=interval[0], end_pt=interval[1])
-gamma    =  20 * max(degree1, degree2)**3
-ifID = True
-####
+def map_xi_eta_to_xy(xi, eta):
+    x = -3*eta + 3*xi**2 + 3*xi**2*eta - xi**3
 
+    y = ( 3*xi - 3*xi*eta + 9*xi*eta**2 - 3*xi*eta**3
+          + 15*xi**2*eta - 18*xi**2*eta**2 + 6*xi**2*eta**3
+          - xi**3 - 9*xi**3*eta + 9*xi**3*eta**2 - 3*xi**3*eta**3 )
+    return x, y
 
-
-######## Geometry switch  
-USE_CURVED_GEOMETRY = False
-
-# def map_xi_eta_to_xy(xi, eta):
-#     x = -3*eta + 3*xi**2 + 3*xi**2*eta - xi**3
-
-#     y = ( 3*xi - 3*xi*eta + 9*xi*eta**2 - 3*xi*eta**3
-#           + 15*xi**2*eta - 18*xi**2*eta**2 + 6*xi**2*eta**3
-#           - xi**3 - 9*xi**3*eta + 9*xi**3*eta**2 - 3*xi**3*eta**3 )
-#     return x, y
-
-# def make_cpts(kv1_, kv2_, deg1_, deg2_, min_knot, max_knot_xi, max_knot_eta):                                                                                                        
-#     cpts_sq = spline.grevillePoints(kv1_, kv2_, deg1_, deg2_)                    
-#     if not USE_CURVED_GEOMETRY:                                                    
-#         return cpts_sq 
+def make_cpts(kv1_, kv2_, deg1_, deg2_, min_knot, unit_max_knot_xi, unit_max_knot_eta):                                                                                                        
+    cpts_sq = spline.grevillePoints(kv1_, kv2_, deg1_, deg2_)                    
+    if not USE_CURVED_GEOMETRY:                                                    
+        return cpts_sq 
                                                           
-#     cpts_ = cpts_sq.copy()
-#     for i in range(cpts_.shape[1]):
-#         xi_cp  = cpts_sq[0, i]
-#         eta_cp = cpts_sq[1, i]
+    cpts_ = cpts_sq.copy()
+    for i in range(cpts_.shape[1]):
+        xi_cp  = cpts_sq[0, i]
+        eta_cp = cpts_sq[1, i]
     
-#         # if your knot range is [min_knot,max_knot]=[0,1], this is just xi_cp, eta_cp
-#         xi_n  = (xi_cp  - min_knot) / (max_knot_xi - min_knot)
-#         eta_n = (eta_cp - min_knot) / (max_knot_eta - min_knot)
+        # if your knot range is [min_knot,max_knot]=[0,1], this is just xi_cp, eta_cp
+        xi_n  = (xi_cp  - min_knot) / (unit_max_knot_xi - min_knot)
+        eta_n = (eta_cp - min_knot) / (unit_max_knot_eta - min_knot)
     
-#         X, Y = map_xi_eta_to_xy(xi_n, eta_n)
-#         cpts_[0, i] = X
-#         cpts_[1, i] = Y
+        X, Y = map_xi_eta_to_xy(xi_n, eta_n)
+        cpts_[0, i] = X
+        cpts_[1, i] = Y
         
-#     return cpts_                                                      
+    return cpts_                                                      
                                                                
+cpts = make_cpts(unitkv1, unitkv2, degree1, degree2, min_knot, unit_max_knot_xi, unit_max_knot_eta)
 
-# cpts = make_cpts(unitkv1_init, unitkv2_init, degree1, degree2, min_knot, max_knot_xi, max_knot_eta)
 
-# d_next = relaxation * d_picard + (1.0 - relaxation) * d_prev 

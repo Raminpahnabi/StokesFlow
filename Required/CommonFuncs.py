@@ -12,6 +12,38 @@ sys.path.append(os.path.join(os.getcwd(), 'Required'))
 
 import Quadrature_Operations_Solutions_boundary as gq_bc
 
+def _physical_domain_bounds(basis):
+    control_points = np.asarray(basis.control_points)
+    x_min = float(np.min(control_points[0]))
+    x_max = float(np.max(control_points[0]))
+    y_min = float(np.min(control_points[1]))
+    y_max = float(np.max(control_points[1]))
+    return x_min, x_max, y_min, y_max
+
+
+def _is_boundary_face(basis, elem, bdry, quad_1D, bounds):
+    xi_vals = gq_bc.GetFaceQuadraturePoints(quad_1D, bdry)
+    face_midpoint = xi_vals[len(xi_vals) // 2]
+
+    basis.localizeElement(elem)
+    basis.localizePoint(face_midpoint)
+    x_f, y_f = basis.mapping()[:2]
+
+    x_min, x_max, y_min, y_max = bounds
+    span = max(x_max - x_min, y_max - y_min, 1.0)
+    tol = 1e-10 * span
+
+    if bdry == gq_bc.BoundaryFace.BOTTOM:
+        return abs(y_f - y_min) <= tol
+    if bdry == gq_bc.BoundaryFace.TOP:
+        return abs(y_f - y_max) <= tol
+    if bdry == gq_bc.BoundaryFace.LEFT:
+        return abs(x_f - x_min) <= tol
+    if bdry == gq_bc.BoundaryFace.RIGHT:
+        return abs(x_f - x_max) <= tol
+    return False
+
+
 def GetSplineDegree(basis):
     degs = []
     for knotvec in basis.knotVectors():
@@ -73,7 +105,7 @@ def compute_face_length(basis, xi_vals, quad_1D, bdry_face):
         
     return length
 
-def ID_array(HDiv, L2, boundary_dofs, prescribed):
+def ID_array(HDiv, L2, boundary_dofs):
     total_basis_functions_HDIV = HDiv.numTotalFunctions()
     total_basis_functions_L2 = L2.numTotalFunctions()
     total_basis = total_basis_functions_HDIV + total_basis_functions_L2
@@ -101,6 +133,27 @@ def ID_array(HDiv, L2, boundary_dofs, prescribed):
 
     return ID
 
+def ID_array_l2projection(HDiv, L2, boundary_dofs):
+    total_basis_functions_HDIV = HDiv.numTotalFunctions()
+    total_basis_functions_L2 = L2.numTotalFunctions()
+    total_basis = total_basis_functions_HDIV + total_basis_functions_L2
+
+    ID = np.zeros(total_basis, dtype=int)
+
+    counter = 0
+    
+    for i in range(total_basis_functions_HDIV):
+        ID[i] = counter
+        counter += 1
+
+    ID[total_basis_functions_HDIV] = -1  # First pressure DOF
+    
+    for i in range(total_basis_functions_HDIV + 1, total_basis):
+        ID[i] = counter
+        counter += 1
+
+    return ID
+
 def ExtractTotalD(ID, d_reduced, prescribed, n_hdiv, n_l2):
     d_total = np.zeros(len(ID))
     
@@ -115,3 +168,16 @@ def ExtractTotalD(ID, d_reduced, prescribed, n_hdiv, n_l2):
             d_total[A] = d_reduced[ID[A]]
             
     return d_total
+
+def ExtractTotalD_l2projection(ID, d_reduced, prescribed, n_hdiv, n_l2):
+    d_total = np.zeros(len(ID))
+    
+    for A in range(len(d_total)):
+        if ID[A] == -1:
+            d_total[A] = 0.0
+                
+        else:
+            d_total[A] = d_reduced[ID[A]]
+            
+    return d_total
+

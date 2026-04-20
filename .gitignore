@@ -5,4 +5,5 @@
 *.pdf
 *.tex
 *.HEIC
+Results_images
 __pycache__/
