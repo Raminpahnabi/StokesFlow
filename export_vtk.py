@@ -25,7 +25,7 @@ import Inputfile as inp
 import NormalizedPressure as npre
 import Solver_L2Projection as ls
 import Solver_StokesFlow as ss
-import Solver_NonlinearNavierStokes as nns
+import Solver_NonlinearNavierStokes as nss
 
 
 def export_as_vtk(basis, dtotal, true_velocity = None, true_pressure = None):        
@@ -108,11 +108,11 @@ def export_as_vtk(basis, dtotal, true_velocity = None, true_pressure = None):
     # Write legacy VTK ASCII file
     # -----------------------------------------------------------------------
     if L2Projection:
-        vtk_path = 'l2projection_solution.vtk'
+        vtk_path = 'solution_l2projection.vtk'
     elif Stokes:
-        vtk_path = 'stokes_solution.vtk'
+        vtk_path = 'solution_stokes.vtk'
     elif NavierStokes:
-        vtk_path = 'navierstokes_solution.vtk'
+        vtk_path = 'solution_navierstokes.vtk'
         
     print(f"Writing {vtk_path}  ({n_pts} points, {n_cells} quads) ...")
     
@@ -253,7 +253,8 @@ elif Stokes:
 
 elif NavierStokes:
     if use_curve_geometry   == False:
-        forcing_function        = inp.forcing_function_ns_1
+        forcing_function        = inp.forcing_function_s_1
+        f_ns                    = inp.forcing_function_ns_1
         exact_solution          = inp.exact_solution_1
         exact_solution_l2       = inp.exact_solution_l2_1
         boundary_value_function = inp.boundary_value_function_1
@@ -283,8 +284,16 @@ elif Stokes:
                                boundary_value_function=boundary_value_function,
                                ifID=True,nu=nu)
 elif NavierStokes:
-    print("Should be Fixed")
-
+    print(f"Solving NavierStokes system — EXPONENTIAL solution (degree={degree1}) ...")
+    dinitial = ss.Stokes(refined_basis, degs, quad, quad_1D, gamma,
+                               forcing_function, exact_solution,
+                               boundary_conditions=None,
+                               boundary_value_function=boundary_value_function,
+                               ifID=True,nu=nu)
+    
+    dtotal = nss.NavierStokes(refined_basis, degs, quad, quad_1D, gamma, forcing_function, f_ns, exact_solution,
+                                      boundary_conditions=None, boundary_value_function=boundary_value_function, ifID=ifID,
+                                      d_initial=dinitial, nu=nu) 
 
 n_l2       = refined_basis.L2.numTotalFunctions()                                  
 alpha      = npre.EvaluateAveragePressure(refined_basis, dtotal, quad)      #(α = ∫_Ω p_h dΩ)
