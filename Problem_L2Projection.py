@@ -5,7 +5,7 @@ Created on Tue Mar 24 14:44:23 2026
 
 @author: raminpahnabi
 """
-import NS_Inputfile as inp
+import Inputfile as inp
 import sys
 import os
 import numpy as np
@@ -22,8 +22,9 @@ import Convergence as cn
 import matplotlib.pyplot as plt  
 import NormalizedPressure as npre
 import Plotting as pl
-import L2Projection_solver as ls
-import StokesFlow_Solver as ss
+import Solver_L2Projection as ls
+import Solver_StokesFlow as ss
+import Solver_NonlinearNavierStokes as nns
 
 max_knot_xi        = inp.max_knot_xi
 max_knot_eta       = inp.max_knot_eta
@@ -59,17 +60,12 @@ if L2Projection:
             exact_solution          = inp.exact_solution_1
             exact_solution_l2       = inp.exact_solution_l2_1
             boundary_value_function = inp.boundary_value_function_1
-    elif use_curve_geometry == True: # TODO: Are these the same as square?
+    elif use_curve_geometry == True: 
         if option == 0:
             forcing_function        = inp.forcing_function_l2projection_0
             exact_solution          = inp.exact_solution_0
             exact_solution_l2       = inp.exact_solution_l2_0
             boundary_value_function = inp.boundary_value_function_0
-        elif option == 1:
-            forcing_function        = inp.forcing_function_l2projection_1
-            exact_solution          = inp.exact_solution_1
-            exact_solution_l2       = inp.exact_solution_l2_1
-            boundary_value_function = inp.boundary_value_function_1
 
 elif Stokes:
     if use_curve_geometry   == False:
@@ -124,6 +120,7 @@ def manufactured_sol_degrees_clean():
     degrees = [2,3,4]  
     colors  = ['b', 'g', 'r', 'c']  
     refinement_levels = [8, 16, 32]#, 64]  
+    # refinement_levels = [32, 64, 128]
     interval_d = [0,1]  
     max_knot_d_xi = max_knot_xi  
     max_knot_d_eta = max_knot_eta 
@@ -137,7 +134,7 @@ def manufactured_sol_degrees_clean():
         print(f"{'='*60}") 
 
         # Build quadrature for this degree  
-        n_quad_d  = deg + 1 
+        n_quad_d  = deg + 3 
         quad_d    = gq_nD.GaussQuadrature2D(n_quad_d, n_quad_d, interval_d, interval_d)  
         quad_1D_d = gq_nD.GaussQuadrature1D(n_quad_d, start_pt=interval_d[0], end_pt=interval_d[1])  
         gamma_d   = 20 * deg**3  

@@ -21,11 +21,11 @@ sys.path.append(str(PROJECT_ROOT / 'Required'))
 
 import splines as spline
 import CommonFuncs as cf
-import NS_Inputfile as inp
+import Inputfile as inp
 import NormalizedPressure as npre
-import L2Projection_solver as ls
-import StokesFlow_Solver as ss
-# import Nonlinear_NavierStokes as nns
+import Solver_L2Projection as ls
+import Solver_StokesFlow as ss
+import Solver_NonlinearNavierStokes as nns
 
 
 def export_as_vtk(basis, dtotal, true_velocity = None, true_pressure = None):        

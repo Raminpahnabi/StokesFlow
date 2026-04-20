@@ -20,7 +20,7 @@ sys.path.append(str(PROJECT_ROOT / 'Required'))
 
 # import splines as spline
 import matplotlib.pyplot as plt
-import StokesFlow_Solver as ss
+import Solver_StokesFlow as ss
 import CommonFuncs as cf
 import NormalizedPressure as npre
 
