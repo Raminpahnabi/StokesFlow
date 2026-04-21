@@ -65,8 +65,9 @@ def NavierStokes(basis, deg, gaussian, quad_1D, gamma, f, f_ns, u_exact, boundar
             ke_Nitsche = ni.LocalStiffnessMatrix_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e, nu=nu)  
             fe_Nitsche = ni.LocalForceVector_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e, f_ns_nu, u_exact, boundary_value_function, nu=nu)  
             
-            ke_adv = la.LocalAdvectionPicard(basis, deg, gaussian, quad_1D, e, d_prev, boundary_conditions)
-
+            # ke_adv = la.LocalAdvectionPicard(basis, deg, gaussian, quad_1D, e, d_prev, boundary_conditions)
+            ke_adv = la.LocalAdvectionNewton(basis, deg, gaussian, quad_1D, e, d_prev, boundary_conditions)
+            
             local_IEN_HDIV = basis.HDIV.connectivity(e)  
             n_local_hdiv = len(local_IEN_HDIV)  
             local_IEN_L2 = basis.L2.connectivity(e)  
