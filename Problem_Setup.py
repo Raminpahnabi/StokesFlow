@@ -69,28 +69,38 @@ if L2Projection:
 
 elif Stokes:
     if use_curve_geometry   == False:
-        forcing_function        = inp.forcing_function_s_1
-        exact_solution          = inp.exact_solution_1
-        exact_solution_l2       = inp.exact_solution_l2_1
-        boundary_value_function = inp.boundary_value_function_1
+        if option == 1:
+            forcing_function        = inp.forcing_function_s_1
+            exact_solution          = inp.exact_solution_1
+            exact_solution_l2       = inp.exact_solution_l2_1
+            boundary_value_function = inp.boundary_value_function_1
+        elif option == 2:
+            forcing_function        = inp.forcing_function_cavity_2
+            exact_solution          = inp.exact_solution_cavity_2
+            exact_solution_l2       = inp.exact_solution_l2_1
+            boundary_value_function = inp.boundary_value_function_cavity_2
     elif use_curve_geometry == True:
-        forcing_function        = inp.forcing_function_s_1_curve
-        exact_solution          = inp.exact_solution_1_curve
-        exact_solution_l2       = inp.exact_solution_1_l2_curve
-        boundary_value_function = inp.boundary_value_function_1_curve
+        if option == 1:
+            forcing_function        = inp.forcing_function_s_1_curve
+            exact_solution          = inp.exact_solution_1_curve
+            exact_solution_l2       = inp.exact_solution_1_l2_curve
+            boundary_value_function = inp.boundary_value_function_1_curve
 
 elif NavierStokes:
     if use_curve_geometry   == False:
-        forcing_function        = inp.forcing_function_s_1
-        f_ns                    = inp.forcing_function_ns_1
-        exact_solution          = inp.exact_solution_1
-        exact_solution_l2       = inp.exact_solution_l2_1
-        boundary_value_function = inp.boundary_value_function_1
+        if option == 1:
+            forcing_function        = inp.forcing_function_s_1
+            f_ns                    = inp.forcing_function_ns_1
+            exact_solution          = inp.exact_solution_1
+            exact_solution_l2       = inp.exact_solution_l2_1
+            boundary_value_function = inp.boundary_value_function_1
+            
     elif use_curve_geometry == True:
-        forcing_function        = inp.forcing_function_ns_1_curve
-        exact_solution          = inp.exact_solution_1_curve
-        exact_solution_l2       = inp.exact_solution_l2_1_curve
-        boundary_value_function = inp.boundary_value_function_1_curve
+        if option == 1:
+            forcing_function        = inp.forcing_function_ns_1_curve
+            exact_solution          = inp.exact_solution_1_curve
+            exact_solution_l2       = inp.exact_solution_l2_1_curve
+            boundary_value_function = inp.boundary_value_function_1_curve
         
 basis = spline.NavierStokesTPDiscretization( kv1, kv2, degree1, degree2, cpts)
 
