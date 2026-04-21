@@ -164,70 +164,68 @@ def LocalAdvectionNewton(basis, deg, quad, quad_1D, elem, previous_d_coeffs, bou
 
                 # Picard term: (u^k·∇)φ_b · φ_a — identical to LocalAdvectionPicard
                 picard_term = 0.0
-                newton_extra2 = 0.0
                 for i in range(2):
                     for j in range(2):
-                        picard_term   += u_k[i] * grad_v[i, j] * phi_a[j]
-                        newton_extra2 += u_k[i] * grad_u_k[i, j] * phi_a[j]  
+                        picard_term   += u_k[i] * grad_v[i, j] * phi_a[j]  
 
                 # extra Newton term: (φ_b·∇)u^k · φ_a = phi_a · (grad_u_k @ phi_b)
                 newton_extra  = float(np.dot(phi_a, grad_u_k @ phi_b)) 
                                         
 
-                ke[a, b] += (picard_term + newton_extra - newton_extra2) * scale                                 
+                ke[a, b] += (picard_term + newton_extra) * scale                                 
 
     return ke
 
 
-def LocalForceNS_Newton(basis, deg, quad, quad_1D, elem, previous_d_coeffs):  # NNS
-    """                                                                         # NNS
-    # NNS Newton nonlinear residual force vector.                               # NNS
-    #   F^NL_a = ∫ (u^k·∇)u^k · φ_a dΩ                                       # NNS
-    #                                                                           # NNS
-    # PURPOSE: balances the extra Newton stiffness term so the fixed point      # NNS
-    # of the iteration satisfies the full NS equations.  Add this to the       # NNS
-    # external force in the solver:                                             # NNS
-    #   (K_Stokes + K_Newton) u^{k+1} = F_ext + F^NL(u^k)                    # NNS
-    """                                                                         # NNS
-    local_IEN_HDIV = basis.HDIV.connectivity(elem)                              # NNS
-    n_local_hdiv   = len(local_IEN_HDIV)                                        # NNS
-    n_local_L2     = len(basis.L2.connectivity(elem))                           # NNS
-    n_local_total  = n_local_hdiv + n_local_L2                                  # NNS
+def LocalForceNS_Newton(basis, deg, quad, quad_1D, elem, previous_d_coeffs):  
+    """                                                                         
+    # Newton nonlinear residual force vector.
+    #   F^NL_a = ∫ (u^k·∇)u^k · φ_a dΩ                                       
+    #                                                                           
+    # PURPOSE: balances the extra Newton stiffness term so the fixed point      
+    # of the iteration satisfies the full NS equations.  Add this to the       
+    # external force in the solver:                                             
+    #   (K_Stokes + K_Newton) u^{k+1} = F_ext + F^NL(u^k)                   
+    """                                                                         
+    local_IEN_HDIV = basis.HDIV.connectivity(elem)                              
+    n_local_hdiv   = len(local_IEN_HDIV)                                        
+    n_local_L2     = len(basis.L2.connectivity(elem))                           
+    n_local_total  = n_local_hdiv + n_local_L2                                  
 
-    fe = np.zeros(n_local_total)                                                # NNS
+    fe = np.zeros(n_local_total)                                                
 
-    for iqpt in range(len(quad.quad_wts)):                                      # NNS
-        weight       = quad.quad_wts[iqpt]                                      # NNS
-        qpt          = quad.quad_pts[iqpt]                                      # NNS
-        quad_jacobian = quad.jacobian                                            # NNS
+    for iqpt in range(len(quad.quad_wts)):                                      
+        weight        = quad.quad_wts[iqpt]                                      
+        qpt           = quad.quad_pts[iqpt]                                      
+        quad_jacobian = quad.jacobian                                            
 
-        basis.localizePoint(qpt)                                                # NNS
-        jac_det          = basis.jacobianDeterminant()                          # NNS
-        transformed_basis = basis.piolaTransformedHDIVBasis()                   # NNS
-        gradient_basis    = basis.piolaTransformedHDIVFirstDerivatives()        # NNS
+        basis.localizePoint(qpt)                                                
+        jac_det           = basis.jacobianDeterminant()                         
+        transformed_basis = basis.piolaTransformedHDIVBasis()                   
+        gradient_basis    = basis.piolaTransformedHDIVFirstDerivatives()        
 
-        # Previous velocity at this quadrature point                            # NNS
-        uh_x = sum(previous_d_coeffs[local_IEN_HDIV[i]] * transformed_basis[i][0] for i in range(n_local_hdiv))  # NNS
-        uh_y = sum(previous_d_coeffs[local_IEN_HDIV[i]] * transformed_basis[i][1] for i in range(n_local_hdiv))  # NNS
-        u_k  = np.array([uh_x, uh_y])                                          # NNS
+        # Previous velocity at this quadrature point                            
+        uh_x = sum(previous_d_coeffs[local_IEN_HDIV[i]] * transformed_basis[i][0] for i in range(n_local_hdiv)) 
+        uh_y = sum(previous_d_coeffs[local_IEN_HDIV[i]] * transformed_basis[i][1] for i in range(n_local_hdiv))  
+        u_k  = np.array([uh_x, uh_y])                                          
 
-        # Gradient of previous velocity                                         # NNS
-        grad_u_k = np.zeros((2, 2))                                             # NNS
-        for c in range(n_local_hdiv):                                           # NNS
-            d_c = previous_d_coeffs[local_IEN_HDIV[c]]                         # NNS
-            grad_u_k[0, 0] += d_c * gradient_basis[c][0]                       # NNS
-            grad_u_k[0, 1] += d_c * gradient_basis[c][1]                       # NNS
-            grad_u_k[1, 0] += d_c * gradient_basis[c][2]                       # NNS
-            grad_u_k[1, 1] += d_c * gradient_basis[c][3]                       # NNS
+        # Gradient of previous velocity                                         
+        grad_u_k = np.zeros((2, 2))                                             
+        for c in range(n_local_hdiv):                                           
+            d_c = previous_d_coeffs[local_IEN_HDIV[c]]                        
+            grad_u_k[0, 0] += d_c * gradient_basis[c][0]                    
+            grad_u_k[0, 1] += d_c * gradient_basis[c][1]                     
+            grad_u_k[1, 0] += d_c * gradient_basis[c][2]                       
+            grad_u_k[1, 1] += d_c * gradient_basis[c][3]                       
 
-        # (u^k·∇)u^k = grad_u_k @ u_k                                         # NNS
-        adv_uk = grad_u_k @ u_k                                                 # NNS
+        # (u^k·∇)u^k = grad_u_k @ u_k                                         
+        adv_uk = grad_u_k @ u_k                                             
 
-        scale = jac_det * weight * quad_jacobian                                # NNS
-        for a in range(n_local_hdiv):                                           # NNS
-            fe[a] += float(np.dot(transformed_basis[a], adv_uk)) * scale       # NNS
+        scale = jac_det * weight * quad_jacobian                              
+        for a in range(n_local_hdiv):                                          
+            fe[a] += float(np.dot(transformed_basis[a], adv_uk)) * scale       
 
-    return fe                                                                    # NNS
+    return fe                                                                    
 
 
 def LocalStiffnessL2Projection(basis, deg, quad, quad_1D, elem):
