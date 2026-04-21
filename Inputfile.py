@@ -268,11 +268,12 @@ def boundary_value_function_0(x, y):
 
 ################# CAVITY, Option 2. ######################
 def forcing_function_cavity_2(x, y, nu=1, sigma=0):
-    return 0, 0
+    return 0.0, 0.0
 
-def exact_solution_cavity_2(x, y):
+def exact_solution_cavity_2(x, y): 
     r     = np.sqrt(x**2 + y**2)
     theta = np.arctan2(y, x)
+    
     # Exact solution using the provided expressions in polar coordinates
     lambda_value = 0.54448373678246
     phi = (np.sin((1 + lambda_value) * theta) * np.cos(lambda_value * theta) / (1 + lambda_value) -
@@ -283,15 +284,41 @@ def exact_solution_cavity_2(x, y):
     u_theta = r**lambda_value * (-(1 + lambda_value) * np.cos(theta) * phi + np.sin(theta) * phi)
     
     return u_r, u_theta
+    # return 0.0, 0.0
 
-def exact_solution_l2_cavity_2(x, y):
-    return 0, 0
+def exact_solution_l2_cavity_2(x, y):  
+    return 0.0
 
-def boundary_value_function_cavity_2(x, y):
-    if abs(y - 1.0) < 1e-10:   
+# top lid (y=1) slides right at U=1; all other walls are no-slip
+def boundary_value_function_cavity_2(x, y):  
+    if abs(y - 1.0) < 1e-10:
         return (1.0, 0.0)
     return (0.0, 0.0)
 #########################################################
+
+######### Option 3: Nonzero Normal Penetration BC ###########
+# Manufactured solution: u=(x,-y),  p=-(x²+y²)/2 + 1/3
+# div(u) = 1-1 = 0 exactly
+# NS:     -ν∇²u + (u·∇)u + ∇p = 0+(x,y)+(-x,-y) = 0  →  f_ns = 0
+# Stokes: -ν∇²u + ∇p = (-x,-y)                         →  f_stokes = (-x,-y)
+# Nonzero normal: right (u·n=1), top (u·n=-1); zero: left, bottom
+# Mass balance: ∫_right 1 dy + ∫_top (-1) dx = 0  ✓
+
+def exact_solution_3(x, y):  
+    return x, -y
+
+def exact_solution_l2_3(x, y):  # zero-mean pressure so convergence study is correct
+    return 0#-(x**2 + y**2) / 2.0 + 1.0/3.0
+
+def forcing_function_s_3(x, y, nu=1, sigma=0):  
+    return -x, -y
+
+def forcing_function_ns_3(x, y, nu=1, sigma=0):  
+    return 0.0, 0.0
+
+def boundary_value_function_3(x, y):  
+    return exact_solution_3(x, y)
+##########################################################################
 
 max_knot_xi = 0.1
 max_knot_eta = 5
@@ -322,10 +349,10 @@ quad_1D             = gq_nD.GaussQuadrature1D(n_quad, start_pt=interval[0], end_
 gamma               =  5 * (degree1 + 1) # 20 * max(degree1, degree2)**3
 ifID                = True 
 USE_CURVED_GEOMETRY = False
-option_number       = 1
+option_number       = 1  
 is_L2Projection     = False
-is_Stokes           = True
-is_NavierStokes     = False
+is_Stokes           = False
+is_NavierStokes     = True
 
 
 ######## Square domain

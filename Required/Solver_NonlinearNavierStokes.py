@@ -67,6 +67,7 @@ def NavierStokes(basis, deg, gaussian, quad_1D, gamma, f, f_ns, u_exact, boundar
             
             # ke_adv = la.LocalAdvectionPicard(basis, deg, gaussian, quad_1D, e, d_prev, boundary_conditions)
             ke_adv = la.LocalAdvectionNewton(basis, deg, gaussian, quad_1D, e, d_prev, boundary_conditions)
+            fe_adv = la.LocalForceNS_Newton(basis, deg, gaussian, quad_1D, e, d_prev)
             
             local_IEN_HDIV = basis.HDIV.connectivity(e)  
             n_local_hdiv = len(local_IEN_HDIV)  
@@ -83,7 +84,7 @@ def NavierStokes(basis, deg, gaussian, quad_1D, gamma, f, f_ns, u_exact, boundar
                 P = ID[A]
                 if P == -1:
                     continue
-                F[P] += fe[a] + fe_Nitsche[a]
+                F[P] += fe[a] + fe_Nitsche[a] + fe_adv[a]
 
                 for b in range(n_local_hdiv):
                     B = local_IEN_HDIV[b]
