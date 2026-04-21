@@ -18,33 +18,35 @@ sys.path.append(str(PROJECT_ROOT / 'Required'))
 
 import splines as spline
 import Gaussian_Quadrature_2D_Solution as gq_nD
-import Solver_StokesFlow as ss
 import Convergence as cn
 import matplotlib.pyplot as plt  
 import NormalizedPressure as npre
+import Plotting as pl
+import Solver_L2Projection as ls
+import Solver_StokesFlow as ss
+import Solver_NonlinearNavierStokes as nss
 
-max_knot_xi             = inp.max_knot_xi
-max_knot_eta            = inp.max_knot_eta
-min_knot                = inp.min_knot
-degree1                 = inp.degree1
-degree2                 = inp.degree2
-nelem1                  = inp.nelem1
-nelem2                  = inp.nelem2
-kv1                     = inp.kv1
-kv2                     = inp.kv2
-degs                    = inp.degs
-cpts                    = inp.cpts
-quad                    = inp.quad
-quad_1D                 = inp.quad_1D
-gamma                   = inp.gamma
-ifID                    = inp.ifID
-nu                      = inp.KINEMATIC_VISCOSITY
-
-use_curve_geometry      = inp.USE_CURVED_GEOMETRY
-L2Projection            = inp.is_L2Projection
-Stokes                  = inp.is_Stokes
-NavierStokes            = inp.is_NavierStokes
-option                  = inp.option_number
+max_knot_xi        = inp.max_knot_xi
+max_knot_eta       = inp.max_knot_eta
+min_knot           = inp.min_knot
+degree1            = inp.degree1
+degree2            = inp.degree2
+nelem1             = inp.nelem1
+nelem2             = inp.nelem2
+kv1                = inp.kv1
+kv2                = inp.kv2
+degs               = inp.degs
+cpts               = inp.cpts
+quad               = inp.quad
+quad_1D            = inp.quad_1D
+gamma              = inp.gamma
+ifID               = inp.ifID
+nu                 = inp.KINEMATIC_VISCOSITY
+use_curve_geometry = inp.USE_CURVED_GEOMETRY
+L2Projection       = inp.is_L2Projection
+Stokes             = inp.is_Stokes
+NavierStokes       = inp.is_NavierStokes
+option             = inp.option_number
 
 if L2Projection:
     if use_curve_geometry   == False:
@@ -58,17 +60,12 @@ if L2Projection:
             exact_solution          = inp.exact_solution_1
             exact_solution_l2       = inp.exact_solution_l2_1
             boundary_value_function = inp.boundary_value_function_1
-    elif use_curve_geometry == True: # TODO: Are these the same as square?
+    elif use_curve_geometry == True: 
         if option == 0:
             forcing_function        = inp.forcing_function_l2projection_0
             exact_solution          = inp.exact_solution_0
             exact_solution_l2       = inp.exact_solution_l2_0
             boundary_value_function = inp.boundary_value_function_0
-        elif option == 1:
-            forcing_function        = inp.forcing_function_l2projection_1
-            exact_solution          = inp.exact_solution_1
-            exact_solution_l2       = inp.exact_solution_l2_1
-            boundary_value_function = inp.boundary_value_function_1
 
 elif Stokes:
     if use_curve_geometry   == False:
@@ -84,7 +81,8 @@ elif Stokes:
 
 elif NavierStokes:
     if use_curve_geometry   == False:
-        forcing_function        = inp.forcing_function_ns_1
+        forcing_function        = inp.forcing_function_s_1
+        f_ns                    = inp.forcing_function_ns_1
         exact_solution          = inp.exact_solution_1
         exact_solution_l2       = inp.exact_solution_l2_1
         boundary_value_function = inp.boundary_value_function_1
@@ -96,11 +94,39 @@ elif NavierStokes:
         
 basis = spline.NavierStokesTPDiscretization( kv1, kv2, degree1, degree2, cpts)
 
-# Quick check
-example_d_check = ss.Stokes(basis, degree1, quad, quad_1D, gamma,
-                   forcing_function, exact_solution,
-                   boundary_conditions=None, boundary_value_function=boundary_value_function, ifID=ifID,nu=nu)
-print("example_d:", example_d_check)
+# Quick check ..
+if L2Projection:
+    example_d_check = ls.L2Projection(basis, degree1, quad, quad_1D, gamma,
+                               forcing_function, exact_solution,
+                               boundary_conditions=None, 
+                               boundary_value_function=boundary_value_function, 
+                               ifID=ifID,nu=nu,
+                               use_curve_geometry =use_curve_geometry)
+    print("example_d_L2Projection:", example_d_check)
+
+elif Stokes:
+    example_d_check = ss.Stokes(basis, degs, quad, quad_1D, gamma,
+                               forcing_function, exact_solution,
+                               boundary_conditions=None,
+                               boundary_value_function=boundary_value_function,
+                               ifID=ifID,nu=nu)
+    print("example_d_Stokes:", example_d_check)
+    
+elif NavierStokes:
+    d_initial = ss.Stokes(basis, degs, quad, quad_1D, gamma,
+                               forcing_function, exact_solution,
+                               boundary_conditions=None,
+                               boundary_value_function=boundary_value_function,
+                               ifID=ifID,nu=nu)
+    
+    example_d_check = nss.NavierStokes(basis, degree1, quad, quad_1D, gamma, 
+                               forcing_function, f_ns, exact_solution,
+                               boundary_conditions=None, 
+                               boundary_value_function=boundary_value_function, 
+                               ifID=ifID, d_initial=d_initial, nu=nu) 
+    print("NavierStokes solution:", example_d_check)  
+    
+    
 ########### START of NORMALIZING Pressure
 alpha      = npre.EvaluateAveragePressure(basis, example_d_check, quad)      #(α = int_Ω p_h dΩ)
 print("avg pressure before normalization:", alpha)                          
@@ -110,25 +136,12 @@ print("avg pressure after  normalization:", average_pressure_after)
 ########### END of NORMALIZING Pressure
 # pl.PlotSolution(basis, example_d_check, quad, quad_1D, gamma, forcing_function, nelem1*2, exact_solution, exact_solution_l2)
 
-nref = 3
-refined_basis = spline.globallyHRefine(basis, nelem1*nelem2*nref, parametric_tolerance=1e-5)
-dtotal = ss.Stokes(refined_basis, degs, quad, quad_1D, gamma,
-                forcing_function, exact_solution,
-                boundary_conditions=None,
-                boundary_value_function=boundary_value_function,ifID=ifID,nu=nu)
-
-alpha = npre.EvaluateAveragePressure(refined_basis, dtotal, quad)     
-print("avg pressure before normalization:", alpha)                            
-dtotal = npre.NormalizePressureCoefficients(refined_basis, dtotal, degs, quad, quad_1D)
-average_pressure_after = npre.EvaluateAveragePressure(refined_basis, dtotal, quad)  
-print("avg pressure after  normalization:", average_pressure_after)         
-
-# pl.PlotSolution(refined_basis, dtotal, quad, quad_1D, gamma, forcing_function, nelem1*2, exact_solution, exact_solution_l2)
 
 def manufactured_sol_degrees_clean():  
     degrees = [2,3,4]  
     colors  = ['b', 'g', 'r', 'c']  
     refinement_levels = [8, 16, 32]#, 64]  
+    # refinement_levels = [32, 64, 128]
     interval_d = [0,1]  
     max_knot_d_xi = max_knot_xi  
     max_knot_d_eta = max_knot_eta 
@@ -142,7 +155,7 @@ def manufactured_sol_degrees_clean():
         print(f"{'='*60}") 
 
         # Build quadrature for this degree  
-        n_quad_d  = deg + 1 
+        n_quad_d  = deg + 3 
         quad_d    = gq_nD.GaussQuadrature2D(n_quad_d, n_quad_d, interval_d, interval_d)  
         quad_1D_d = gq_nD.GaussQuadrature1D(n_quad_d, start_pt=interval_d[0], end_pt=interval_d[1])  
         gamma_d   = 20 * deg**3  
@@ -152,7 +165,7 @@ def manufactured_sol_degrees_clean():
         kv2_d = spline.KnotVector([0]*deg + [0, max_knot_d_eta] + [max_knot_d_eta]*deg, 1e-9)  
         unitkv1_d = spline.KnotVector([0]*deg + [0, 1] + [1]*deg, 1e-9)
         unitkv2_d = spline.KnotVector([0]*deg + [0, 1] + [1]*deg, 1e-9)
-        cpts_d = spline.grevillePoints(unitkv1_d, unitkv2_d, deg, deg)  
+        cpts_d = inp.make_cpts(unitkv1_d, unitkv2_d, deg, deg, min_knot, 1, 1)
         basis_d = spline.NavierStokesTPDiscretization(kv1_d, kv2_d, deg, deg, cpts_d)  
 
         errors   = []
@@ -163,12 +176,31 @@ def manufactured_sol_degrees_clean():
         for ilevel, n_div in enumerate(refinement_levels):  
             rb = spline.globallyHRefine(basis_d, n_div, parametric_tolerance=1e-5)  
 
-            d = ss.Stokes(rb, [deg, deg], quad_d, quad_1D_d, gamma_d,  
+            if L2Projection:
+                d = ls.L2Projection(rb, [deg, deg], quad_d, quad_1D_d, gamma_d,  
                           forcing_function, exact_solution, 
                           boundary_conditions=None,  
                           boundary_value_function=boundary_value_function, 
-                          ifID=True,nu=nu)
+                          ifID=True,nu=nu,use_curve_geometry=use_curve_geometry)
+            
+            elif Stokes:
+                d = ss.Stokes(rb, [deg, deg], quad_d, quad_1D_d, gamma_d,
+                                           forcing_function, exact_solution,
+                                           boundary_conditions=None,
+                                           boundary_value_function=boundary_value_function,
+                                           ifID=True,nu=nu)
 
+            elif NavierStokes:
+                d_initial = ss.Stokes(rb, [deg, deg], quad_d, quad_1D_d, gamma_d,
+                                           forcing_function, exact_solution,
+                                           boundary_conditions=None,
+                                           boundary_value_function=boundary_value_function,
+                                           ifID=True,nu=nu)
+                
+                d = nss.NavierStokes(rb, [deg, deg], quad_d, quad_1D_d, gamma_d, forcing_function, f_ns, exact_solution,
+                                    boundary_conditions=None, boundary_value_function=boundary_value_function, ifID=ifID,
+                                    d_initial=d_initial, nu=nu)
+                
             e = cn.compute_convergence_error(rb, d, quad_d, exact_solution, isHDIV=True)  
             
             ########### START of NORMALIZING Pressure

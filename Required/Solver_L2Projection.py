@@ -26,9 +26,9 @@ import Nitsche as ni
 import CommonFuncs as cf
 import BoundaryConditions as bc
 
-#################################################################################################
-################################     L2Projection_div_free     ###################################
-#################################################################################################
+################################################################################
+##############     L2Projection_div_free     ###################################
+################################################################################
 def L2Projection(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions, boundary_value_function, ifID, nu,use_curve_geometry):  #ns added nu so the Stokes solver (used as NS initial guess) uses the correct viscosity throughout
     
     if ifID:
@@ -36,7 +36,6 @@ def L2Projection(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_cond
         n_hdiv_1_comp = cf.GetNumberH1FirstComponent(basis)[0]
         n_hdiv_2_comp = cf.GetNumberH1FirstComponent(basis)[1]
         n_hdiv = n_hdiv_1_comp + n_hdiv_2_comp
-        # n_hdiv = basis.HDIV.numTotalFunctions()
         n_l2 = basis.L2.numTotalFunctions()
     
         boundary_dofs = bc.GetBoundaryDOFs(basis)

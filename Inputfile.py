@@ -26,7 +26,7 @@ import f_stokes_curve as fs
 
 KINEMATIC_VISCOSITY = 0.1
 
-# ############################## Stokes ################################
+########################### Stokes #########################
 def forcing_function_s_1(x, y, nu, sigma = 0):
 
     nu_val = nu(x, y) if callable(nu) else nu
@@ -75,7 +75,7 @@ def forcing_function_s_1(x, y, nu, sigma = 0):
     return f1, f2
 
 
-####################### NavierStokes with AI #####################
+################### NavierStokes with AI ###############
 def forcing_function_ns_1(x, y, nu, sigma=0):
     ex = np.exp(x)
     e2x = np.exp(2*x)
@@ -122,7 +122,7 @@ def forcing_function_ns_1(x, y, nu, sigma=0):
 
     return f1, f2
 
-##################### CURVE DOMAIN Section With AI ###########################
+############# CURVE DOMAIN Section With AI ################
 
 forcing_function_stokes_curve = fs.forcing_function_stokes_curve
 
@@ -191,7 +191,7 @@ def exact_solution_l2_curve(xi, eta):
 
     return ps
 
-################################### From John Evans ###########################################
+################### From John Evans ################
 def exact_solution_1(x, y):
     u1 = 2 * np.exp(x) * (-1 + x)*(-1 + x)* x**2 * (y**2 - y) * (-1 + 2 * y)
     u2 = -np.exp(x) * (-1 + x) * x * (-2 + x * (3 + x)) * (-1 + y)**2 * y**2
@@ -246,7 +246,7 @@ def boundary_value_function_1(x, y):
     return exact_solution_1(x, y)
 
 
-############################ Easiest one ################################
+####################### Easiest one #####################
 def exact_solution_0(x, y):
     u1 = y
     u2 = x
@@ -265,8 +265,33 @@ def forcing_function_l2projection_0(x, y, nu=1, sigma=0):
 
 def boundary_value_function_0(x, y):
     return exact_solution_0(x, y)
-########################################################################
 
+################# CAVITY, Option 2. ######################
+def forcing_function_cavity_2(x, y, nu=1, sigma=0):
+    return 0, 0
+
+def exact_solution_cavity_2(x, y):
+    r     = np.sqrt(x**2 + y**2)
+    theta = np.arctan2(y, x)
+    # Exact solution using the provided expressions in polar coordinates
+    lambda_value = 0.54448373678246
+    phi = (np.sin((1 + lambda_value) * theta) * np.cos(lambda_value * theta) / (1 + lambda_value) -
+           np.cos((1 + lambda_value) * theta) / (1 - lambda_value))
+    
+    # Calculating the components of the velocity field
+    u_r = r**lambda_value * ((1 + lambda_value) * np.sin(theta) * phi + np.cos(theta) * phi)
+    u_theta = r**lambda_value * (-(1 + lambda_value) * np.cos(theta) * phi + np.sin(theta) * phi)
+    
+    return u_r, u_theta
+
+def exact_solution_l2_cavity_2(x, y):
+    return 0, 0
+
+def boundary_value_function_cavity_2(x, y):
+    if abs(y - 1.0) < 1e-10:   
+        return (1.0, 0.0)
+    return (0.0, 0.0)
+#########################################################
 
 max_knot_xi = 0.1
 max_knot_eta = 5
@@ -297,10 +322,10 @@ quad_1D             = gq_nD.GaussQuadrature1D(n_quad, start_pt=interval[0], end_
 gamma               =  5 * (degree1 + 1) # 20 * max(degree1, degree2)**3
 ifID                = True 
 USE_CURVED_GEOMETRY = False
-option_number       = 0
+option_number       = 1
 is_L2Projection     = False
-is_Stokes           = False
-is_NavierStokes     = True
+is_Stokes           = True
+is_NavierStokes     = False
 
 
 ######## Square domain
@@ -341,5 +366,4 @@ def make_cpts(kv1_, kv2_, deg1_, deg2_, min_knot, unit_max_knot_xi, unit_max_kno
     return cpts_                                                      
                                                                
 cpts = make_cpts(unitkv1, unitkv2, degree1, degree2, min_knot, unit_max_knot_xi, unit_max_knot_eta)
-
 
