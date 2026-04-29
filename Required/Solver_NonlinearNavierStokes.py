@@ -90,9 +90,6 @@ def NavierStokes(basis, deg, gaussian, quad_1D, gamma, f, f_ns, u_exact, boundar
             n_local_hdiv = len(local_IEN_HDIV)  
             local_IEN_L2 = basis.L2.connectivity(e)  
             n_local_L2 = len(local_IEN_L2)  
-            
-            # ke_total = ke + ke_Nitsche + ke_adv  
-            # fe_total = fe + fe_Nitsche  
         
             ke_total2 = ke + ke_adv + ke_boundary
 

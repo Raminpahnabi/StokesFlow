@@ -494,17 +494,6 @@ elif JetNavierStokes:
     #  right → outflow: normal flux determined by NS equations
     skip_prescribed = ['right']
     
-    # rb = spline.globallyHRefine(basis, n_div, parametric_tolerance=1e-5)
-    
-    # kv1_d, kv2_d = rb.knotVectors()
-    # cpts_d = rb.control_points
-    # elems_to_refine = []
-    # elems_to_refine.append([[1,1],[1,2],[1,3],[1,4],[2,1],[2,2],[2,3],[2,4],[3,1],[3,2],[3,3],[3,4],[4,1],[4,2],[4,3],[4,4]])#, [q, 5], [q, 6]])  # Refine one element column
-  
-    # refined_basis = spline.NavierStokesHierarchicalDiscretization(
-    #     kv2_d, kv1_d, degree1, degree2, cpts_d, elems_to_refine
-    # )
-
 
     print("\nSolving Stokes (initial guess) ...")
     d_stokes = ss.Stokes(refined_basis, degs, quad, quad_1D, gamma,
