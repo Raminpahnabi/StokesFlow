@@ -21,10 +21,18 @@ sys.path.append(str(PROJECT_ROOT / 'Required'))
 import Quadrature_Operations_Solutions_boundary as gq_bc
 import CommonFuncs as cf
 
+_FACE_NAME = {
+    gq_bc.BoundaryFace.BOTTOM: 'bottom',
+    gq_bc.BoundaryFace.TOP:    'top',
+    gq_bc.BoundaryFace.LEFT:   'left',
+    gq_bc.BoundaryFace.RIGHT:  'right',
+}
+
 # ===========================================================================
 #   Nitsche functions modified to act ONLY on TANGENTIAL DOFs
 # ===========================================================================
-def LocalForceVector_Nitsche_IGA_2D(basis, deg, quad,quad_1D, gamma, elem, forcing_function,u_exact, boundary_value_function, nu=1):  #ns added nu parameter
+def LocalForceVector_Nitsche_IGA_2D(basis, deg, quad,quad_1D, gamma, elem, forcing_function,u_exact, boundary_value_function, nu=1,
+                                    skip_faces=None):  # skip_faces: outflow faces only (e.g. ['right']); tangential Nitsche applied on all other boundaries
     kinematic_viscosity = nu 
 
     local_IEN_HDIV = basis.HDIV.connectivity(elem)
@@ -37,8 +45,11 @@ def LocalForceVector_Nitsche_IGA_2D(basis, deg, quad,quad_1D, gamma, elem, forci
 
     bdries = [gq_bc.BoundaryFace.BOTTOM,gq_bc.BoundaryFace.TOP,gq_bc.BoundaryFace.LEFT,gq_bc.BoundaryFace.RIGHT]
     bounds = cf._physical_domain_bounds(basis)
+    _skip = set(skip_faces or [])  
 
     for bdry in bdries:
+        if _FACE_NAME[bdry] in _skip:  # outflow: no weak tangential Dirichlet on this face
+            continue
         xi_vals = gq_bc.GetFaceQuadraturePoints(quad_1D, bdry)
         if not cf._is_boundary_face(basis, elem, bdry, quad_1D, bounds):
             continue
@@ -104,8 +115,9 @@ def LocalForceVector_Nitsche_IGA_2D(basis, deg, quad,quad_1D, gamma, elem, forci
 
 
 
-def LocalStiffnessMatrix_Nitsche_IGA_2D(basis, deg, quad, quad_1D, gamma, elem, boundary_value_function=None, nu=1): 
-    kinematic_viscosity = nu  #ns use passed nu instead of hardcoded global
+def LocalStiffnessMatrix_Nitsche_IGA_2D(basis, deg, quad, quad_1D, gamma, elem, boundary_value_function=None, nu=1,
+                                        skip_faces=None): 
+    kinematic_viscosity = nu  
 
     local_IEN_HDIV = basis.HDIV.connectivity(elem)
     n_local_hdiv = len(local_IEN_HDIV)
@@ -118,8 +130,11 @@ def LocalStiffnessMatrix_Nitsche_IGA_2D(basis, deg, quad, quad_1D, gamma, elem, 
     bdries = [gq_bc.BoundaryFace.BOTTOM, gq_bc.BoundaryFace.TOP,
               gq_bc.BoundaryFace.LEFT, gq_bc.BoundaryFace.RIGHT]
     bounds = cf._physical_domain_bounds(basis)
+    _skip = set(skip_faces or [])  
 
     for bdry in bdries:
+        if _FACE_NAME[bdry] in _skip:  
+            continue
         xi_vals = gq_bc.GetFaceQuadraturePoints(quad_1D, bdry)
         if not cf._is_boundary_face(basis, elem, bdry, quad_1D, bounds):
             continue

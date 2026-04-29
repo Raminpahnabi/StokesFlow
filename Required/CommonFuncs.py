@@ -12,6 +12,24 @@ sys.path.append(os.path.join(os.getcwd(), 'Required'))
 
 import Quadrature_Operations_Solutions_boundary as gq_bc
 
+# from scipy.sparse import lil_matrix
+# from scipy.sparse.linalg import spsolve
+from pathlib import Path
+
+os.environ["SWEEPS_API_PATH"] = "/Users/raminpahnabi/Documents/BYU/sweeps/build/src/api"
+import splines as spline
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+sys.path.append(str(PROJECT_ROOT))
+from sweeps_path import ensure_sweeps_api_on_path
+
+ensure_sweeps_api_on_path()
+sys.path.append(str(PROJECT_ROOT / 'HWs'))
+sys.path.append(str(PROJECT_ROOT / 'Required'))
+
+
+
+
 def _physical_domain_bounds(basis):
     control_points = np.asarray(basis.control_points)
     x_min = float(np.min(control_points[0]))
@@ -45,8 +63,13 @@ def _is_boundary_face(basis, elem, bdry, quad_1D, bounds):
 
 
 def GetSplineDegree(basis):
+    try: 
+        kv_iter = basis.knotVectors()
+    except AttributeError:  
+        return []  # hierarchical basis: no global knot vectors
+    
     degs = []
-    for knotvec in basis.knotVectors():
+    for knotvec in kv_iter:
         knot_list = str(knotvec).replace("}","").replace("{","").split(",")
         count = 0
         first_knot = float(knot_list[0])
@@ -59,6 +82,12 @@ def GetSplineDegree(basis):
     return degs
 
 def GetNumberH1FirstComponent(basis):
+    try:  # LR bases have no knotVectors()
+        basis.knotVectors()
+    except AttributeError:  # hierarchical basis: return total HDIV count as comp1, 0 as comp2
+        n_hdiv = basis.HDIV.numTotalFunctions()  
+        return n_hdiv, 0  
+
     degs = GetSplineDegree(basis)
     knot_vecs = basis.knotVectors()
     num_h1_bfs = []
@@ -105,7 +134,7 @@ def compute_face_length(basis, xi_vals, quad_1D, bdry_face):
         
     return length
 
-def ID_array(HDiv, L2, boundary_dofs):
+def ID_array(HDiv, L2, boundary_dofs, free_faces=None):  # free_faces = outflow_faces (normal DOFs solved, not eliminated)
     total_basis_functions_HDIV = HDiv.numTotalFunctions()
     total_basis_functions_L2 = L2.numTotalFunctions()
     total_basis = total_basis_functions_HDIV + total_basis_functions_L2
@@ -113,19 +142,23 @@ def ID_array(HDiv, L2, boundary_dofs):
     ID = np.zeros(total_basis, dtype=int)
 
     counter = 0
-    
-    all_normal = boundary_dofs['all_normal']
-    
+
+    #build constrained set: all normal DOFs minus those on free faces
+    free = set(free_faces or [])
+    constrained_normal = set(boundary_dofs['all_normal'])
+    for face in free:
+        constrained_normal -= set(boundary_dofs[face]['normal'])  #remove free-face DOFs so they are solved, not prescribed
+
     for i in range(total_basis_functions_HDIV):
-        if i in all_normal:
-            ID[i] = -1 
+        if i in constrained_normal:
+            ID[i] = -1
         else:
             ID[i] = counter
             counter += 1
 
-    # Assign indices to L2 space functions
+
     # Mark first pressure DOF as fixed to avoid singularity
-    ID[total_basis_functions_HDIV] = -1  # First pressure DOF
+    ID[total_basis_functions_HDIV] = -1  
     
     for i in range(total_basis_functions_HDIV + 1, total_basis):
         ID[i] = counter
@@ -146,7 +179,7 @@ def ID_array_l2projection(HDiv, L2, boundary_dofs):
         ID[i] = counter
         counter += 1
 
-    ID[total_basis_functions_HDIV] = -1  # First pressure DOF
+    ID[total_basis_functions_HDIV] = -1
     
     for i in range(total_basis_functions_HDIV + 1, total_basis):
         ID[i] = counter
@@ -181,3 +214,86 @@ def ExtractTotalD_l2projection(ID, d_reduced, prescribed, n_hdiv, n_l2):
             
     return d_total
 
+def find_normal_parallel_boundary_conditions(discretization):
+    # Initialize boundary conditions storage
+    boundary_conditions = {
+        'left': {'hdiv_normal': [], 'hdiv_parallel': []},
+        'right': {'hdiv_normal': [], 'hdiv_parallel': []},
+        'bottom': {'hdiv_normal': [], 'hdiv_parallel': []},
+        'top': {'hdiv_normal': [], 'hdiv_parallel': []}
+    }
+
+    # Define patch sides using the correct PatchSide enum values
+    sides = {
+        'left': spline.PatchSide.S0,
+        'right': spline.PatchSide.S1,
+        'bottom': spline.PatchSide.T0,
+        'top': spline.PatchSide.T1
+    }
+
+    # Loop over each side and find perpendicular and parallel functions
+    all_funcs = list(range(discretization.HDIV.numTotalFunctions()))  # Get total number of HDiv functions
+    
+    for side_name, patch_side in sides.items():
+        try:
+            # Find perpendicular HDiv functions (normal to the boundary) on the given side
+            perpendicular_funcs = discretization.boundaryPerpendicularHDivFuncs(patch_side)
+            #print(f"Perpendicular functions on {side_name}: {perpendicular_funcs}")
+            boundary_conditions[side_name]['hdiv_normal'].extend(perpendicular_funcs)
+
+            # # Identify the parallel functions (those not perpendicular) for this side
+            # parallel_funcs = set(all_funcs) - set(perpendicular_funcs)
+            # boundary_conditions[side_name]['hdiv_parallel'].extend(parallel_funcs)
+
+        except Exception as e:
+            print(f"Error processing side {side_name}: {e}")
+
+    return boundary_conditions
+
+
+    
+def find_boundary_elements(basis):
+    # Get normal boundary conditions using an existing function
+    normal_boundary = find_normal_parallel_boundary_conditions(basis)
+    
+    # Dictionary to store indices on each boundary
+    # store normal basis function indicies in the first list, elements in the 2nd
+
+    # first index is global bf indices that are normal on this boundary, 
+    # second index is elements that are on this boundary
+    # third is the dirichlet boundary condition normal to this boundary
+    # fourth is the dirichlet boundary condition (weakly enforced) tangential to this boundary condition 
+    # fifth is the normal dirichlet boundary condition to this boundary condition being appended later
+    boundary_indices = {
+        'left': [set(),set(),[],[],[]], 
+        'right': [set(),set(),[],[],[]],
+        'top': [set(),set(),[],[],[]],
+        'bottom': [set(),set(),[],[],[]]
+    }
+
+    # Loop over all elements to check their connectivity
+    for elem in basis.elements():
+        # Get connectivity for the current element in HDIV space
+        local_IEN_HDIV = set(basis.HDIV.connectivity(elem))  # Connectivity for HDIV space
+
+        # Check if the indices of the element are on any of the boundaries and collect them
+        if local_IEN_HDIV & set(normal_boundary.get('left', {}).get('hdiv_normal', [])):
+            boundary_indices['left'][0].update(local_IEN_HDIV & set(normal_boundary['left']['hdiv_normal']))
+            boundary_indices['left'][1].add(elem.dart)
+        if local_IEN_HDIV & set(normal_boundary.get('right', {}).get('hdiv_normal', [])):
+            boundary_indices['right'][0].update(local_IEN_HDIV & set(normal_boundary['right']['hdiv_normal']))
+            boundary_indices['right'][1].add(elem.dart)
+        if local_IEN_HDIV & set(normal_boundary.get('top', {}).get('hdiv_normal', [])):
+            boundary_indices['top'][0].update(local_IEN_HDIV & set(normal_boundary['top']['hdiv_normal']))
+            boundary_indices['top'][1].add(elem.dart)
+        if local_IEN_HDIV & set(normal_boundary.get('bottom', {}).get('hdiv_normal', [])):
+            boundary_indices['bottom'][0].update(local_IEN_HDIV & set(normal_boundary['bottom']['hdiv_normal']))
+            boundary_indices['bottom'][1].add(elem.dart)
+
+    # Convert sets to sorted lists for easier interpretation
+    for key in boundary_indices:
+        boundary_indices[key][0] = sorted(boundary_indices[key][0])
+
+    return boundary_indices
+
+    

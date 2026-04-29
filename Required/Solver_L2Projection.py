@@ -33,12 +33,29 @@ def L2Projection(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_cond
     
     if ifID:
         
-        n_hdiv_1_comp = cf.GetNumberH1FirstComponent(basis)[0]
-        n_hdiv_2_comp = cf.GetNumberH1FirstComponent(basis)[1]
-        n_hdiv = n_hdiv_1_comp + n_hdiv_2_comp
+        if bc.is_hierarchical(basis):  # LR basis: GetNumberH1FirstComponent uses knotVectors() → unavailable
+            n_hdiv = basis.HDIV.numTotalFunctions()  
+        else:  
+            n_hdiv_1_comp = cf.GetNumberH1FirstComponent(basis)[0]
+            n_hdiv_2_comp = cf.GetNumberH1FirstComponent(basis)[1]
+            n_hdiv = n_hdiv_1_comp + n_hdiv_2_comp
         n_l2 = basis.L2.numTotalFunctions()
+        n_total_funcs = n_hdiv + n_l2
+
+
+        if bc.is_hierarchical(basis):  # LR basis: build boundary_dofs from find_boundary_elements output
+            boundary_conditions_lr = cf.find_boundary_elements(basis)  
+            boundary_dofs = bc._lr_to_boundary_dofs(boundary_conditions_lr)  
+        else:  
+            boundary_dofs = bc.GetBoundaryDOFs(basis, deg) 
+            
+        
+        # n_hdiv_1_comp = cf.GetNumberH1FirstComponent(basis)[0]
+        # n_hdiv_2_comp = cf.GetNumberH1FirstComponent(basis)[1]
+        # n_hdiv = n_hdiv_1_comp + n_hdiv_2_comp
+        # n_l2 = basis.L2.numTotalFunctions()
     
-        boundary_dofs = bc.GetBoundaryDOFs(basis)
+        # boundary_dofs = bc.GetBoundaryDOFs(basis)
         prescribed = bc.ComputePrescribedNormalDOFValues(basis, boundary_dofs, boundary_value_function, quad_1D)
         
         ID = cf.ID_array_l2projection(basis.HDIV, basis.L2, boundary_dofs)
@@ -47,7 +64,6 @@ def L2Projection(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_cond
 
         K = lil_matrix((n, n))
         F = np.zeros(n)
-        
         
         
         for e in basis.elements():

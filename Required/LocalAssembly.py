@@ -37,7 +37,7 @@ def LocalForceStokes(basis, deg, quad, quad_1D, gamma, elem, forcing_function, n
     return fe
     
     
-def LocalStiffnessStokes(basis, deg, quad, quad_1D, elem, boundary_condition, parent_domain_fudge_factor=1, nu=1):  
+def LocalStiffnessStokes(basis, deg, quad, quad_1D, elem, boundary_condition, nu=1):  
     kinematic_viscosity = nu 
 
     local_IEN_HDIV = basis.HDIV.connectivity(elem)
@@ -74,6 +74,232 @@ def LocalStiffnessStokes(basis, deg, quad, quad_1D, elem, boundary_condition, pa
         ke[n_local_hdiv:, :n_local_hdiv] = -ke[:n_local_hdiv, n_local_hdiv:].T
     
     return ke
+
+#################### UPWIND #####################
+def EvalLocalStiffnessStokes_boundary(basis, deg, quad, quad_1D, elem, boundary_condition, nu=1):
+    local_IEN_HDIV = basis.HDIV.connectivity(elem)
+    n_local_hdiv = len(local_IEN_HDIV)
+    local_IEN_L2 = basis.L2.connectivity(elem)
+    n_local_L2=len(local_IEN_L2)
+    n_local_total = n_local_hdiv + n_local_L2
+
+    ke = np.zeros((n_local_total, n_local_total))
+
+    if boundary_condition is not None:
+        for boundary, indices in boundary_condition.items():
+                
+                # Generate quadrature points for the boundary
+                if boundary == 'left':
+                    if elem.dart not in indices[1]:
+                        continue
+                    else:
+                        quad_pts = [[0, val] for val in quad_1D.quad_pts]
+                elif boundary == 'right':
+                    if elem.dart not in indices[1]:
+                        continue
+                    else:
+                        quad_pts = [[1, val] for val in quad_1D.quad_pts]
+                elif boundary == 'top':
+                    if elem.dart not in indices[1]:
+                        continue
+                    else:
+                        quad_pts = [[val, 1] for val in quad_1D.quad_pts]
+                elif boundary == 'bottom':
+                    if elem.dart not in indices[1]:
+                        continue
+                    else:
+                        quad_pts = [[val, 0] for val in quad_1D.quad_pts]
+                
+                
+                jac_det_bdry = []
+                temp_weight = []
+                
+                ubc = boundary_condition[boundary][4]
+                ubc_global_indices = boundary_condition[boundary][0]
+                ubc_mapped = {}
+                for c in range(0,len(local_IEN_HDIV)):
+                    if local_IEN_HDIV[c] in ubc_global_indices:
+                        C=local_IEN_HDIV[c]
+                        ubc_mapped[c] = C
+                # ubc_mapped = {local_IEN_HDIV.index(A): ubc[i] for i, A in enumerate(ubc_global_indices) if A in local_IEN_HDIV}
+                ubc_globalidx_to_sideidx = {}
+                for i in range(0,len(ubc_global_indices)):
+                    ubc_globalidx_to_sideidx[ubc_global_indices[i]] = i
+                
+                for i_1D, weight_1D in enumerate(quad_1D.quad_wts):
+                    qpt_boundary = quad_pts[i_1D]  # Using the generated quadrature points for the boundary
+                    basis.localizePoint(qpt_boundary)
+                    deformation_gradients = basis.jacobian()
+                    if boundary == 'left' or boundary == 'right':
+                        deformation_gradient_boundary = deformation_gradients[:,1]
+                    elif boundary == 'top' or boundary == 'bottom':
+                        deformation_gradient_boundary = deformation_gradients[:,0]
+                    
+                    jac_det_boundary = np.sqrt(deformation_gradient_boundary[0]**2 + deformation_gradient_boundary[1]**2)
+                    jac_det_bdry.append(jac_det_boundary)
+                    temp_weight.append(weight_1D)
+                
+               
+                    tangent_vector_boundary = deformation_gradient_boundary
+                    
+                    # Calculate the normal vector for the boundary
+                    normal_vector_boundary = np.array([-tangent_vector_boundary[1], tangent_vector_boundary[0]])
+                    magnitude_normal_boundary = np.linalg.norm(normal_vector_boundary)
+                    normal_unit_vector_boundary = normal_vector_boundary / magnitude_normal_boundary if magnitude_normal_boundary != 0 else np.array([0, 0])
+    
+                    # Set direction scalar based on the boundary
+                    dir_change_scalar = 1
+                    if boundary in ['bottom', 'right']:
+                        dir_change_scalar = -1
+                    elif boundary in ['top', 'left']:
+                          dir_change_scalar = 1
+    
+                    # Adjust the normal vector based on the boundary's unit vector
+                    adjusted_normal = normal_unit_vector_boundary * dir_change_scalar
+                    
+                    transformed_basis = basis.piolaTransformedHDIVBasis()
+
+                    u_bc = np.zeros(2)
+                    for c in range(n_local_hdiv):
+                        if c in ubc_mapped:
+                            C = ubc_mapped[c]
+                            side_idx = ubc_globalidx_to_sideidx[C]
+                            coeff = ubc[side_idx]
+                            u_bc += coeff * transformed_basis[c]
+                                    
+                    upwind_term = np.dot(u_bc,adjusted_normal)
+                    
+                    if upwind_term > 0:
+                        for a in range(n_local_hdiv):                        
+                            for b in range(n_local_hdiv):        
+                                    # Add contributions to the stiffness matrix
+                                    ke_boundary = (upwind_term *np.dot(transformed_basis[a],transformed_basis[b])
+                                        
+                                    ) * weight_1D * jac_det_boundary *quad_1D.jacobian
+                                    
+                                    if isinstance(ke_boundary, np.ndarray):
+                                        ke_boundary = np.sum(ke_boundary)
+                    
+                                    ke[a, b] += ke_boundary                   
+    return ke
+
+##################### Force UPWIND #####################
+def EvalLocalforceStokes_boundary(basis,deg, quad, quad_1D, elem, forcing_function, boundary_conditions=None, nu=1):
+    local_IEN_HDIV = basis.HDIV.connectivity(elem)
+    n_local_hdiv = len(local_IEN_HDIV)
+    local_IEN_L2 = basis.L2.connectivity(elem)
+    n_local_L2 = len(local_IEN_L2)
+    n_local_total = n_local_hdiv + n_local_L2
+
+    # Initialize local force vector
+    fe = np.zeros(n_local_total)
+    deformation_gradients = basis.jacobian()
+
+    if boundary_conditions is not None:
+        for boundary, indices in boundary_conditions.items():
+            # Generate quadrature points for the boundary
+            if boundary == 'left':
+                if elem.dart not in indices[1]:
+                    continue
+                else:
+                    quad_pts = [[0, val] for val in quad_1D.quad_pts]
+            elif boundary == 'right':
+                if elem.dart not in indices[1]:
+                    continue
+                else:
+                    quad_pts = [[1, val] for val in quad_1D.quad_pts]
+            elif boundary == 'top':
+                if elem.dart not in indices[1]:
+                    continue
+                else:
+                    quad_pts = [[val, 1] for val in quad_1D.quad_pts]
+            elif boundary == 'bottom':
+                if elem.dart not in indices[1]:
+                    continue
+                else:
+                    quad_pts = [[val, 0] for val in quad_1D.quad_pts]
+           
+           
+           
+            # on this boundary type
+            jac_det_bdry = []
+            temp_weight = []
+           
+            for i_1D, weight_1D in enumerate(quad_1D.quad_wts):
+                qpt_boundary = quad_pts[i_1D]  # Using the generated quadrature points for the boundary
+                basis.localizePoint(qpt_boundary)
+                deformation_gradients = basis.jacobian()
+                if boundary == 'left' or boundary == 'right':
+                    deformation_gradient_boundary = deformation_gradients[:,1]
+                elif boundary == 'top' or boundary == 'bottom':
+                    deformation_gradient_boundary = deformation_gradients[:,0]
+                    
+                ubc = boundary_conditions[boundary][4]
+                ubc_global_indices = boundary_conditions[boundary][0]
+                ubc_mapped = {}
+                for c in range(0,len(local_IEN_HDIV)):
+                    if local_IEN_HDIV[c] in ubc_global_indices:
+                        C=local_IEN_HDIV[c]
+                        ubc_mapped[c] = C
+                ubc_globalidx_to_sideidx = {}
+                for i in range(0,len(ubc_global_indices)):
+                    ubc_globalidx_to_sideidx[ubc_global_indices[i]] = i
+               
+                jac_det_boundary = np.sqrt(deformation_gradient_boundary[0]**2 + deformation_gradient_boundary[1]**2)
+                jac_det_bdry.append(jac_det_boundary)
+                temp_weight.append(weight_1D)
+
+                # Calculate the tangent vector
+                tangent_vector_boundary = deformation_gradient_boundary
+                magnitude_tangent_boundary = np.linalg.norm(tangent_vector_boundary)
+                tangent_unit_vector_boundary = tangent_vector_boundary / magnitude_tangent_boundary if magnitude_tangent_boundary != 0 else np.array([0, 0])
+    
+                # Calculate the normal vector for the boundary
+                normal_vector_boundary = np.array([-tangent_vector_boundary[1], tangent_vector_boundary[0]])
+                magnitude_normal_boundary = np.linalg.norm(normal_vector_boundary)
+                normal_unit_vector_boundary = normal_vector_boundary / magnitude_normal_boundary if magnitude_normal_boundary != 0 else np.array([0, 0])
+    
+                # Set direction scalar based on the boundary
+                dir_change_scalar = 1
+                if boundary in ['bottom', 'right']:
+                    dir_change_scalar = -1
+    
+                # Adjust the normal vector based on the boundary's unit vector
+                adjusted_normal = normal_unit_vector_boundary * dir_change_scalar
+               
+                transformed_basis = basis.piolaTransformedHDIVBasis()
+
+                qpt_mapped = basis.mapping()
+                x_g, y_g = qpt_mapped[0], qpt_mapped[1]
+
+                u_bc_normal = np.zeros(2)
+                for c in range(n_local_hdiv):
+                    if c in ubc_mapped:
+                        C = ubc_mapped[c]
+                        side_idx = ubc_globalidx_to_sideidx[C]
+                        coeff = ubc[side_idx]
+                        u_bc_normal += coeff * transformed_basis[c]
+                                
+                        
+                upwind_term = np.dot(u_bc_normal,adjusted_normal)
+
+                given_boundary= boundary_conditions[boundary][3](x_g,y_g)*tangent_unit_vector_boundary +u_bc_normal
+              
+                if upwind_term<=0:
+          
+                    for a in range(n_local_hdiv):                        
+                        fe_boundary= (
+                            upwind_term* np.dot(given_boundary,transformed_basis[a])
+                        ) * weight_1D * quad_1D.jacobian*jac_det_boundary
+                        
+                        if isinstance(fe_boundary, np.ndarray):
+                            fe_boundary = np.sum(fe_boundary)
+                        fe[a] -= fe_boundary
+                       
+                else:
+                    continue
+    
+    return fe
 
 def LocalAdvectionPicard(basis, deg, quad, quad_1D, elem, previous_d_coeffs, boundary_condition):
     local_IEN_HDIV = basis.HDIV.connectivity(elem)

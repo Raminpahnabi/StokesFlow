@@ -22,12 +22,40 @@ import Quadrature_Operations_Solutions_boundary as gq_bc
 import CommonFuncs as cf
 
 
+def is_hierarchical(basis):  # True when basis is NavierStokesHierarchicalDiscretization (no knotVectors) 
+    try:  
+        basis.knotVectors()
+        return False          # tensor-product: knotVectors() succeeded
+    except Exception:       
+        return True           # hierarchical: knotVectors() not available
 
 
+def _lr_to_boundary_dofs(bc_lr):  # convert find_boundary_elements() output to boundary_dofs-compatible dict
+    """
+    Convert the find_boundary_elements() format
+        bc_lr[face] = [normal_dofs_list, elements_set, ...]
+    to the standard boundary_dofs format used by ComputePrescribedNormalDOFValues / ID_array:
+        {'bottom': {'normal': [...], 'tangential': []}, ..., 'all_normal': set, 'all_tangential': set}
 
-def GetBoundaryDOFs(basis):
+    NOTE: tangential sets are empty for hierarchical bases — Nitsche handles tangential weakly
+    via boundary-face detection, not via a tangential-DOF list.
+    """  
+    result = {}  
+    all_normal = set()  
+    for face in ('bottom', 'top', 'left', 'right'):  
+        normal = list(bc_lr[face][0])   # bc_lr[face][0] is the sorted list of normal-DOF indices
+        result[face] = {'normal': normal, 'tangential': []}  
+        all_normal |= set(normal)        
+    result['all_normal']     = all_normal   
+    result['all_tangential'] = set()        # no tangential DOF list needed for LR
+    return result  
+
+
+def GetBoundaryDOFs(basis, degs):
     """
     Returns a dict of global DOF index sets for each face, split by role.
+    NOTE: only valid for tensor-product (TP) bases that expose knotVectors().
+    For hierarchical (LR) bases use _lr_to_boundary_dofs(find_boundary_elements(basis)) instead.
 
     comp1: n_bf_x × (n_bf_y-1)  e.g. 4×3 grid  (/\ arrows)
            TANGENTIAL  on BOTTOM and TOP
@@ -47,7 +75,13 @@ def GetBoundaryDOFs(basis):
           'all_tangential': set of all tangential DOFs,
         }
     """
+    if is_hierarchical(basis):  # safety guard: LR bases must use _lr_to_boundary_dofs instead
+        raise RuntimeError(  
+            "GetBoundaryDOFs() called on a hierarchical (LR) basis — "  
+            "use _lr_to_boundary_dofs(find_boundary_elements(basis)) instead."  
+        )  
     degs = cf.GetSplineDegree(basis)
+    # degs = degs
     knot_vecs = basis.knotVectors()
     num_h1_bfs = []
     for i in range(len(degs)):
@@ -112,7 +146,8 @@ def GetBoundaryDOFs(basis):
 #   Compute PRESCRIBED VALUES for normal DOFs (g value)
 #       (needed for strong enforcement)
 # ===========================================================================
-def ComputePrescribedNormalDOFValues(basis, boundary_dofs, boundary_value_function, quad_1D):
+def ComputePrescribedNormalDOFValues(basis, boundary_dofs, boundary_value_function, quad_1D,
+                                     skip_faces=None):  #PE skip_faces: list of face names whose normal DOFs are left free (e.g. ['right'] for outflow)
     """
     For each normal boundary DOF, compute the prescribed value by L2 projection
     of (u_exact · n) onto the boundary.
@@ -126,17 +161,27 @@ def ComputePrescribedNormalDOFValues(basis, boundary_dofs, boundary_value_functi
     # We accumulate: mass_vec[A] and rhs_vec[A] for each normal DOF A
     # then prescribed[A] = rhs_vec[A] / mass_vec[A]
     # (scalar L2 projection along boundary)
-    all_normal = boundary_dofs['all_normal']
+    skip = set(skip_faces or [])  #PE set of face names to leave free (no strong enforcement)
+
+    # only include faces that are not skipped
+    all_normal = set()  #PE rebuild to exclude skipped-face DOFs
+    for face in ('bottom', 'top', 'left', 'right'):
+        if face not in skip:
+            all_normal.update(boundary_dofs[face]['normal'])
 
     mass_vec = np.zeros(n_hdiv)
     rhs_vec  = np.zeros(n_hdiv)
 
-    bdry_map = {
-        gq_bc.BoundaryFace.BOTTOM: boundary_dofs['bottom']['normal'],
-        gq_bc.BoundaryFace.TOP:    boundary_dofs['top']['normal'],
-        gq_bc.BoundaryFace.LEFT:   boundary_dofs['left']['normal'],
-        gq_bc.BoundaryFace.RIGHT:  boundary_dofs['right']['normal'],
-    }
+    # build bdry_map only for faces that need strong enforcement
+    bdry_map = {}
+    if 'bottom' not in skip:
+        bdry_map[gq_bc.BoundaryFace.BOTTOM] = boundary_dofs['bottom']['normal']
+    if 'top' not in skip:
+        bdry_map[gq_bc.BoundaryFace.TOP]    = boundary_dofs['top']['normal']
+    if 'left' not in skip:
+        bdry_map[gq_bc.BoundaryFace.LEFT]   = boundary_dofs['left']['normal']
+    if 'right' not in skip:
+        bdry_map[gq_bc.BoundaryFace.RIGHT]  = boundary_dofs['right']['normal']
     bounds = cf._physical_domain_bounds(basis)
 
     for elem in basis.elements():
