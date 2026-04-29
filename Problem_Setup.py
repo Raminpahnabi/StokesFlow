@@ -104,49 +104,6 @@ elif NavierStokes:
             boundary_value_function = inp.boundary_value_function_cavity_2
 
 
-# # Quick check ..
-# if L2Projection:
-#     example_d_check = ls.L2Projection(basis, degree1, quad, quad_1D, gamma,
-#                                 forcing_function, exact_solution,
-#                                 boundary_conditions=None, 
-#                                 boundary_value_function=boundary_value_function, 
-#                                 ifID=ifID,nu=nu,
-#                                 use_curve_geometry =use_curve_geometry)
-#     print("example_d_L2Projection:", example_d_check)
-
-# elif Stokes:
-#     example_d_check = ss.Stokes(basis, degs, quad, quad_1D, gamma,
-#                                 forcing_function, exact_solution,
-#                                 boundary_conditions=None,
-#                                 boundary_value_function=boundary_value_function,
-#                                 ifID=ifID,nu=nu)
-#     print("example_d_Stokes:", example_d_check)
-    
-# elif NavierStokes:
-#     d_initial = ss.Stokes(basis, degs, quad, quad_1D, gamma,
-#                                 forcing_function, exact_solution,
-#                                 boundary_conditions=None,
-#                                 boundary_value_function=boundary_value_function,
-#                                 ifID=ifID,nu=nu)
-    
-#     example_d_check = nss.NavierStokes(basis, degree1, quad, quad_1D, gamma, 
-#                                 forcing_function, f_ns, exact_solution,
-#                                 boundary_conditions=None, 
-#                                 boundary_value_function=boundary_value_function, 
-#                                 ifID=ifID, d_initial=d_initial, nu=nu) 
-#     print("NavierStokes solution:", example_d_check)  
-    
-    
-# ########### START of NORMALIZING Pressure
-# alpha      = npre.EvaluateAveragePressure(basis, example_d_check, quad)      #(α = int_Ω p_h dΩ)
-# print("avg pressure before normalization:", alpha)                          
-# example_d_check = npre.NormalizePressureCoefficients(basis, example_d_check, degree1, quad, quad_1D)
-# average_pressure_after = npre.EvaluateAveragePressure(basis, example_d_check, quad)  
-# print("avg pressure after  normalization:", average_pressure_after)          
-# ########### END of NORMALIZING Pressure
-# pl.PlotSolution(basis, example_d_check, quad, quad_1D, gamma, forcing_function, nelem1*2, exact_solution, exact_solution_l2)
-
-
 def check_local_refinement_vtk():
     """
     Build a 3-level hierarchically refined mesh on a unit-square domain
