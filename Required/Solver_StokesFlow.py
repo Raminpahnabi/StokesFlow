@@ -33,7 +33,7 @@ import BoundaryConditions as bc
 ################################     Stokes_Flow_div_free     ###################################
 #################################################################################################
 def Stokes(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions, boundary_value_function, ifID, nu,
-           outflow_faces=None):  # ['right']: traction-free outlet (no strong u·n, no Nitsche on those faces only)
+           outflow_faces=None, use_curve_geometry=False):  # ['right']: traction-free outlet (no strong u·n, no Nitsche on those faces only)
 
     if ifID:
 
@@ -60,7 +60,10 @@ def Stokes(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions
         prescribed = bc.ComputePrescribedNormalDOFValues(basis, boundary_dofs, boundary_value_function, quad_1D,
                                                          skip_faces=_out)  
         # Build ID array (marks normal DOFs as -1)
-        ID = cf.ID_array(basis.HDIV, basis.L2, boundary_dofs, free_faces=_out)  
+        ID = cf.ID_array(basis.HDIV, basis.L2, boundary_dofs, free_faces=_out)
+        
+        # Pre-compute boundary element sets once for curved domain (avoids O(n^2) cost) # Curve Domain
+        boundary_sets = cf._boundary_element_sets(basis) if use_curve_geometry else None  
         
         n = max(ID)+1
 
@@ -78,9 +81,9 @@ def Stokes(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions
             ke = la.LocalStiffnessStokes(basis, deg, gaussian, quad_1D, e, boundary_conditions, nu=nu)
             fe = la.LocalForceStokes(basis, deg, gaussian, quad_1D, gamma, e, f,nu)
             ke_Nitsche = ni.LocalStiffnessMatrix_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e, nu=nu,
-                                                                 skip_faces=_out)  
+                                                                 skip_faces=_out, boundary_sets=boundary_sets)  
             fe_Nitsche = ni.LocalForceVector_Nitsche_IGA_2D(basis, deg, gaussian, quad_1D, gamma, e, f, u_exact, boundary_value_function, nu=nu,
-                                                             skip_faces=_out)  
+                                                             skip_faces=_out, boundary_sets=boundary_sets)  
 
 
             local_IEN_HDIV = basis.HDIV.connectivity(e)

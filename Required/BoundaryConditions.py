@@ -147,7 +147,7 @@ def GetBoundaryDOFs(basis, degs):
 #       (needed for strong enforcement)
 # ===========================================================================
 def ComputePrescribedNormalDOFValues(basis, boundary_dofs, boundary_value_function, quad_1D,
-                                     skip_faces=None):  #PE skip_faces: list of face names whose normal DOFs are left free (e.g. ['right'] for outflow)
+                                     skip_faces=None, use_curve_geometry=False):  #PE skip_faces: list of face names whose normal DOFs are left free (e.g. ['right'] for outflow)
     """
     For each normal boundary DOF, compute the prescribed value by L2 projection
     of (u_exact · n) onto the boundary.
@@ -183,6 +183,7 @@ def ComputePrescribedNormalDOFValues(basis, boundary_dofs, boundary_value_functi
     if 'right' not in skip:
         bdry_map[gq_bc.BoundaryFace.RIGHT]  = boundary_dofs['right']['normal']
     bounds = cf._physical_domain_bounds(basis)
+    boundary_sets = cf._boundary_element_sets(basis) if use_curve_geometry else None  #1 precompute once for curved domain
 
     for elem in basis.elements():
         basis.localizeElement(elem)
@@ -191,7 +192,7 @@ def ComputePrescribedNormalDOFValues(basis, boundary_dofs, boundary_value_functi
         for bdry, normal_global_dofs in bdry_map.items():
             normal_global_set = set(normal_global_dofs)
             xi_vals = gq_bc.GetFaceQuadraturePoints(quad_1D, bdry)
-            if not cf._is_boundary_face(basis, elem, bdry, quad_1D, bounds):
+            if not cf._is_boundary_face(basis, elem, bdry, quad_1D, bounds, boundary_sets):
                 continue
 
             # rotation matrix for outward normal
@@ -212,6 +213,11 @@ def ComputePrescribedNormalDOFValues(basis, boundary_dofs, boundary_value_functi
                 qpt_mapped = basis.mapping()
                 x_g, y_g   = qpt_mapped[0], qpt_mapped[1]
                 u_exact_val = np.array(boundary_value_function(x_g, y_g))
+                # u_exact_val = np.array(boundary_value_function(quad_pts[0], quad_pts[1])) 
+                # if use_curve_geometry:  #CS curved domain: boundary condition defined in parametric space
+                #     u_exact_val = np.array(boundary_value_function(quad_pts[0], quad_pts[1]))  
+                # else:  
+                #     u_exact_val = np.array(boundary_value_function(x_g, y_g))
                 u_n_exact   = np.dot(u_exact_val, normal_unit)   # scalar normal component
 
                 phi_all = basis.piolaTransformedHDIVBasis()       # shape: (n_local, 2)

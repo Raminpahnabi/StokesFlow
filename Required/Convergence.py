@@ -84,7 +84,7 @@ def compute_largest_element_area(basis, quad):
     areas = compute_all_element_areas(basis, quad)
     return max(areas)
 
-def compute_convergence_error(basis, d_coeffs, quad, exact_solution, isHDIV=True):
+def compute_convergence_error(basis, d_coeffs, quad, exact_solution, isHDIV=True, use_curve_geometry=False):
     # isHDIV: True for velocity error, False for pressure error
     total_error = 0.0
     # n_hdiv = basis.HDIV.numTotalFunctions()
@@ -131,7 +131,7 @@ def compute_convergence_error(basis, d_coeffs, quad, exact_solution, isHDIV=True
                 qpt_mapped = basis.mapping() 
                 x_g, y_g = qpt_mapped[0], qpt_mapped[1]
                 
-                u_exact = np.array(exact_solution(x_g, y_g))  
+                u_exact = np.array(exact_solution(x_g, y_g))  #CSn always physical coords
                 uh_xy = EvaluateSolution_2D_Hdiv(basis, elem, qpt[0], qpt[1], d_coeffs)
                 
                 error_xy = u_exact - uh_xy
@@ -165,7 +165,7 @@ def compute_convergence_error(basis, d_coeffs, quad, exact_solution, isHDIV=True
     return total_error
 
 
-def compute_pressure_convergence_error(basis, d_coeffs, quad, exact_solution_l2):
+def compute_pressure_convergence_error(basis, d_coeffs, quad, exact_solution_l2, use_curve_geometry=False):
     # mean of numerical pressure (should be ~0 after NormalizePressureCoefficients)
     mean_p_h = npre.EvaluateMeanPressure(basis, d_coeffs, quad)
 
@@ -184,7 +184,7 @@ def compute_pressure_convergence_error(basis, d_coeffs, quad, exact_solution_l2)
             qpt_mapped = basis.mapping()
             x_g, y_g = qpt_mapped[0], qpt_mapped[1]
             dV = jac_det * weight * quad.jacobian
-            total_exact += exact_solution_l2(x_g, y_g) * dV
+            total_exact += exact_solution_l2(x_g, y_g) * dV  #CSn always physical coords
             total_area  += dV
     mean_p_exact = total_exact / total_area  #ns mean of exact pressure over the domain
 
@@ -198,7 +198,7 @@ def compute_pressure_convergence_error(basis, d_coeffs, quad, exact_solution_l2)
             jac_det = basis.jacobianDeterminant()
             qpt_mapped = basis.mapping()
             x_g, y_g   = qpt_mapped[0], qpt_mapped[1]
-            p_exact_centered = exact_solution_l2(x_g, y_g) - mean_p_exact  #ns subtract exact mean
+            p_exact_centered = exact_solution_l2(x_g, y_g) - mean_p_exact  #CSn always physical coords
             p_h = float(EvaluateSolution_2D_L2(basis, elem, qpt[0], qpt[1], d_coeffs))
             p_h_centered = p_h - mean_p_h                                   #ns subtract numerical mean
             total_error += (p_exact_centered - p_h_centered)**2 * jac_det * weight * quad.jacobian

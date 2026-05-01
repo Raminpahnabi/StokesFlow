@@ -6,27 +6,81 @@ Created on Tue Apr 14 18:18:42 2026
 @author: raminpahnabi
 """
 
-import sys
-import os
 import numpy as np
-from pathlib import Path
 
-os.environ["SWEEPS_API_PATH"] = "/Users/raminpahnabi/Documents/BYU/sweeps/build/src/api"
+##################### STOKES CURVE Domain ########################### 
+def exact_solution_1_curve(xi,eta):
+    
+    numerator1 = (
+        np.exp(xi)
+        * (-1 + eta) * eta
+        * (-1 + xi)**2 * xi
+        * (
+            -2 * (-2 + xi) * xi**2
+            + eta**2 * (-2 + xi - 4*xi**2 + xi**3)
+            + eta * (2 - xi - 8*xi**2 + 3*xi**3)
+        )
+    )
 
-from sweeps_path import ensure_sweeps_api_on_path
+    numerator2 = (
+        np.exp(xi)
+        * (-1 + eta) * eta
+        * (-1 + xi) * xi**2
+        * (
+            2 * (-1 + xi)**2 * (1 + xi)
+            + eta**4 * (-1 + xi)**2 * (-2 - 3*xi + 3*xi**2)
+            - eta**3 * (-1 + xi)**2 * (-4 - 15*xi + 9*xi**2)
+            + eta * (-4 + 13*xi - 14*xi**2 + 10*xi**3 - 3*xi**4)
+            + eta**2 * (-4 - 19*xi + 56*xi**2 - 44*xi**3 + 9*xi**4)
+        )
+    )
 
-PROJECT_ROOT = Path(__file__).resolve().parent
-sweepspath = ensure_sweeps_api_on_path()
-sys.path.append(str(PROJECT_ROOT / 'HWs'))
-sys.path.append(str(PROJECT_ROOT / 'Required'))
+    denominator = (
+        3 * (
+            -1
+            + 4*xi**2
+            - 11*xi**3
+            + 10*xi**4
+            - 3*xi**5
+            + eta**3 * (-1 + xi)**2 * (1 - 2*xi + 3*xi**2)
+            - 3 * eta**2 * (-1 + xi)**2 * (1 - 2*xi - xi**2 + xi**3)
+            + eta * (1 - 10*xi - 2*xi**2 + 30*xi**3 - 27*xi**4 + 6*xi**5)
+        )
+    )
 
-import splines as spline
-import Gaussian_Quadrature_2D_Solution as gq_nD
+    v1 = numerator1 / denominator
+    v2 = - numerator2 / denominator
 
-KINEMATIC_VISCOSITY = 0.1
+    return np.array([v1, v2])
 
-################################################## CURVE Domain ############################################### 
-# STOKES
+def exact_solution_l2_1_curve(xi, eta):
+
+    ex = np.exp(xi)
+
+    G = (
+        -1 + 4*xi**2 - 11*xi**3 + 10*xi**4 - 3*xi**5
+        + eta**3 * (xi - 1)**2 * (1 - 2*xi + 3*xi**2)
+        - 3*eta**2 * (xi - 1)**2 * (1 - 2*xi - xi**2 + xi**3)
+        + eta * (1 - 10*xi - 2*xi**2 + 30*xi**3 - 27*xi**4 + 6*xi**5)
+    )
+
+    numerator = (
+        156*np.e
+        - 8*(53 - 57*eta + 57*eta**2)
+        + ex * eta * (
+            -2*eta**2 * xi * (2 - 5*xi + 2*xi**2 + xi**3)
+            + eta**3 * xi * (2 - 5*xi + 2*xi**2 + xi**3)
+            - 12*(38 - 38*xi + 19*xi**2 - 6*xi**3 + xi**4)
+            + eta*(456 - 454*xi + 223*xi**2 - 70*xi**3 + 13*xi**4)
+        )
+    )
+
+    ps = - numerator / (9 * G)
+
+    return ps
+
+def boundary_value_function_1_curve(x, y):
+    return exact_solution_1_curve(x, y)
 
 def forcing_function_stokes_curve(xi, eta, nu):
     nu_val = nu(xi, eta) if callable(nu) else nu
@@ -1967,69 +2021,3 @@ def forcing_function_stokes_curve(xi, eta, nu):
     f2 = num_f2 / denom
 
     return np.array([f1, f2])
-
-def exact_solution_curve(xi, eta):
-
-    ex = np.exp(xi)
-
-    # Common geometric term (same as before)
-    G = (
-        -1 + 4*xi**2 - 11*xi**3 + 10*xi**4 - 3*xi**5
-        + eta**3 * (xi - 1)**2 * (1 - 2*xi + 3*xi**2)
-        - 3*eta**2 * (xi - 1)**2 * (1 - 2*xi - xi**2 + xi**3)
-        + eta * (1 - 10*xi - 2*xi**2 + 30*xi**3 - 27*xi**4 + 6*xi**5)
-    )
-
-
-    u1_num = (
-        ex * (eta - 1) * eta * (xi - 1)**2 * xi * (
-            -2 * (-2 + xi) * xi**2
-            + eta**2 * (-2 + xi - 4*xi**2 + xi**3)
-            + eta * (2 - xi - 8*xi**2 + 3*xi**3)
-        )
-    )
-    
-    u1 = u1_num / (3 * G)
-
-
-    u2_num = (
-        ex * (eta - 1) * eta * (xi - 1) * xi**2 * (
-            2 * (xi - 1)**2 * (1 + xi)
-            + eta**4 * (xi - 1)**2 * (-2 - 3*xi + 3*xi**2)
-            - eta**3 * (xi - 1)**2 * (-4 - 15*xi + 9*xi**2)
-            + eta * (-4 + 13*xi - 14*xi**2 + 10*xi**3 - 3*xi**4)
-            + eta**2 * (-4 - 19*xi + 56*xi**2 - 44*xi**3 + 9*xi**4)
-        )
-    )
-
-    u2 = - u2_num / (3 * G)
-
-    return u1, u2
-
-def exact_solution_l2_curve(xi, eta):
-
-    ex = np.exp(xi)
-
-    # Common geometric denominator term (same as before)
-    G = (
-        -1 + 4*xi**2 - 11*xi**3 + 10*xi**4 - 3*xi**5
-        + eta**3 * (xi - 1)**2 * (1 - 2*xi + 3*xi**2)
-        - 3*eta**2 * (xi - 1)**2 * (1 - 2*xi - xi**2 + xi**3)
-        + eta * (1 - 10*xi - 2*xi**2 + 30*xi**3 - 27*xi**4 + 6*xi**5)
-    )
-
-    numerator = (
-        156*np.e
-        - 8*(53 - 57*eta + 57*eta**2)
-        + ex * eta * (
-            -2*eta**2 * xi * (2 - 5*xi + 2*xi**2 + xi**3)
-            + eta**3 * xi * (2 - 5*xi + 2*xi**2 + xi**3)
-            - 12*(38 - 38*xi + 19*xi**2 - 6*xi**3 + xi**4)
-            + eta*(456 - 454*xi + 223*xi**2 - 70*xi**3 + 13*xi**4)
-        )
-    )
-
-    ps = - numerator / (9 * G)
-
-    return ps
-
