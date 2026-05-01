@@ -26,6 +26,7 @@ import Solver_L2Projection as ls
 import Solver_StokesFlow as ss
 import Solver_NonlinearNavierStokes as nss
 import export_vtk as vtk
+import Inputfile_force_exactsol as inpfe
 
 max_knot_xi        = inp.max_knot_xi
 max_knot_eta       = inp.max_knot_eta
@@ -50,58 +51,14 @@ NavierStokes       = inp.is_NavierStokes
 JetNavierStokes    = inp.is_JetNavierStokes
 option             = inp.option_number
 
-if L2Projection:
-    if use_curve_geometry   == False:
-        if option == 0:
-            forcing_function        = inp.forcing_function_l2projection_0
-            exact_solution          = inp.exact_solution_0
-            exact_solution_l2       = inp.exact_solution_l2_0
-            boundary_value_function = inp.boundary_value_function_0
+
+forcing_function        = inpfe.forcing_function
+exact_solution          = inpfe.exact_solution
+exact_solution_l2       = inpfe.exact_solution_l2
+boundary_value_function = inpfe.boundary_value_function
+if NavierStokes or JetNavierStokes:
+    f_ns                = inpfe.forcing_function_ns
         
-        elif option == 1:
-            forcing_function        = inp.forcing_function_l2projection_1
-            exact_solution          = inp.exact_solution_1
-            exact_solution_l2       = inp.exact_solution_l2_1
-            boundary_value_function = inp.boundary_value_function_1
-    
-    elif use_curve_geometry == True: 
-        if option == 0:
-            forcing_function        = inp.forcing_function_l2projection_0
-            exact_solution          = inp.exact_solution_0
-            exact_solution_l2       = inp.exact_solution_l2_0
-            boundary_value_function = inp.boundary_value_function_0
-
-
-elif Stokes:
-    if use_curve_geometry   == False:
-        if option == 1:
-            forcing_function        = inp.forcing_function_s_1
-            exact_solution          = inp.exact_solution_1
-            exact_solution_l2       = inp.exact_solution_l2_1
-            boundary_value_function = inp.boundary_value_function_1
-        
-        elif option == 2:
-            forcing_function        = inp.forcing_function_cavity_2
-            exact_solution          = inp.exact_solution_cavity_2
-            exact_solution_l2       = inp.exact_solution_l2_cavity_2
-            boundary_value_function = inp.boundary_value_function_cavity_2
-
-
-elif NavierStokes:
-    if use_curve_geometry   == False:
-        if option == 1:
-            forcing_function        = inp.forcing_function_s_1
-            f_ns                    = inp.forcing_function_ns_1
-            exact_solution          = inp.exact_solution_1
-            exact_solution_l2       = inp.exact_solution_l2_1
-            boundary_value_function = inp.boundary_value_function_1
-        
-        elif option == 2:
-            forcing_function        = inp.forcing_function_cavity_2
-            f_ns                    = inp.forcing_function_cavity_2
-            exact_solution          = inp.exact_solution_cavity_2
-            exact_solution_l2       = inp.exact_solution_l2_cavity_2
-            boundary_value_function = inp.boundary_value_function_cavity_2
 
 
 def check_local_refinement_vtk():
@@ -200,17 +157,17 @@ def manufactured_sol_degrees_clean():
 
         print("level | n_divisions | h           | error")  
         for ilevel, n_div in enumerate(refinement_levels):  
-            rb_local = spline.globallyHRefine(basis_d, n_div, parametric_tolerance=1e-5)
+            rb = spline.globallyHRefine(basis_d, n_div, parametric_tolerance=1e-5)
             
-            kv1_d, kv2_d = rb_local.knotVectors()
-            cpts_d = rb_local.control_points
+            kv1_d, kv2_d = rb.knotVectors()
+            cpts_d = rb.control_points
             # Scale indices with n_div so the locally refined region stays at
             # the same physical fraction [1/8, 5/8] of the domain for every n_div.
             # At n_div=8: indices 1–4 → physical [0.125, 0.625].
             # At n_div=16: indices 2–9 → same physical region.
             # At n_div=32: indices 4–19 → same physical region.
             r_start = n_div // 8
-            r_end   = 2 * n_div // 8
+            r_end   = 1 * n_div // 8
             L1 = [[r, c] for r in range(r_start, r_end) for c in range(r_start, r_end)]
             elems_to_refine = [L1]
             
@@ -218,9 +175,9 @@ def manufactured_sol_degrees_clean():
             # # elems_to_refine.append([[1,1],[1,2],[1,3],[1,4],[2,1],[2,2],[2,3],[2,4],[3,1],[3,2],[3,3],[3,4],[4,1],[4,2],[4,3],[4,4]])#, [q, 5], [q, 6]])  # Refine one element column
             # elems_to_refine.append([[1,1],[1,2],[1,3],[2,1],[2,2],[2,3],[3,1],[3,2],[3,3]])
           
-            # rb_local = spline.NavierStokesHierarchicalDiscretization(
-            #     kv2_d, kv1_d, deg, deg, cpts_d, elems_to_refine
-            # )
+            rb_local = spline.NavierStokesHierarchicalDiscretization(
+                kv2_d, kv1_d, deg, deg, cpts_d, elems_to_refine
+            )
             
             if L2Projection:
                 d = ls.L2Projection(rb_local, [deg, deg], quad_d, quad_1D_d, gamma_d,  
@@ -234,14 +191,14 @@ def manufactured_sol_degrees_clean():
                                            forcing_function, exact_solution,
                                            boundary_conditions=None,
                                            boundary_value_function=boundary_value_function,
-                                           ifID=True,nu=nu)
+                                           ifID=True,nu=nu,use_curve_geometry=use_curve_geometry)
 
             elif NavierStokes:
                 d_initial = ss.Stokes(rb_local, [deg, deg], quad_d, quad_1D_d, gamma_d,
                                            forcing_function, exact_solution,
                                            boundary_conditions=None,
                                            boundary_value_function=boundary_value_function,
-                                           ifID=True,nu=nu)
+                                           ifID=True,nu=nu,use_curve_geometry=use_curve_geometry)
                 
                 d = nss.NavierStokes(rb_local, [deg, deg], quad_d, quad_1D_d, gamma_d, forcing_function, f_ns, exact_solution,
                                     boundary_conditions=None, boundary_value_function=boundary_value_function, ifID=ifID,
@@ -255,7 +212,7 @@ def manufactured_sol_degrees_clean():
             ########### END of NORMALIZING Pressure
             
             ########### START of VTK file 
-            vtk.export_as_vtk(rb_local, d, true_velocity=exact_solution, true_pressure=exact_solution_l2,vtk_path=f"bezier_mesh_level{ilevel}_deg{deg}.vtk")
+            # vtk.export_as_vtk(rb_local, d, true_velocity=exact_solution, true_pressure=exact_solution_l2,vtk_path=f"bezier_mesh_level{ilevel}_deg{deg}.vtk")
             # vtk.export_bezier_mesh_vtk(rb_local, vtk_path=f"bezier_mesh_level{ilevel}_deg{deg}.vtk")
 
             e_p = cn.compute_pressure_convergence_error(rb_local, d, quad_d, exact_solution_l2)  

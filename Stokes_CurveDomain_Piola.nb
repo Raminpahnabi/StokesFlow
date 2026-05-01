@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[    361377,       7563]
-NotebookOptionsPosition[    359087,       7514]
-NotebookOutlinePosition[    359480,       7530]
-CellTagsIndexPosition[    359437,       7527]
+NotebookDataLength[    361322,       7528]
+NotebookOptionsPosition[    359129,       7480]
+NotebookOutlinePosition[    359522,       7496]
+CellTagsIndexPosition[    359479,       7493]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -108,8 +108,9 @@ Cell[BoxData[
    RowBox[{
     RowBox[{"Jac", "=", 
      RowBox[{"Det", "[", "DF", "]"}]}], ";"}], "\[IndentingNewLine]", 
-   RowBox[{"G", "=", 
-    RowBox[{"Inverse", "[", "DF", "]"}]}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"G", "=", 
+     RowBox[{"Inverse", "[", "DF", "]"}]}], ";"}], "\[IndentingNewLine]", 
    "\[IndentingNewLine]", 
    RowBox[{"Print", "[", 
     RowBox[{"\"\<DF = \>\"", ",", 
@@ -117,266 +118,8 @@ Cell[BoxData[
    RowBox[{"Print", "[", 
     RowBox[{"\"\<J = det(DF) = \>\"", ",", 
      RowBox[{"Simplify", "[", "Jac", "]"}]}], "]"}]}]}]], "Input",
- CellChangeTimes->{{3.99*^9, 3.985173284936245*^9}},
- CellLabel->
-  "In[178]:=",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000002"],
-
-Cell[BoxData[
- RowBox[{"{", 
-  RowBox[{
-   RowBox[{"{", 
-    RowBox[{
-     FractionBox[
-      RowBox[{
-       RowBox[{
-        RowBox[{"-", "3"}], " ", "\[Xi]"}], "+", 
-       RowBox[{"18", " ", "\[Eta]", " ", "\[Xi]"}], "-", 
-       RowBox[{"9", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", "\[Xi]"}], "+", 
-       RowBox[{"15", " ", 
-        SuperscriptBox["\[Xi]", "2"]}], "-", 
-       RowBox[{"36", " ", "\[Eta]", " ", 
-        SuperscriptBox["\[Xi]", "2"]}], "+", 
-       RowBox[{"18", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", 
-        SuperscriptBox["\[Xi]", "2"]}], "-", 
-       RowBox[{"9", " ", 
-        SuperscriptBox["\[Xi]", "3"]}], "+", 
-       RowBox[{"18", " ", "\[Eta]", " ", 
-        SuperscriptBox["\[Xi]", "3"]}], "-", 
-       RowBox[{"9", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", 
-        SuperscriptBox["\[Xi]", "3"]}]}], 
-      RowBox[{"9", "-", 
-       RowBox[{"9", " ", "\[Eta]"}], "+", 
-       RowBox[{"27", " ", 
-        SuperscriptBox["\[Eta]", "2"]}], "-", 
-       RowBox[{"9", " ", 
-        SuperscriptBox["\[Eta]", "3"]}], "+", 
-       RowBox[{"90", " ", "\[Eta]", " ", "\[Xi]"}], "-", 
-       RowBox[{"108", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", "\[Xi]"}], "+", 
-       RowBox[{"36", " ", 
-        SuperscriptBox["\[Eta]", "3"], " ", "\[Xi]"}], "-", 
-       RowBox[{"36", " ", 
-        SuperscriptBox["\[Xi]", "2"]}], "+", 
-       RowBox[{"18", " ", "\[Eta]", " ", 
-        SuperscriptBox["\[Xi]", "2"]}], "+", 
-       RowBox[{"108", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", 
-        SuperscriptBox["\[Xi]", "2"]}], "-", 
-       RowBox[{"72", " ", 
-        SuperscriptBox["\[Eta]", "3"], " ", 
-        SuperscriptBox["\[Xi]", "2"]}], "+", 
-       RowBox[{"99", " ", 
-        SuperscriptBox["\[Xi]", "3"]}], "-", 
-       RowBox[{"270", " ", "\[Eta]", " ", 
-        SuperscriptBox["\[Xi]", "3"]}], "+", 
-       RowBox[{"27", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", 
-        SuperscriptBox["\[Xi]", "3"]}], "+", 
-       RowBox[{"72", " ", 
-        SuperscriptBox["\[Eta]", "3"], " ", 
-        SuperscriptBox["\[Xi]", "3"]}], "-", 
-       RowBox[{"90", " ", 
-        SuperscriptBox["\[Xi]", "4"]}], "+", 
-       RowBox[{"243", " ", "\[Eta]", " ", 
-        SuperscriptBox["\[Xi]", "4"]}], "-", 
-       RowBox[{"81", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", 
-        SuperscriptBox["\[Xi]", "4"]}], "-", 
-       RowBox[{"27", " ", 
-        SuperscriptBox["\[Eta]", "3"], " ", 
-        SuperscriptBox["\[Xi]", "4"]}], "+", 
-       RowBox[{"27", " ", 
-        SuperscriptBox["\[Xi]", "5"]}], "-", 
-       RowBox[{"54", " ", "\[Eta]", " ", 
-        SuperscriptBox["\[Xi]", "5"]}], "+", 
-       RowBox[{"27", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", 
-        SuperscriptBox["\[Xi]", "5"]}]}]], ",", 
-     FractionBox[
-      RowBox[{"3", "-", 
-       RowBox[{"3", " ", 
-        SuperscriptBox["\[Xi]", "2"]}]}], 
-      RowBox[{"9", "-", 
-       RowBox[{"9", " ", "\[Eta]"}], "+", 
-       RowBox[{"27", " ", 
-        SuperscriptBox["\[Eta]", "2"]}], "-", 
-       RowBox[{"9", " ", 
-        SuperscriptBox["\[Eta]", "3"]}], "+", 
-       RowBox[{"90", " ", "\[Eta]", " ", "\[Xi]"}], "-", 
-       RowBox[{"108", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", "\[Xi]"}], "+", 
-       RowBox[{"36", " ", 
-        SuperscriptBox["\[Eta]", "3"], " ", "\[Xi]"}], "-", 
-       RowBox[{"36", " ", 
-        SuperscriptBox["\[Xi]", "2"]}], "+", 
-       RowBox[{"18", " ", "\[Eta]", " ", 
-        SuperscriptBox["\[Xi]", "2"]}], "+", 
-       RowBox[{"108", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", 
-        SuperscriptBox["\[Xi]", "2"]}], "-", 
-       RowBox[{"72", " ", 
-        SuperscriptBox["\[Eta]", "3"], " ", 
-        SuperscriptBox["\[Xi]", "2"]}], "+", 
-       RowBox[{"99", " ", 
-        SuperscriptBox["\[Xi]", "3"]}], "-", 
-       RowBox[{"270", " ", "\[Eta]", " ", 
-        SuperscriptBox["\[Xi]", "3"]}], "+", 
-       RowBox[{"27", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", 
-        SuperscriptBox["\[Xi]", "3"]}], "+", 
-       RowBox[{"72", " ", 
-        SuperscriptBox["\[Eta]", "3"], " ", 
-        SuperscriptBox["\[Xi]", "3"]}], "-", 
-       RowBox[{"90", " ", 
-        SuperscriptBox["\[Xi]", "4"]}], "+", 
-       RowBox[{"243", " ", "\[Eta]", " ", 
-        SuperscriptBox["\[Xi]", "4"]}], "-", 
-       RowBox[{"81", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", 
-        SuperscriptBox["\[Xi]", "4"]}], "-", 
-       RowBox[{"27", " ", 
-        SuperscriptBox["\[Eta]", "3"], " ", 
-        SuperscriptBox["\[Xi]", "4"]}], "+", 
-       RowBox[{"27", " ", 
-        SuperscriptBox["\[Xi]", "5"]}], "-", 
-       RowBox[{"54", " ", "\[Eta]", " ", 
-        SuperscriptBox["\[Xi]", "5"]}], "+", 
-       RowBox[{"27", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", 
-        SuperscriptBox["\[Xi]", "5"]}]}]]}], "}"}], ",", 
-   RowBox[{"{", 
-    RowBox[{
-     FractionBox[
-      RowBox[{
-       RowBox[{"-", "3"}], "+", 
-       RowBox[{"3", " ", "\[Eta]"}], "-", 
-       RowBox[{"9", " ", 
-        SuperscriptBox["\[Eta]", "2"]}], "+", 
-       RowBox[{"3", " ", 
-        SuperscriptBox["\[Eta]", "3"]}], "-", 
-       RowBox[{"30", " ", "\[Eta]", " ", "\[Xi]"}], "+", 
-       RowBox[{"36", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", "\[Xi]"}], "-", 
-       RowBox[{"12", " ", 
-        SuperscriptBox["\[Eta]", "3"], " ", "\[Xi]"}], "+", 
-       RowBox[{"3", " ", 
-        SuperscriptBox["\[Xi]", "2"]}], "+", 
-       RowBox[{"27", " ", "\[Eta]", " ", 
-        SuperscriptBox["\[Xi]", "2"]}], "-", 
-       RowBox[{"27", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", 
-        SuperscriptBox["\[Xi]", "2"]}], "+", 
-       RowBox[{"9", " ", 
-        SuperscriptBox["\[Eta]", "3"], " ", 
-        SuperscriptBox["\[Xi]", "2"]}]}], 
-      RowBox[{"9", "-", 
-       RowBox[{"9", " ", "\[Eta]"}], "+", 
-       RowBox[{"27", " ", 
-        SuperscriptBox["\[Eta]", "2"]}], "-", 
-       RowBox[{"9", " ", 
-        SuperscriptBox["\[Eta]", "3"]}], "+", 
-       RowBox[{"90", " ", "\[Eta]", " ", "\[Xi]"}], "-", 
-       RowBox[{"108", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", "\[Xi]"}], "+", 
-       RowBox[{"36", " ", 
-        SuperscriptBox["\[Eta]", "3"], " ", "\[Xi]"}], "-", 
-       RowBox[{"36", " ", 
-        SuperscriptBox["\[Xi]", "2"]}], "+", 
-       RowBox[{"18", " ", "\[Eta]", " ", 
-        SuperscriptBox["\[Xi]", "2"]}], "+", 
-       RowBox[{"108", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", 
-        SuperscriptBox["\[Xi]", "2"]}], "-", 
-       RowBox[{"72", " ", 
-        SuperscriptBox["\[Eta]", "3"], " ", 
-        SuperscriptBox["\[Xi]", "2"]}], "+", 
-       RowBox[{"99", " ", 
-        SuperscriptBox["\[Xi]", "3"]}], "-", 
-       RowBox[{"270", " ", "\[Eta]", " ", 
-        SuperscriptBox["\[Xi]", "3"]}], "+", 
-       RowBox[{"27", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", 
-        SuperscriptBox["\[Xi]", "3"]}], "+", 
-       RowBox[{"72", " ", 
-        SuperscriptBox["\[Eta]", "3"], " ", 
-        SuperscriptBox["\[Xi]", "3"]}], "-", 
-       RowBox[{"90", " ", 
-        SuperscriptBox["\[Xi]", "4"]}], "+", 
-       RowBox[{"243", " ", "\[Eta]", " ", 
-        SuperscriptBox["\[Xi]", "4"]}], "-", 
-       RowBox[{"81", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", 
-        SuperscriptBox["\[Xi]", "4"]}], "-", 
-       RowBox[{"27", " ", 
-        SuperscriptBox["\[Eta]", "3"], " ", 
-        SuperscriptBox["\[Xi]", "4"]}], "+", 
-       RowBox[{"27", " ", 
-        SuperscriptBox["\[Xi]", "5"]}], "-", 
-       RowBox[{"54", " ", "\[Eta]", " ", 
-        SuperscriptBox["\[Xi]", "5"]}], "+", 
-       RowBox[{"27", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", 
-        SuperscriptBox["\[Xi]", "5"]}]}]], ",", 
-     FractionBox[
-      RowBox[{
-       RowBox[{"6", " ", "\[Xi]"}], "+", 
-       RowBox[{"6", " ", "\[Eta]", " ", "\[Xi]"}], "-", 
-       RowBox[{"3", " ", 
-        SuperscriptBox["\[Xi]", "2"]}]}], 
-      RowBox[{"9", "-", 
-       RowBox[{"9", " ", "\[Eta]"}], "+", 
-       RowBox[{"27", " ", 
-        SuperscriptBox["\[Eta]", "2"]}], "-", 
-       RowBox[{"9", " ", 
-        SuperscriptBox["\[Eta]", "3"]}], "+", 
-       RowBox[{"90", " ", "\[Eta]", " ", "\[Xi]"}], "-", 
-       RowBox[{"108", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", "\[Xi]"}], "+", 
-       RowBox[{"36", " ", 
-        SuperscriptBox["\[Eta]", "3"], " ", "\[Xi]"}], "-", 
-       RowBox[{"36", " ", 
-        SuperscriptBox["\[Xi]", "2"]}], "+", 
-       RowBox[{"18", " ", "\[Eta]", " ", 
-        SuperscriptBox["\[Xi]", "2"]}], "+", 
-       RowBox[{"108", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", 
-        SuperscriptBox["\[Xi]", "2"]}], "-", 
-       RowBox[{"72", " ", 
-        SuperscriptBox["\[Eta]", "3"], " ", 
-        SuperscriptBox["\[Xi]", "2"]}], "+", 
-       RowBox[{"99", " ", 
-        SuperscriptBox["\[Xi]", "3"]}], "-", 
-       RowBox[{"270", " ", "\[Eta]", " ", 
-        SuperscriptBox["\[Xi]", "3"]}], "+", 
-       RowBox[{"27", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", 
-        SuperscriptBox["\[Xi]", "3"]}], "+", 
-       RowBox[{"72", " ", 
-        SuperscriptBox["\[Eta]", "3"], " ", 
-        SuperscriptBox["\[Xi]", "3"]}], "-", 
-       RowBox[{"90", " ", 
-        SuperscriptBox["\[Xi]", "4"]}], "+", 
-       RowBox[{"243", " ", "\[Eta]", " ", 
-        SuperscriptBox["\[Xi]", "4"]}], "-", 
-       RowBox[{"81", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", 
-        SuperscriptBox["\[Xi]", "4"]}], "-", 
-       RowBox[{"27", " ", 
-        SuperscriptBox["\[Eta]", "3"], " ", 
-        SuperscriptBox["\[Xi]", "4"]}], "+", 
-       RowBox[{"27", " ", 
-        SuperscriptBox["\[Xi]", "5"]}], "-", 
-       RowBox[{"54", " ", "\[Eta]", " ", 
-        SuperscriptBox["\[Xi]", "5"]}], "+", 
-       RowBox[{"27", " ", 
-        SuperscriptBox["\[Eta]", "2"], " ", 
-        SuperscriptBox["\[Xi]", "5"]}]}]]}], "}"}]}], "}"}]], "Output",
- CellChangeTimes->{3.985173285325161*^9},
- CellLabel->
-  "Out[183]=",ExpressionUUID->"f2c710f4-60d3-4898-9c9f-d244b0b97281"],
+ CellChangeTimes->{{3.99*^9, 3.985173284936245*^9}, 3.986555348002473*^9},
+ CellLabel->"In[9]:=",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000002"],
 
 Cell[CellGroupData[{
 
@@ -466,10 +209,12 @@ Cell[BoxData[
       18 $CellContext`\[Eta] $CellContext`\[Xi]^3 - 
       9 $CellContext`\[Eta]^2 $CellContext`\[Xi]^3}}]],
   Editable->False]], "Print",
- CellChangeTimes->{3.9851088941336813`*^9, 3.985173285328841*^9},
+ CellChangeTimes->{
+  3.9851088941336813`*^9, 3.985173285328841*^9, {3.9865553390217133`*^9, 
+   3.986555348462858*^9}},
  CellLabel->
   "During evaluation of \
-In[178]:=",ExpressionUUID->"91425978-ff5b-4561-9bd8-f3be8916d8bf"],
+In[9]:=",ExpressionUUID->"f9be2c5e-2873-434f-b6ee-6c61d48fc745"],
 
 Cell[BoxData[
  InterpretationBox[
@@ -532,10 +277,12 @@ $CellContext`\[Eta] (1 - 10 $CellContext`\[Xi] - 2 $CellContext`\[Xi]^2 +
       30 $CellContext`\[Xi]^3 - 27 $CellContext`\[Xi]^4 + 
       6 $CellContext`\[Xi]^5))],
   Editable->False]], "Print",
- CellChangeTimes->{3.9851088941336813`*^9, 3.985173285330958*^9},
+ CellChangeTimes->{
+  3.9851088941336813`*^9, 3.985173285328841*^9, {3.9865553390217133`*^9, 
+   3.9865553484651823`*^9}},
  CellLabel->
   "During evaluation of \
-In[178]:=",ExpressionUUID->"bb7de1d3-c8b0-430e-a242-a662012f6210"]
+In[9]:=",ExpressionUUID->"5fafd70a-a262-4d51-b2b3-9051580d74ff"]
 }, Open  ]]
 }, Open  ]],
 
@@ -550,7 +297,7 @@ Cell[BoxData[
      "\[Xi]", " ", "plays", " ", "role", " ", "of", " ", "x", ",", " ", 
       "\[Eta]", " ", "plays", " ", "role", " ", "of", " ", "y"}], ")"}]}], 
    " ", "*)"}], "\[IndentingNewLine]", 
-  RowBox[{"(*", 
+  RowBox[{
    RowBox[{
     RowBox[{"vp1", "=", 
      RowBox[{"2", " ", 
@@ -564,8 +311,9 @@ Cell[BoxData[
         SuperscriptBox["\[Eta]", "2"], "-", "\[Eta]"}], ")"}], " ", 
       RowBox[{"(", 
        RowBox[{
-        RowBox[{"2", "\[Eta]"}], "-", "1"}], ")"}]}]}], ";", 
-    "\[IndentingNewLine]", 
+        RowBox[{"2", "\[Eta]"}], "-", "1"}], ")"}]}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
     RowBox[{"vp2", "=", 
      RowBox[{
       RowBox[{"-", 
@@ -581,12 +329,11 @@ Cell[BoxData[
       SuperscriptBox[
        RowBox[{"(", 
         RowBox[{"\[Eta]", "-", "1"}], ")"}], "2"], " ", 
-      SuperscriptBox["\[Eta]", "2"]}]}], ";"}], "*)"}], "\[IndentingNewLine]", 
-  RowBox[{
-   RowBox[{
-    RowBox[{"vp1", "=", "y"}], ";"}], "\[IndentingNewLine]", 
-   RowBox[{
-    RowBox[{"vp2", "=", "x"}], ";"}], "\[IndentingNewLine]", 
+      SuperscriptBox["\[Eta]", "2"]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", 
+    RowBox[{
+     RowBox[{"vp1", "=", "y"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"vp2", "=", "x"}], ";"}], "*)"}], "\[IndentingNewLine]", 
    RowBox[{
     RowBox[{"vp", "=", 
      RowBox[{"{", 
@@ -595,62 +342,62 @@ Cell[BoxData[
    RowBox[{"(*", " ", 
     RowBox[{"Parametric", " ", "pressure"}], " ", "*)"}], 
    "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"pp", "=", 
+     RowBox[{
+      RowBox[{"-", "424"}], "+", 
+      RowBox[{"156", " ", 
+       RowBox[{"Exp", "[", "1", "]"}]}], "+", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"-", "\[Eta]"}], "+", 
+         SuperscriptBox["\[Eta]", "2"]}], ")"}], 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"-", "456"}], "+", 
+         RowBox[{
+          RowBox[{"Exp", "[", "\[Xi]", "]"}], 
+          RowBox[{"(", 
+           RowBox[{"456", "+", 
+            RowBox[{
+             SuperscriptBox["\[Xi]", "2"], 
+             RowBox[{"(", 
+              RowBox[{"228", "-", 
+               RowBox[{"5", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"-", "\[Eta]"}], "+", 
+                  SuperscriptBox["\[Eta]", "2"]}], ")"}]}]}], ")"}]}], "+", 
+            RowBox[{"2", "\[Xi]", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"-", "228"}], "+", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"-", "\[Eta]"}], "+", 
+                 SuperscriptBox["\[Eta]", "2"]}], ")"}]}], ")"}]}], "+", 
+            RowBox[{"2", 
+             SuperscriptBox["\[Xi]", "3"], 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"-", "36"}], "+", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"-", "\[Eta]"}], "+", 
+                 SuperscriptBox["\[Eta]", "2"]}], ")"}]}], ")"}]}], "+", 
+            RowBox[{
+             SuperscriptBox["\[Xi]", "4"], 
+             RowBox[{"(", 
+              RowBox[{"12", "+", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"-", "\[Eta]"}], "+", 
+                 SuperscriptBox["\[Eta]", "2"]}], ")"}]}], ")"}]}]}], 
+           ")"}]}]}], ")"}]}]}]}], ";"}], "\[IndentingNewLine]", 
    RowBox[{"(*", 
     RowBox[{
-     RowBox[{"pp", "=", 
-      RowBox[{
-       RowBox[{"-", "424"}], "+", 
-       RowBox[{"156", " ", 
-        RowBox[{"Exp", "[", "1", "]"}]}], "+", 
-       RowBox[{
-        RowBox[{"(", 
-         RowBox[{
-          RowBox[{"-", "\[Eta]"}], "+", 
-          SuperscriptBox["\[Eta]", "2"]}], ")"}], 
-        RowBox[{"(", 
-         RowBox[{
-          RowBox[{"-", "456"}], "+", 
-          RowBox[{
-           RowBox[{"Exp", "[", "\[Xi]", "]"}], 
-           RowBox[{"(", 
-            RowBox[{"456", "+", 
-             RowBox[{
-              SuperscriptBox["\[Xi]", "2"], 
-              RowBox[{"(", 
-               RowBox[{"228", "-", 
-                RowBox[{"5", 
-                 RowBox[{"(", 
-                  RowBox[{
-                   RowBox[{"-", "\[Eta]"}], "+", 
-                   SuperscriptBox["\[Eta]", "2"]}], ")"}]}]}], ")"}]}], "+", 
-             RowBox[{"2", "\[Xi]", 
-              RowBox[{"(", 
-               RowBox[{
-                RowBox[{"-", "228"}], "+", 
-                RowBox[{"(", 
-                 RowBox[{
-                  RowBox[{"-", "\[Eta]"}], "+", 
-                  SuperscriptBox["\[Eta]", "2"]}], ")"}]}], ")"}]}], "+", 
-             RowBox[{"2", 
-              SuperscriptBox["\[Xi]", "3"], 
-              RowBox[{"(", 
-               RowBox[{
-                RowBox[{"-", "36"}], "+", 
-                RowBox[{"(", 
-                 RowBox[{
-                  RowBox[{"-", "\[Eta]"}], "+", 
-                  SuperscriptBox["\[Eta]", "2"]}], ")"}]}], ")"}]}], "+", 
-             RowBox[{
-              SuperscriptBox["\[Xi]", "4"], 
-              RowBox[{"(", 
-               RowBox[{"12", "+", 
-                RowBox[{"(", 
-                 RowBox[{
-                  RowBox[{"-", "\[Eta]"}], "+", 
-                  SuperscriptBox["\[Eta]", "2"]}], ")"}]}], ")"}]}]}], 
-            ")"}]}]}], ")"}]}]}]}], ";"}], "*)"}], "\[IndentingNewLine]", 
-   RowBox[{
-    RowBox[{"pp", "=", " ", "0"}], ";"}], "\[IndentingNewLine]", 
+     RowBox[{"pp", "=", " ", "0"}], ";"}], "*)"}], "\[IndentingNewLine]", 
    RowBox[{"(*", " ", 
     RowBox[{"Verify", " ", "parametric", " ", "divergence", 
      RowBox[{"-", "free"}], ":", " ", 
@@ -665,9 +412,11 @@ Cell[BoxData[
        RowBox[{"D", "[", 
         RowBox[{"vp2", ",", "\[Eta]"}], "]"}]}], "]"}]}], "]"}]}]}]], "Input",\
 
- CellChangeTimes->{{3.99*^9, 3.985427768537624*^9}},
+ CellChangeTimes->{{3.99*^9, 3.985427768537624*^9}, {3.9865564290611877`*^9, 
+  3.986556432941659*^9}, {3.9865565202847347`*^9, 3.986556524014357*^9}, {
+  3.9865567255418997`*^9, 3.986556773173297*^9}},
  CellLabel->
-  "In[288]:=",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000003"],
+  "In[110]:=",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000003"],
 
 Cell[BoxData[
  InterpretationBox[
@@ -676,10 +425,13 @@ Cell[BoxData[
   SequenceForm["Parametric div(vp) [must be 0] = ", 0],
   Editable->False]], "Print",
  CellChangeTimes->{
-  3.985108910716559*^9, {3.985427769091538*^9, 3.9854277724466677`*^9}},
+  3.985108910716559*^9, {3.985427769091538*^9, 3.9854277724466677`*^9}, {
+   3.9865565092784147`*^9, 3.98655651096638*^9}, 3.986556612664392*^9, {
+   3.9865566813493233`*^9, 3.9865566960240707`*^9}, {3.9865567495582*^9, 
+   3.986556784741008*^9}},
  CellLabel->
   "During evaluation of \
-In[288]:=",ExpressionUUID->"cf5af229-5a53-4449-a05d-151723dbb5b9"]
+In[110]:=",ExpressionUUID->"27885823-5d1b-4fa4-a5bc-c38dbfb90076"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -721,123 +473,344 @@ Cell[BoxData[
      RowBox[{"Simplify", "[", 
       FractionBox["pp", "Jac"], "]"}]}], ";"}], "\[IndentingNewLine]", 
    "\[IndentingNewLine]", 
-   RowBox[{"Print", "[", 
-    RowBox[{"\"\<vs = \>\"", ",", "vs"}], "]"}], "\[IndentingNewLine]", 
-   RowBox[{"Print", "[", 
-    RowBox[{"\"\<ps  = \>\"", ",", "ps"}], "]"}], "\[IndentingNewLine]", 
-   "\[IndentingNewLine]"}]}]], "Input",
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<vs = \>\"", ",", 
+      RowBox[{"MatrixForm", "[", "vs", "]"}]}], "]"}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<ps = \>\"", ",", 
+      RowBox[{"MatrixForm", "[", "ps", "]"}]}], "]"}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]"}]}]], "Input",
  CellChangeTimes->{{3.99*^9, 3.985122307409349*^9}, {3.98512252278013*^9, 
-  3.9851225286922693`*^9}, {3.985185620186822*^9, 3.9851856203261623`*^9}},
+  3.9851225286922693`*^9}, {3.985185620186822*^9, 3.9851856203261623`*^9}, {
+  3.986556960690377*^9, 3.9865569725759993`*^9}, {3.986557294591824*^9, 
+  3.986557299415802*^9}, {3.9865574700719337`*^9, 3.986557470681431*^9}},
  CellLabel->
-  "In[293]:=",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000004"],
+  "In[377]:=",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000004"],
 
 Cell[CellGroupData[{
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"vs = \"\>", "\[InvisibleSpace]", 
-   RowBox[{"{", 
-    RowBox[{
-     FractionBox[
-      RowBox[{"x", "-", 
-       RowBox[{"x", " ", 
-        SuperscriptBox["\[Xi]", "2"]}], "+", 
-       RowBox[{"y", " ", "\[Xi]", " ", 
-        RowBox[{"(", 
-         RowBox[{
-          RowBox[{"-", "2"}], "-", 
-          RowBox[{"2", " ", "\[Eta]"}], "+", "\[Xi]"}], ")"}]}]}], 
-      RowBox[{"3", " ", 
-       RowBox[{"(", 
-        RowBox[{
-         RowBox[{"-", "1"}], "+", 
-         RowBox[{"4", " ", 
-          SuperscriptBox["\[Xi]", "2"]}], "-", 
-         RowBox[{"11", " ", 
-          SuperscriptBox["\[Xi]", "3"]}], "+", 
-         RowBox[{"10", " ", 
-          SuperscriptBox["\[Xi]", "4"]}], "-", 
-         RowBox[{"3", " ", 
-          SuperscriptBox["\[Xi]", "5"]}], "+", 
-         RowBox[{
-          SuperscriptBox["\[Eta]", "3"], " ", 
-          SuperscriptBox[
+   TagBox[
+    RowBox[{"(", "\[NoBreak]", 
+     TagBox[GridBox[{
+        {
+         FractionBox[
+          RowBox[{
+           SuperscriptBox["\[ExponentialE]", "\[Xi]"], " ", 
            RowBox[{"(", 
             RowBox[{
-             RowBox[{"-", "1"}], "+", "\[Xi]"}], ")"}], "2"], " ", 
-          RowBox[{"(", 
-           RowBox[{"1", "-", 
-            RowBox[{"2", " ", "\[Xi]"}], "+", 
-            RowBox[{"3", " ", 
-             SuperscriptBox["\[Xi]", "2"]}]}], ")"}]}], "-", 
-         RowBox[{"3", " ", 
-          SuperscriptBox["\[Eta]", "2"], " ", 
-          SuperscriptBox[
+             RowBox[{"-", "1"}], "+", "\[Eta]"}], ")"}], " ", "\[Eta]", " ", 
+           SuperscriptBox[
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"-", "1"}], "+", "\[Xi]"}], ")"}], "2"], " ", "\[Xi]", 
+           " ", 
            RowBox[{"(", 
             RowBox[{
-             RowBox[{"-", "1"}], "+", "\[Xi]"}], ")"}], "2"], " ", 
-          RowBox[{"(", 
-           RowBox[{"1", "-", 
-            RowBox[{"2", " ", "\[Xi]"}], "-", 
-            SuperscriptBox["\[Xi]", "2"], "+", 
-            SuperscriptBox["\[Xi]", "3"]}], ")"}]}], "+", 
-         RowBox[{"\[Eta]", " ", 
-          RowBox[{"(", 
-           RowBox[{"1", "-", 
-            RowBox[{"10", " ", "\[Xi]"}], "-", 
-            RowBox[{"2", " ", 
-             SuperscriptBox["\[Xi]", "2"]}], "+", 
-            RowBox[{"30", " ", 
-             SuperscriptBox["\[Xi]", "3"]}], "-", 
-            RowBox[{"27", " ", 
-             SuperscriptBox["\[Xi]", "4"]}], "+", 
-            RowBox[{"6", " ", 
-             SuperscriptBox["\[Xi]", "5"]}]}], ")"}]}]}], ")"}]}]], ",", 
+             RowBox[{
+              RowBox[{"-", "2"}], " ", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"-", "2"}], "+", "\[Xi]"}], ")"}], " ", 
+              SuperscriptBox["\[Xi]", "2"]}], "+", 
+             RowBox[{
+              SuperscriptBox["\[Eta]", "2"], " ", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"-", "2"}], "+", "\[Xi]", "-", 
+                RowBox[{"4", " ", 
+                 SuperscriptBox["\[Xi]", "2"]}], "+", 
+                SuperscriptBox["\[Xi]", "3"]}], ")"}]}], "+", 
+             RowBox[{"\[Eta]", " ", 
+              RowBox[{"(", 
+               RowBox[{"2", "-", "\[Xi]", "-", 
+                RowBox[{"8", " ", 
+                 SuperscriptBox["\[Xi]", "2"]}], "+", 
+                RowBox[{"3", " ", 
+                 SuperscriptBox["\[Xi]", "3"]}]}], ")"}]}]}], ")"}]}], 
+          RowBox[{"3", " ", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"-", "1"}], "+", 
+             RowBox[{"4", " ", 
+              SuperscriptBox["\[Xi]", "2"]}], "-", 
+             RowBox[{"11", " ", 
+              SuperscriptBox["\[Xi]", "3"]}], "+", 
+             RowBox[{"10", " ", 
+              SuperscriptBox["\[Xi]", "4"]}], "-", 
+             RowBox[{"3", " ", 
+              SuperscriptBox["\[Xi]", "5"]}], "+", 
+             RowBox[{
+              SuperscriptBox["\[Eta]", "3"], " ", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"-", "1"}], "+", "\[Xi]"}], ")"}], "2"], " ", 
+              RowBox[{"(", 
+               RowBox[{"1", "-", 
+                RowBox[{"2", " ", "\[Xi]"}], "+", 
+                RowBox[{"3", " ", 
+                 SuperscriptBox["\[Xi]", "2"]}]}], ")"}]}], "-", 
+             RowBox[{"3", " ", 
+              SuperscriptBox["\[Eta]", "2"], " ", 
+              SuperscriptBox[
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"-", "1"}], "+", "\[Xi]"}], ")"}], "2"], " ", 
+              RowBox[{"(", 
+               RowBox[{"1", "-", 
+                RowBox[{"2", " ", "\[Xi]"}], "-", 
+                SuperscriptBox["\[Xi]", "2"], "+", 
+                SuperscriptBox["\[Xi]", "3"]}], ")"}]}], "+", 
+             RowBox[{"\[Eta]", " ", 
+              RowBox[{"(", 
+               RowBox[{"1", "-", 
+                RowBox[{"10", " ", "\[Xi]"}], "-", 
+                RowBox[{"2", " ", 
+                 SuperscriptBox["\[Xi]", "2"]}], "+", 
+                RowBox[{"30", " ", 
+                 SuperscriptBox["\[Xi]", "3"]}], "-", 
+                RowBox[{"27", " ", 
+                 SuperscriptBox["\[Xi]", "4"]}], "+", 
+                RowBox[{"6", " ", 
+                 SuperscriptBox["\[Xi]", "5"]}]}], ")"}]}]}], ")"}]}]]},
+        {
+         RowBox[{"-", 
+          FractionBox[
+           RowBox[{
+            SuperscriptBox["\[ExponentialE]", "\[Xi]"], " ", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"-", "1"}], "+", "\[Eta]"}], ")"}], " ", "\[Eta]", " ", 
+            
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"-", "1"}], "+", "\[Xi]"}], ")"}], " ", 
+            SuperscriptBox["\[Xi]", "2"], " ", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"2", " ", 
+               SuperscriptBox[
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"-", "1"}], "+", "\[Xi]"}], ")"}], "2"], " ", 
+               RowBox[{"(", 
+                RowBox[{"1", "+", "\[Xi]"}], ")"}]}], "+", 
+              RowBox[{
+               SuperscriptBox["\[Eta]", "4"], " ", 
+               SuperscriptBox[
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"-", "1"}], "+", "\[Xi]"}], ")"}], "2"], " ", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"-", "2"}], "-", 
+                 RowBox[{"3", " ", "\[Xi]"}], "+", 
+                 RowBox[{"3", " ", 
+                  SuperscriptBox["\[Xi]", "2"]}]}], ")"}]}], "-", 
+              RowBox[{
+               SuperscriptBox["\[Eta]", "3"], " ", 
+               SuperscriptBox[
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"-", "1"}], "+", "\[Xi]"}], ")"}], "2"], " ", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"-", "4"}], "-", 
+                 RowBox[{"15", " ", "\[Xi]"}], "+", 
+                 RowBox[{"9", " ", 
+                  SuperscriptBox["\[Xi]", "2"]}]}], ")"}]}], "+", 
+              RowBox[{"\[Eta]", " ", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"-", "4"}], "+", 
+                 RowBox[{"13", " ", "\[Xi]"}], "-", 
+                 RowBox[{"14", " ", 
+                  SuperscriptBox["\[Xi]", "2"]}], "+", 
+                 RowBox[{"10", " ", 
+                  SuperscriptBox["\[Xi]", "3"]}], "-", 
+                 RowBox[{"3", " ", 
+                  SuperscriptBox["\[Xi]", "4"]}]}], ")"}]}], "+", 
+              RowBox[{
+               SuperscriptBox["\[Eta]", "2"], " ", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"-", "4"}], "-", 
+                 RowBox[{"19", " ", "\[Xi]"}], "+", 
+                 RowBox[{"56", " ", 
+                  SuperscriptBox["\[Xi]", "2"]}], "-", 
+                 RowBox[{"44", " ", 
+                  SuperscriptBox["\[Xi]", "3"]}], "+", 
+                 RowBox[{"9", " ", 
+                  SuperscriptBox["\[Xi]", "4"]}]}], ")"}]}]}], ")"}]}], 
+           RowBox[{"3", " ", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"-", "1"}], "+", 
+              RowBox[{"4", " ", 
+               SuperscriptBox["\[Xi]", "2"]}], "-", 
+              RowBox[{"11", " ", 
+               SuperscriptBox["\[Xi]", "3"]}], "+", 
+              RowBox[{"10", " ", 
+               SuperscriptBox["\[Xi]", "4"]}], "-", 
+              RowBox[{"3", " ", 
+               SuperscriptBox["\[Xi]", "5"]}], "+", 
+              RowBox[{
+               SuperscriptBox["\[Eta]", "3"], " ", 
+               SuperscriptBox[
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"-", "1"}], "+", "\[Xi]"}], ")"}], "2"], " ", 
+               RowBox[{"(", 
+                RowBox[{"1", "-", 
+                 RowBox[{"2", " ", "\[Xi]"}], "+", 
+                 RowBox[{"3", " ", 
+                  SuperscriptBox["\[Xi]", "2"]}]}], ")"}]}], "-", 
+              RowBox[{"3", " ", 
+               SuperscriptBox["\[Eta]", "2"], " ", 
+               SuperscriptBox[
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"-", "1"}], "+", "\[Xi]"}], ")"}], "2"], " ", 
+               RowBox[{"(", 
+                RowBox[{"1", "-", 
+                 RowBox[{"2", " ", "\[Xi]"}], "-", 
+                 SuperscriptBox["\[Xi]", "2"], "+", 
+                 SuperscriptBox["\[Xi]", "3"]}], ")"}]}], "+", 
+              RowBox[{"\[Eta]", " ", 
+               RowBox[{"(", 
+                RowBox[{"1", "-", 
+                 RowBox[{"10", " ", "\[Xi]"}], "-", 
+                 RowBox[{"2", " ", 
+                  SuperscriptBox["\[Xi]", "2"]}], "+", 
+                 RowBox[{"30", " ", 
+                  SuperscriptBox["\[Xi]", "3"]}], "-", 
+                 RowBox[{"27", " ", 
+                  SuperscriptBox["\[Xi]", "4"]}], "+", 
+                 RowBox[{"6", " ", 
+                  SuperscriptBox["\[Xi]", "5"]}]}], ")"}]}]}], ")"}]}]]}]}
+       },
+       GridBoxAlignment->{"Columns" -> {{Center}}, "Rows" -> {{Baseline}}},
+       GridBoxSpacings->{"Columns" -> {
+           Offset[0.27999999999999997`], {
+            Offset[0.5599999999999999]}, 
+           Offset[0.27999999999999997`]}, "Rows" -> {
+           Offset[0.2], {
+            Offset[0.4]}, 
+           Offset[0.2]}}],
+      Column], "\[NoBreak]", ")"}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm["vs = ", 
+   MatrixForm[{
+    Rational[1, 3] 
+     E^$CellContext`\[Xi] (-1 + $CellContext`\[Eta]) $CellContext`\[Eta] (-1 + \
+$CellContext`\[Xi])^2 $CellContext`\[Xi] ((-2) (-2 + $CellContext`\[Xi]) \
+$CellContext`\[Xi]^2 + $CellContext`\[Eta]^2 (-2 + $CellContext`\[Xi] - 
+        4 $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + $CellContext`\[Eta] (
+        2 - $CellContext`\[Xi] - 8 $CellContext`\[Xi]^2 + 
+        3 $CellContext`\[Xi]^3))/(-1 + 4 $CellContext`\[Xi]^2 - 
+     11 $CellContext`\[Xi]^3 + 10 $CellContext`\[Xi]^4 - 
+     3 $CellContext`\[Xi]^5 + $CellContext`\[Eta]^3 (-1 + \
+$CellContext`\[Xi])^2 (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) - 
+     3 $CellContext`\[Eta]^2 (-1 + $CellContext`\[Xi])^2 (1 - 
+      2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + \
+$CellContext`\[Eta] (1 - 10 $CellContext`\[Xi] - 2 $CellContext`\[Xi]^2 + 
+       30 $CellContext`\[Xi]^3 - 27 $CellContext`\[Xi]^4 + 
+       6 $CellContext`\[Xi]^5)), Rational[-1, 3] 
+     E^$CellContext`\[Xi] (-1 + $CellContext`\[Eta]) $CellContext`\[Eta] (-1 + \
+$CellContext`\[Xi]) $CellContext`\[Xi]^2 (
+      2 (-1 + $CellContext`\[Xi])^2 (
+        1 + $CellContext`\[Xi]) + $CellContext`\[Eta]^4 (-1 + $CellContext`\
+\[Xi])^2 (-2 - 3 $CellContext`\[Xi] + 
+        3 $CellContext`\[Xi]^2) - $CellContext`\[Eta]^3 (-1 + $CellContext`\
+\[Xi])^2 (-4 - 15 $CellContext`\[Xi] + 
+       9 $CellContext`\[Xi]^2) + $CellContext`\[Eta] (-4 + 
+        13 $CellContext`\[Xi] - 14 $CellContext`\[Xi]^2 + 
+        10 $CellContext`\[Xi]^3 - 
+        3 $CellContext`\[Xi]^4) + $CellContext`\[Eta]^2 (-4 - 
+        19 $CellContext`\[Xi] + 56 $CellContext`\[Xi]^2 - 
+        44 $CellContext`\[Xi]^3 + 9 $CellContext`\[Xi]^4))/(-1 + 
+     4 $CellContext`\[Xi]^2 - 11 $CellContext`\[Xi]^3 + 
+     10 $CellContext`\[Xi]^4 - 
+     3 $CellContext`\[Xi]^5 + $CellContext`\[Eta]^3 (-1 + \
+$CellContext`\[Xi])^2 (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) - 
+     3 $CellContext`\[Eta]^2 (-1 + $CellContext`\[Xi])^2 (1 - 
+      2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + \
+$CellContext`\[Eta] (1 - 10 $CellContext`\[Xi] - 2 $CellContext`\[Xi]^2 + 
+       30 $CellContext`\[Xi]^3 - 27 $CellContext`\[Xi]^4 + 
+       6 $CellContext`\[Xi]^5))}]],
+  Editable->False]], "Print",
+ CellChangeTimes->{
+  3.985108942869277*^9, 3.985122308223249*^9, {3.985122529604723*^9, 
+   3.985122531197687*^9}, 3.9854277752425528`*^9, {3.986556702546221*^9, 
+   3.986556713325852*^9}, {3.986556745524105*^9, 3.986556753707679*^9}, 
+   3.986556790070712*^9, 3.986556978460865*^9, 3.986557301392308*^9, 
+   3.986557471579773*^9, 3.9865604501270657`*^9},
+ CellLabel->
+  "During evaluation of \
+In[377]:=",ExpressionUUID->"f80e14d6-3bf6-462a-b0b9-a0dcc00d7b45"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"ps = \"\>", "\[InvisibleSpace]", 
+   TagBox[
+    RowBox[{"-", 
      FractionBox[
       RowBox[{
-       RowBox[{"x", " ", "\[Xi]", " ", 
+       RowBox[{"156", " ", "\[ExponentialE]"}], "-", 
+       RowBox[{"8", " ", 
         RowBox[{"(", 
-         RowBox[{"1", "-", 
-          RowBox[{"6", " ", "\[Eta]", " ", 
-           SuperscriptBox[
-            RowBox[{"(", 
-             RowBox[{
-              RowBox[{"-", "1"}], "+", "\[Xi]"}], ")"}], "2"]}], "+", 
-          RowBox[{"3", " ", 
-           SuperscriptBox["\[Eta]", "2"], " ", 
-           SuperscriptBox[
-            RowBox[{"(", 
-             RowBox[{
-              RowBox[{"-", "1"}], "+", "\[Xi]"}], ")"}], "2"]}], "-", 
-          RowBox[{"5", " ", "\[Xi]"}], "+", 
-          RowBox[{"3", " ", 
-           SuperscriptBox["\[Xi]", "2"]}]}], ")"}]}], "+", 
-       RowBox[{"y", " ", 
+         RowBox[{"53", "-", 
+          RowBox[{"57", " ", "\[Eta]"}], "+", 
+          RowBox[{"57", " ", 
+           SuperscriptBox["\[Eta]", "2"]}]}], ")"}]}], "+", 
+       RowBox[{
+        SuperscriptBox["\[ExponentialE]", "\[Xi]"], " ", "\[Eta]", " ", 
         RowBox[{"(", 
          RowBox[{
-          RowBox[{"-", "1"}], "+", 
-          SuperscriptBox["\[Xi]", "2"], "-", 
-          RowBox[{"3", " ", 
-           SuperscriptBox["\[Eta]", "2"], " ", 
-           RowBox[{"(", 
-            RowBox[{"1", "-", 
-             RowBox[{"4", " ", "\[Xi]"}], "+", 
-             RowBox[{"3", " ", 
-              SuperscriptBox["\[Xi]", "2"]}]}], ")"}]}], "+", 
           RowBox[{
-           SuperscriptBox["\[Eta]", "3"], " ", 
+           RowBox[{"-", "2"}], " ", 
+           SuperscriptBox["\[Eta]", "2"], " ", "\[Xi]", " ", 
            RowBox[{"(", 
-            RowBox[{"1", "-", 
-             RowBox[{"4", " ", "\[Xi]"}], "+", 
-             RowBox[{"3", " ", 
-              SuperscriptBox["\[Xi]", "2"]}]}], ")"}]}], "+", 
+            RowBox[{"2", "-", 
+             RowBox[{"5", " ", "\[Xi]"}], "+", 
+             RowBox[{"2", " ", 
+              SuperscriptBox["\[Xi]", "2"]}], "+", 
+             SuperscriptBox["\[Xi]", "3"]}], ")"}]}], "+", 
+          RowBox[{
+           SuperscriptBox["\[Eta]", "3"], " ", "\[Xi]", " ", 
+           RowBox[{"(", 
+            RowBox[{"2", "-", 
+             RowBox[{"5", " ", "\[Xi]"}], "+", 
+             RowBox[{"2", " ", 
+              SuperscriptBox["\[Xi]", "2"]}], "+", 
+             SuperscriptBox["\[Xi]", "3"]}], ")"}]}], "-", 
+          RowBox[{"12", " ", 
+           RowBox[{"(", 
+            RowBox[{"38", "-", 
+             RowBox[{"38", " ", "\[Xi]"}], "+", 
+             RowBox[{"19", " ", 
+              SuperscriptBox["\[Xi]", "2"]}], "-", 
+             RowBox[{"6", " ", 
+              SuperscriptBox["\[Xi]", "3"]}], "+", 
+             SuperscriptBox["\[Xi]", "4"]}], ")"}]}], "+", 
           RowBox[{"\[Eta]", " ", 
            RowBox[{"(", 
-            RowBox[{"1", "-", 
-             RowBox[{"10", " ", "\[Xi]"}], "+", 
-             RowBox[{"9", " ", 
-              SuperscriptBox["\[Xi]", "2"]}]}], ")"}]}]}], ")"}]}]}], 
-      RowBox[{"3", " ", 
+            RowBox[{"456", "-", 
+             RowBox[{"454", " ", "\[Xi]"}], "+", 
+             RowBox[{"223", " ", 
+              SuperscriptBox["\[Xi]", "2"]}], "-", 
+             RowBox[{"70", " ", 
+              SuperscriptBox["\[Xi]", "3"]}], "+", 
+             RowBox[{"13", " ", 
+              SuperscriptBox["\[Xi]", "4"]}]}], ")"}]}]}], ")"}]}]}], 
+      RowBox[{"9", " ", 
        RowBox[{"(", 
         RowBox[{
          RowBox[{"-", "1"}], "+", 
@@ -882,24 +855,12 @@ Cell[BoxData[
             RowBox[{"27", " ", 
              SuperscriptBox["\[Xi]", "4"]}], "+", 
             RowBox[{"6", " ", 
-             SuperscriptBox["\[Xi]", "5"]}]}], ")"}]}]}], ")"}]}]]}], "}"}]}],
-  
-  SequenceForm[
-  "vs = ", {
-   Rational[1, 
-      3] ($CellContext`x - $CellContext`x $CellContext`\[Xi]^2 + \
-$CellContext`y $CellContext`\[Xi] (-2 - 
-       2 $CellContext`\[Eta] + $CellContext`\[Xi]))/(-1 + 
-    4 $CellContext`\[Xi]^2 - 11 $CellContext`\[Xi]^3 + 
-    10 $CellContext`\[Xi]^4 - 
-    3 $CellContext`\[Xi]^5 + $CellContext`\[Eta]^3 (-1 + \
-$CellContext`\[Xi])^2 (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) - 
-    3 $CellContext`\[Eta]^2 (-1 + $CellContext`\[Xi])^2 (1 - 
-     2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + \
-$CellContext`\[Eta] (1 - 10 $CellContext`\[Xi] - 2 $CellContext`\[Xi]^2 + 
-      30 $CellContext`\[Xi]^3 - 27 $CellContext`\[Xi]^4 + 
-      6 $CellContext`\[Xi]^5)), 
-    Rational[1, 3] (-1 + 4 $CellContext`\[Xi]^2 - 11 $CellContext`\[Xi]^3 + 
+             SuperscriptBox["\[Xi]", "5"]}]}], ")"}]}]}], ")"}]}]]}],
+    Function[BoxForm`e$, 
+     MatrixForm[BoxForm`e$]]]}],
+  SequenceForm["ps = ", 
+   MatrixForm[
+   Rational[-1, 9] (-1 + 4 $CellContext`\[Xi]^2 - 11 $CellContext`\[Xi]^3 + 
       10 $CellContext`\[Xi]^4 - 
       3 $CellContext`\[Xi]^5 + $CellContext`\[Eta]^3 (-1 + \
 $CellContext`\[Xi])^2 (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) - 
@@ -907,35 +868,27 @@ $CellContext`\[Xi])^2 (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) -
        2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + \
 $CellContext`\[Eta] (1 - 10 $CellContext`\[Xi] - 2 $CellContext`\[Xi]^2 + 
         30 $CellContext`\[Xi]^3 - 27 $CellContext`\[Xi]^4 + 
-        6 $CellContext`\[Xi]^5))^(-1) ($CellContext`x $CellContext`\[Xi] (1 - 
-       6 $CellContext`\[Eta] (-1 + $CellContext`\[Xi])^2 + 
-       3 $CellContext`\[Eta]^2 (-1 + $CellContext`\[Xi])^2 - 
-       5 $CellContext`\[Xi] + 
-       3 $CellContext`\[Xi]^2) + $CellContext`y (-1 + $CellContext`\[Xi]^2 - 
-       3 $CellContext`\[Eta]^2 (1 - 4 $CellContext`\[Xi] + 
-        3 $CellContext`\[Xi]^2) + $CellContext`\[Eta]^3 (1 - 
-         4 $CellContext`\[Xi] + 
-         3 $CellContext`\[Xi]^2) + $CellContext`\[Eta] (1 - 
-         10 $CellContext`\[Xi] + 9 $CellContext`\[Xi]^2)))}],
+        6 $CellContext`\[Xi]^5))^(-1) (156 E - 
+     8 (53 - 57 $CellContext`\[Eta] + 57 $CellContext`\[Eta]^2) + 
+     E^$CellContext`\[Xi] $CellContext`\[Eta] ((-2) $CellContext`\[Eta]^2 \
+$CellContext`\[Xi] (2 - 5 $CellContext`\[Xi] + 
+         2 $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + \
+$CellContext`\[Eta]^3 $CellContext`\[Xi] (2 - 5 $CellContext`\[Xi] + 
+         2 $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) - 
+       12 (38 - 38 $CellContext`\[Xi] + 19 $CellContext`\[Xi]^2 - 
+        6 $CellContext`\[Xi]^3 + $CellContext`\[Xi]^4) + $CellContext`\[Eta] (
+         456 - 454 $CellContext`\[Xi] + 223 $CellContext`\[Xi]^2 - 
+         70 $CellContext`\[Xi]^3 + 13 $CellContext`\[Xi]^4)))]],
   Editable->False]], "Print",
  CellChangeTimes->{
   3.985108942869277*^9, 3.985122308223249*^9, {3.985122529604723*^9, 
-   3.985122531197687*^9}, 3.9854277752425528`*^9},
+   3.985122531197687*^9}, 3.9854277752425528`*^9, {3.986556702546221*^9, 
+   3.986556713325852*^9}, {3.986556745524105*^9, 3.986556753707679*^9}, 
+   3.986556790070712*^9, 3.986556978460865*^9, 3.986557301392308*^9, 
+   3.986557471579773*^9, 3.9865604501297903`*^9},
  CellLabel->
   "During evaluation of \
-In[293]:=",ExpressionUUID->"161cb072-d2b0-4270-9a6f-eac8548188f0"],
-
-Cell[BoxData[
- InterpretationBox[
-  RowBox[{"\<\"ps  = \"\>", "\[InvisibleSpace]", "0"}],
-  SequenceForm["ps  = ", 0],
-  Editable->False]], "Print",
- CellChangeTimes->{
-  3.985108942869277*^9, 3.985122308223249*^9, {3.985122529604723*^9, 
-   3.985122531197687*^9}, 3.985427775245018*^9},
- CellLabel->
-  "During evaluation of \
-In[293]:=",ExpressionUUID->"f8f5ffa1-465f-40cf-82a7-e31e99976523"]
+In[377]:=",ExpressionUUID->"927ef618-4ed8-4fb1-88e5-dd9fcb2f19fc"]
 }, Open  ]]
 }, Open  ]],
 
@@ -989,7 +942,10 @@ Cell[BoxData[
            RowBox[{"2", ",", "2"}], "]"}], "]"}], 
          RowBox[{"D", "[", 
           RowBox[{"phi", ",", "\[Eta]"}], "]"}]}]}]}], "}"}]}], ";"}], 
-   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"gradX", "[", "ps", "]"}], ";"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
    RowBox[{"(*", " ", 
     RowBox[{
     "Spatial", " ", "gradient", " ", "of", " ", "vector", " ", "v", " ", 
@@ -1088,14 +1044,16 @@ Cell[BoxData[
    "\[IndentingNewLine]", "\[IndentingNewLine]", 
    RowBox[{
    "Print", "[", "\"\<Spatial operators defined.\>\"", "]"}]}]}]], "Input",
- CellChangeTimes->{{3.99*^9, 3.9900000000005*^9}},
- CellLabel->"In[71]:=",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000005"],
+ CellChangeTimes->{{3.99*^9, 3.98656067812307*^9}, 3.986560790493472*^9},
+ CellLabel->
+  "In[516]:=",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000005"],
 
 Cell[BoxData["\<\"Spatial operators defined.\"\>"], "Print",
- CellChangeTimes->{3.985120734154297*^9},
+ CellChangeTimes->{3.985120734154297*^9, 3.9865606790789824`*^9, 
+  3.986560796436645*^9},
  CellLabel->
   "During evaluation of \
-In[71]:=",ExpressionUUID->"cf1f659c-3352-46b6-934b-7bffcf668ca5"]
+In[516]:=",ExpressionUUID->"c6d7906c-397a-405a-8dc0-e8b5a8581836"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -1113,6 +1071,9 @@ Cell[BoxData[
    "\[IndentingNewLine]", 
    RowBox[{
     RowBox[{"gradX", "[", "ps", "]"}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Simplify", "[", 
+     RowBox[{"gradX", "[", "ps", "]"}], "]"}], ";"}], "\[IndentingNewLine]", 
    "\[IndentingNewLine]", 
    RowBox[{"(*", " ", 
     RowBox[{
@@ -1126,10 +1087,11 @@ Cell[BoxData[
       RowBox[{"vs", "+", 
        RowBox[{"gradX", "[", "ps", "]"}]}], "]"}]}], ";"}], 
    "\[IndentingNewLine]", 
-   RowBox[{"Print", "[", 
-    RowBox[{"\"\<Force_L2Projection_CurveDomain: \>\"", ",", 
-     RowBox[{"MatrixForm", "[", "fl2", "]"}]}], "]"}], "\[IndentingNewLine]", 
-   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<Force_L2Projection_CurveDomain: \>\"", ",", 
+      RowBox[{"MatrixForm", "[", "fl2", "]"}]}], "]"}], ";"}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
    RowBox[{"(*", " ", 
     RowBox[{"Forcing", " ", "function", " ", 
      RowBox[{"f", " ", "=", " ", 
@@ -1156,9 +1118,15 @@ Cell[BoxData[
   3.985120756379424*^9, 3.985120759076661*^9}, {3.98512081336552*^9, 
   3.985120835091762*^9}, {3.9851225516244583`*^9, 3.985122582683835*^9}, {
   3.9851856467018623`*^9, 3.985185691412374*^9}, {3.9851857216667233`*^9, 
-  3.985185721715794*^9}, {3.985185753486363*^9, 3.9851857743025846`*^9}},
+  3.985185721715794*^9}, {3.985185753486363*^9, 3.9851857743025846`*^9}, {
+  3.986559969821146*^9, 3.986560003846808*^9}, {3.9865600359334593`*^9, 
+  3.98656007184904*^9}, {3.986560156326796*^9, 3.986560158576042*^9}, {
+  3.986560332536731*^9, 3.986560430781783*^9}, {3.986560465490808*^9, 
+  3.98656046934217*^9}, {3.986560550731537*^9, 3.9865606155441637`*^9}, {
+  3.9865606631940613`*^9, 3.9865606756314573`*^9}, {3.9865607174546957`*^9, 
+  3.986560730043623*^9}},
  CellLabel->
-  "In[277]:=",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000006"],
+  "In[509]:=",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000006"],
 
 Cell[CellGroupData[{
 
@@ -2302,246 +2270,229 @@ Cell[BoxData[
     Function[BoxForm`e$, 
      MatrixForm[BoxForm`e$]]]}],
   SequenceForm["Force_L2Projection_CurveDomain: ", 
-   MatrixForm[{((
-       Rational[-1, 81] (1 - 4 $CellContext`\[Xi]^2 + 11 $CellContext`\[Xi]^3 - 
-         10 $CellContext`\[Xi]^4 + 
-         3 $CellContext`\[Xi]^5 - ($CellContext`\[Eta]^3 (-1 + $CellContext`\
-\[Xi])^2) (1 - 2 $CellContext`\[Xi] + 
-          3 $CellContext`\[Xi]^2) + ((
-            3 $CellContext`\[Eta]^2) (-1 + $CellContext`\[Xi])^2) (1 - 
-           2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + \
-$CellContext`\[Xi]^3) + $CellContext`\[Eta] (-1 + 10 $CellContext`\[Xi] + 
-           2 $CellContext`\[Xi]^2 - 30 $CellContext`\[Xi]^3 + 
-           27 $CellContext`\[Xi]^4 - 6 $CellContext`\[Xi]^5))^(-2))/(-1 + 
-      4 $CellContext`\[Xi]^2 - 11 $CellContext`\[Xi]^3 + 
-      10 $CellContext`\[Xi]^4 - 
-      3 $CellContext`\[Xi]^5 + ($CellContext`\[Eta]^3 (-1 + \
-$CellContext`\[Xi])^2) (1 - 2 $CellContext`\[Xi] + 
-        3 $CellContext`\[Xi]^2) - ((
-        3 $CellContext`\[Eta]^2) (-1 + $CellContext`\[Xi])^2) (1 - 
-       2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + \
+   MatrixForm[{
+    Rational[-1, 81] (1 - 4 $CellContext`\[Xi]^2 + 11 $CellContext`\[Xi]^3 - 
+       10 $CellContext`\[Xi]^4 + 
+       3 $CellContext`\[Xi]^5 - $CellContext`\[Eta]^3 (-1 + \
+$CellContext`\[Xi])^2 (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) + 
+       3 $CellContext`\[Eta]^2 (-1 + $CellContext`\[Xi])^2 (1 - 
+         2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + \
+$CellContext`\[Eta] (-1 + 10 $CellContext`\[Xi] + 2 $CellContext`\[Xi]^2 - 
+         30 $CellContext`\[Xi]^3 + 27 $CellContext`\[Xi]^4 - 
+         6 $CellContext`\[Xi]^5))^(-2) (-1 + 4 $CellContext`\[Xi]^2 - 
+       11 $CellContext`\[Xi]^3 + 10 $CellContext`\[Xi]^4 - 
+       3 $CellContext`\[Xi]^5 + $CellContext`\[Eta]^3 (-1 + \
+$CellContext`\[Xi])^2 (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) - 
+       3 $CellContext`\[Eta]^2 (-1 + $CellContext`\[Xi])^2 (1 - 
+        2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + \
 $CellContext`\[Eta] (1 - 10 $CellContext`\[Xi] - 2 $CellContext`\[Xi]^2 + 
-        30 $CellContext`\[Xi]^3 - 27 $CellContext`\[Xi]^4 + 
-        6 $CellContext`\[Xi]^5))) ((((((((-27) 
-             E^$CellContext`\[Xi]) (-1 + $CellContext`\[Eta])) $CellContext`\
-\[Eta]) (-1 + $CellContext`\[Xi])^2) $CellContext`\[Xi]) (((-2) (-2 + \
-$CellContext`\[Xi])) $CellContext`\[Xi]^2 + $CellContext`\[Eta]^2 (-2 + \
+         30 $CellContext`\[Xi]^3 - 27 $CellContext`\[Xi]^4 + 
+         6 $CellContext`\[Xi]^5))^(-1) ((-27) 
+       E^$CellContext`\[Xi] (-1 + $CellContext`\[Eta]) $CellContext`\[Eta] \
+(-1 + $CellContext`\[Xi])^2 $CellContext`\[Xi] ((-2) (-2 + \
+$CellContext`\[Xi]) $CellContext`\[Xi]^2 + $CellContext`\[Eta]^2 (-2 + \
 $CellContext`\[Xi] - 
-           4 $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + $CellContext`\
-\[Eta] (2 - $CellContext`\[Xi] - 8 $CellContext`\[Xi]^2 + 
-           3 $CellContext`\[Xi]^3))) (1 - 4 $CellContext`\[Xi]^2 + 
+          4 $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + \
+$CellContext`\[Eta] (2 - $CellContext`\[Xi] - 8 $CellContext`\[Xi]^2 + 
+          3 $CellContext`\[Xi]^3)) (1 - 4 $CellContext`\[Xi]^2 + 
          11 $CellContext`\[Xi]^3 - 10 $CellContext`\[Xi]^4 + 
-         3 $CellContext`\[Xi]^5 - ($CellContext`\[Eta]^3 (-1 + $CellContext`\
-\[Xi])^2) (1 - 2 $CellContext`\[Xi] + 
-          3 $CellContext`\[Xi]^2) + ((
-            3 $CellContext`\[Eta]^2) (-1 + $CellContext`\[Xi])^2) (1 - 
+         3 $CellContext`\[Xi]^5 - $CellContext`\[Eta]^3 (-1 + $CellContext`\
+\[Xi])^2 (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) + 
+         3 $CellContext`\[Eta]^2 (-1 + $CellContext`\[Xi])^2 (1 - 
            2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + \
 $CellContext`\[Xi]^3) + $CellContext`\[Eta] (-1 + 10 $CellContext`\[Xi] + 
            2 $CellContext`\[Xi]^2 - 30 $CellContext`\[Xi]^3 + 
-           27 $CellContext`\[Xi]^4 - 6 $CellContext`\[Xi]^5))^2 - (
-       3 (-1 + $CellContext`\[Xi]^2 - (3 $CellContext`\[Eta]^2) (1 - 
+           27 $CellContext`\[Xi]^4 - 6 $CellContext`\[Xi]^5))^2 - 
+      3 (-1 + $CellContext`\[Xi]^2 - 
+       3 $CellContext`\[Eta]^2 (1 - 4 $CellContext`\[Xi] + 
+        3 $CellContext`\[Xi]^2) + $CellContext`\[Eta]^3 (1 - 
          4 $CellContext`\[Xi] + 
-         3 $CellContext`\[Xi]^2) + $CellContext`\[Eta]^3 (1 - 
-          4 $CellContext`\[Xi] + 
-          3 $CellContext`\[Xi]^2) + $CellContext`\[Eta] (1 - 
-          10 $CellContext`\[Xi] + 
-          9 $CellContext`\[Xi]^2))) ((((-2) (-1 + 
-           2 $CellContext`\[Eta])) (-228 + 
-          E^$CellContext`\[Xi] (
-            228 + (2 (-114 - $CellContext`\[Eta] + $CellContext`\[Eta]^2)) \
+         3 $CellContext`\[Xi]^2) + $CellContext`\[Eta] (1 - 
+         10 $CellContext`\[Xi] + 9 $CellContext`\[Xi]^2)) ((-2) (-1 + 
+         2 $CellContext`\[Eta]) (-228 + 
+         E^$CellContext`\[Xi] (228 + 
+           2 (-114 - $CellContext`\[Eta] + $CellContext`\[Eta]^2) \
 $CellContext`\[Xi] + (114 + 5 $CellContext`\[Eta] - 
-              5 $CellContext`\[Eta]^2) $CellContext`\[Xi]^2 + (
-              2 (-18 - $CellContext`\[Eta] + $CellContext`\[Eta]^2)) \
+             5 $CellContext`\[Eta]^2) $CellContext`\[Xi]^2 + 
+           2 (-18 - $CellContext`\[Eta] + $CellContext`\[Eta]^2) \
 $CellContext`\[Xi]^3 + (
-              6 - $CellContext`\[Eta] + $CellContext`\[Eta]^2) $CellContext`\
-\[Xi]^4))) (1 - 4 $CellContext`\[Xi]^2 + 11 $CellContext`\[Xi]^3 - 
+             6 - $CellContext`\[Eta] + $CellContext`\[Eta]^2) $CellContext`\
+\[Xi]^4)) (1 - 4 $CellContext`\[Xi]^2 + 11 $CellContext`\[Xi]^3 - 
          10 $CellContext`\[Xi]^4 + 
-         3 $CellContext`\[Xi]^5 - ($CellContext`\[Eta]^3 (-1 + $CellContext`\
-\[Xi])^2) (1 - 2 $CellContext`\[Xi] + 
-          3 $CellContext`\[Xi]^2) + ((
-            3 $CellContext`\[Eta]^2) (-1 + $CellContext`\[Xi])^2) (1 - 
+         3 $CellContext`\[Xi]^5 - $CellContext`\[Eta]^3 (-1 + $CellContext`\
+\[Xi])^2 (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) + 
+         3 $CellContext`\[Eta]^2 (-1 + $CellContext`\[Xi])^2 (1 - 
            2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + \
 $CellContext`\[Xi]^3) + $CellContext`\[Eta] (-1 + 10 $CellContext`\[Xi] + 
            2 $CellContext`\[Xi]^2 - 30 $CellContext`\[Xi]^3 + 
            27 $CellContext`\[Xi]^4 - 6 $CellContext`\[Xi]^5)) - (1 - 
         10 $CellContext`\[Xi] - 2 $CellContext`\[Xi]^2 + 
         30 $CellContext`\[Xi]^3 - 27 $CellContext`\[Xi]^4 + 
-        6 $CellContext`\[Xi]^5 + ((
-           3 $CellContext`\[Eta]^2) (-1 + $CellContext`\[Xi])^2) (1 - 
-          2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) - ((
-          6 $CellContext`\[Eta]) (-1 + $CellContext`\[Xi])^2) (1 - 
+        6 $CellContext`\[Xi]^5 + 
+        3 $CellContext`\[Eta]^2 (-1 + $CellContext`\[Xi])^2 (1 - 
+          2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) - 
+        6 $CellContext`\[Eta] (-1 + $CellContext`\[Xi])^2 (1 - 
          2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3)) \
-(156 E - 8 (53 - 57 $CellContext`\[Eta] + 
-         57 $CellContext`\[Eta]^2) + (
-          E^$CellContext`\[Xi] $CellContext`\[Eta]) ((((-2) $CellContext`\
-\[Eta]^2) $CellContext`\[Xi]) (2 - 5 $CellContext`\[Xi] + 
-            2 $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + ($CellContext`\
-\[Eta]^3 $CellContext`\[Xi]) (2 - 5 $CellContext`\[Xi] + 
+(156 E - 8 (53 - 57 $CellContext`\[Eta] + 57 $CellContext`\[Eta]^2) + 
+        E^$CellContext`\[Xi] $CellContext`\[Eta] ((-2) $CellContext`\[Eta]^2 \
+$CellContext`\[Xi] (2 - 5 $CellContext`\[Xi] + 
+            2 $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + $CellContext`\
+\[Eta]^3 $CellContext`\[Xi] (2 - 5 $CellContext`\[Xi] + 
             2 $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) - 
           12 (38 - 38 $CellContext`\[Xi] + 19 $CellContext`\[Xi]^2 - 
            6 $CellContext`\[Xi]^3 + $CellContext`\[Xi]^4) + $CellContext`\
 \[Eta] (456 - 454 $CellContext`\[Xi] + 223 $CellContext`\[Xi]^2 - 
-            70 $CellContext`\[Xi]^3 + 13 $CellContext`\[Xi]^4)))) - ((
-        3 $CellContext`\[Xi]) (
-        1 - (
-         6 $CellContext`\[Eta]) (-1 + $CellContext`\[Xi])^2 + (
-          3 $CellContext`\[Eta]^2) (-1 + $CellContext`\[Xi])^2 - 
-        5 $CellContext`\[Xi] + 
-        3 $CellContext`\[Xi]^2)) ((((
-           E^$CellContext`\[Xi] (-1 + $CellContext`\[Eta])) $CellContext`\
-\[Eta]) ((
-            12 (-1 + $CellContext`\[Xi])^2) $CellContext`\[Xi]^2 - \
-$CellContext`\[Eta] (2 - 8 $CellContext`\[Xi] + $CellContext`\[Xi]^2 + 
-           6 $CellContext`\[Xi]^3 + $CellContext`\[Xi]^4) + $CellContext`\
-\[Eta]^2 (2 - 8 $CellContext`\[Xi] + $CellContext`\[Xi]^2 + 
-            6 $CellContext`\[Xi]^3 + $CellContext`\[Xi]^4))) (1 - 
+            70 $CellContext`\[Xi]^3 + 13 $CellContext`\[Xi]^4)))) - 
+      3 $CellContext`\[Xi] (1 - 
+       6 $CellContext`\[Eta] (-1 + $CellContext`\[Xi])^2 + 
+       3 $CellContext`\[Eta]^2 (-1 + $CellContext`\[Xi])^2 - 
+       5 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) (
+       E^$CellContext`\[Xi] (-1 + $CellContext`\[Eta]) $CellContext`\[Eta] (
+         12 (-1 + $CellContext`\[Xi])^2 $CellContext`\[Xi]^2 - $CellContext`\
+\[Eta] (2 - 8 $CellContext`\[Xi] + $CellContext`\[Xi]^2 + 
+          6 $CellContext`\[Xi]^3 + $CellContext`\[Xi]^4) + \
+$CellContext`\[Eta]^2 (2 - 8 $CellContext`\[Xi] + $CellContext`\[Xi]^2 + 
+           6 $CellContext`\[Xi]^3 + $CellContext`\[Xi]^4)) (1 - 
          4 $CellContext`\[Xi]^2 + 11 $CellContext`\[Xi]^3 - 
          10 $CellContext`\[Xi]^4 + 
-         3 $CellContext`\[Xi]^5 - ($CellContext`\[Eta]^3 (-1 + $CellContext`\
-\[Xi])^2) (1 - 2 $CellContext`\[Xi] + 
-          3 $CellContext`\[Xi]^2) + ((
-            3 $CellContext`\[Eta]^2) (-1 + $CellContext`\[Xi])^2) (1 - 
+         3 $CellContext`\[Xi]^5 - $CellContext`\[Eta]^3 (-1 + $CellContext`\
+\[Xi])^2 (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) + 
+         3 $CellContext`\[Eta]^2 (-1 + $CellContext`\[Xi])^2 (1 - 
            2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + \
 $CellContext`\[Xi]^3) + $CellContext`\[Eta] (-1 + 10 $CellContext`\[Xi] + 
            2 $CellContext`\[Xi]^2 - 30 $CellContext`\[Xi]^3 + 
            27 $CellContext`\[Xi]^4 - 
            6 $CellContext`\[Xi]^5)) + ($CellContext`\[Xi] (8 - 
            33 $CellContext`\[Xi] + 40 $CellContext`\[Xi]^2 - 
-           15 $CellContext`\[Xi]^3) + (4 $CellContext`\[Eta]^3) (-1 + 
-           4 $CellContext`\[Xi] - 6 $CellContext`\[Xi]^2 + 
-           3 $CellContext`\[Xi]^3) - (3 $CellContext`\[Eta]^2) (-4 + 
-          8 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2 - 
-          12 $CellContext`\[Xi]^3 + 
-          5 $CellContext`\[Xi]^4) + (2 $CellContext`\[Eta]) (-5 - 
-           2 $CellContext`\[Xi] + 45 $CellContext`\[Xi]^2 - 
-           54 $CellContext`\[Xi]^3 + 15 $CellContext`\[Xi]^4)) (156 E - 
-         8 (53 - 57 $CellContext`\[Eta] + 
-          57 $CellContext`\[Eta]^2) + (
-           E^$CellContext`\[Xi] $CellContext`\[Eta]) ((((-2) $CellContext`\
-\[Eta]^2) $CellContext`\[Xi]) (2 - 5 $CellContext`\[Xi] + 
-             2 $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + ($CellContext`\
-\[Eta]^3 $CellContext`\[Xi]) (2 - 5 $CellContext`\[Xi] + 
+           15 $CellContext`\[Xi]^3) + 
+         4 $CellContext`\[Eta]^3 (-1 + 4 $CellContext`\[Xi] - 
+           6 $CellContext`\[Xi]^2 + 3 $CellContext`\[Xi]^3) - 
+         3 $CellContext`\[Eta]^2 (-4 + 8 $CellContext`\[Xi] + 
+          3 $CellContext`\[Xi]^2 - 12 $CellContext`\[Xi]^3 + 
+          5 $CellContext`\[Xi]^4) + 
+         2 $CellContext`\[Eta] (-5 - 2 $CellContext`\[Xi] + 
+           45 $CellContext`\[Xi]^2 - 54 $CellContext`\[Xi]^3 + 
+           15 $CellContext`\[Xi]^4)) (156 E - 
+         8 (53 - 57 $CellContext`\[Eta] + 57 $CellContext`\[Eta]^2) + 
+         E^$CellContext`\[Xi] $CellContext`\[Eta] ((-2) $CellContext`\[Eta]^2 \
+$CellContext`\[Xi] (2 - 5 $CellContext`\[Xi] + 
+             2 $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + $CellContext`\
+\[Eta]^3 $CellContext`\[Xi] (2 - 5 $CellContext`\[Xi] + 
              2 $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) - 
            12 (38 - 38 $CellContext`\[Xi] + 19 $CellContext`\[Xi]^2 - 
             6 $CellContext`\[Xi]^3 + $CellContext`\[Xi]^4) + $CellContext`\
 \[Eta] (456 - 454 $CellContext`\[Xi] + 223 $CellContext`\[Xi]^2 - 
-             70 $CellContext`\[Xi]^3 + 13 $CellContext`\[Xi]^4))))), ((
-       Rational[-1, 81] (1 - 4 $CellContext`\[Xi]^2 + 11 $CellContext`\[Xi]^3 - 
-         10 $CellContext`\[Xi]^4 + 
-         3 $CellContext`\[Xi]^5 - ($CellContext`\[Eta]^3 (-1 + $CellContext`\
-\[Xi])^2) (1 - 2 $CellContext`\[Xi] + 
-          3 $CellContext`\[Xi]^2) + ((
-            3 $CellContext`\[Eta]^2) (-1 + $CellContext`\[Xi])^2) (1 - 
-           2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + \
-$CellContext`\[Xi]^3) + $CellContext`\[Eta] (-1 + 10 $CellContext`\[Xi] + 
-           2 $CellContext`\[Xi]^2 - 30 $CellContext`\[Xi]^3 + 
-           27 $CellContext`\[Xi]^4 - 6 $CellContext`\[Xi]^5))^(-2))/(-1 + 
-      4 $CellContext`\[Xi]^2 - 11 $CellContext`\[Xi]^3 + 
-      10 $CellContext`\[Xi]^4 - 
-      3 $CellContext`\[Xi]^5 + ($CellContext`\[Eta]^3 (-1 + \
-$CellContext`\[Xi])^2) (1 - 2 $CellContext`\[Xi] + 
-        3 $CellContext`\[Xi]^2) - ((
-        3 $CellContext`\[Eta]^2) (-1 + $CellContext`\[Xi])^2) (1 - 
-       2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + \
+             70 $CellContext`\[Xi]^3 + 13 $CellContext`\[Xi]^4))))), 
+     Rational[-1, 81] (1 - 4 $CellContext`\[Xi]^2 + 11 $CellContext`\[Xi]^3 - 
+       10 $CellContext`\[Xi]^4 + 
+       3 $CellContext`\[Xi]^5 - $CellContext`\[Eta]^3 (-1 + \
+$CellContext`\[Xi])^2 (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) + 
+       3 $CellContext`\[Eta]^2 (-1 + $CellContext`\[Xi])^2 (1 - 
+         2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + \
+$CellContext`\[Eta] (-1 + 10 $CellContext`\[Xi] + 2 $CellContext`\[Xi]^2 - 
+         30 $CellContext`\[Xi]^3 + 27 $CellContext`\[Xi]^4 - 
+         6 $CellContext`\[Xi]^5))^(-2) (-1 + 4 $CellContext`\[Xi]^2 - 
+       11 $CellContext`\[Xi]^3 + 10 $CellContext`\[Xi]^4 - 
+       3 $CellContext`\[Xi]^5 + $CellContext`\[Eta]^3 (-1 + \
+$CellContext`\[Xi])^2 (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) - 
+       3 $CellContext`\[Eta]^2 (-1 + $CellContext`\[Xi])^2 (1 - 
+        2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + \
 $CellContext`\[Eta] (1 - 10 $CellContext`\[Xi] - 2 $CellContext`\[Xi]^2 + 
-        30 $CellContext`\[Xi]^3 - 27 $CellContext`\[Xi]^4 + 
-        6 $CellContext`\[Xi]^5))) (((((((27 
-             E^$CellContext`\[Xi]) (-1 + $CellContext`\[Eta])) $CellContext`\
-\[Eta]) (-1 + $CellContext`\[Xi])) $CellContext`\[Xi]^2) ((
-           2 (-1 + $CellContext`\[Xi])^2) (
-           1 + $CellContext`\[Xi]) + ($CellContext`\[Eta]^4 (-1 + \
-$CellContext`\[Xi])^2) (-2 - 3 $CellContext`\[Xi] + 
-           3 $CellContext`\[Xi]^2) - ($CellContext`\[Eta]^3 (-1 + \
-$CellContext`\[Xi])^2) (-4 - 15 $CellContext`\[Xi] + 
-          9 $CellContext`\[Xi]^2) + $CellContext`\[Eta] (-4 + 
-           13 $CellContext`\[Xi] - 14 $CellContext`\[Xi]^2 + 
-           10 $CellContext`\[Xi]^3 - 
-           3 $CellContext`\[Xi]^4) + $CellContext`\[Eta]^2 (-4 - 
-           19 $CellContext`\[Xi] + 56 $CellContext`\[Xi]^2 - 
-           44 $CellContext`\[Xi]^3 + 9 $CellContext`\[Xi]^4))) (1 - 
+         30 $CellContext`\[Xi]^3 - 27 $CellContext`\[Xi]^4 + 
+         6 $CellContext`\[Xi]^5))^(-1) (
+      27 E^$CellContext`\[Xi] (-1 + $CellContext`\[Eta]) $CellContext`\[Eta] \
+(-1 + $CellContext`\[Xi]) $CellContext`\[Xi]^2 (
+        2 (-1 + $CellContext`\[Xi])^2 (
+          1 + $CellContext`\[Xi]) + $CellContext`\[Eta]^4 (-1 + $CellContext`\
+\[Xi])^2 (-2 - 3 $CellContext`\[Xi] + 
+          3 $CellContext`\[Xi]^2) - $CellContext`\[Eta]^3 (-1 + $CellContext`\
+\[Xi])^2 (-4 - 15 $CellContext`\[Xi] + 
+         9 $CellContext`\[Xi]^2) + $CellContext`\[Eta] (-4 + 
+          13 $CellContext`\[Xi] - 14 $CellContext`\[Xi]^2 + 
+          10 $CellContext`\[Xi]^3 - 
+          3 $CellContext`\[Xi]^4) + $CellContext`\[Eta]^2 (-4 - 
+          19 $CellContext`\[Xi] + 56 $CellContext`\[Xi]^2 - 
+          44 $CellContext`\[Xi]^3 + 9 $CellContext`\[Xi]^4)) (1 - 
          4 $CellContext`\[Xi]^2 + 11 $CellContext`\[Xi]^3 - 
          10 $CellContext`\[Xi]^4 + 
-         3 $CellContext`\[Xi]^5 - ($CellContext`\[Eta]^3 (-1 + $CellContext`\
-\[Xi])^2) (1 - 2 $CellContext`\[Xi] + 
-          3 $CellContext`\[Xi]^2) + ((
-            3 $CellContext`\[Eta]^2) (-1 + $CellContext`\[Xi])^2) (1 - 
+         3 $CellContext`\[Xi]^5 - $CellContext`\[Eta]^3 (-1 + $CellContext`\
+\[Xi])^2 (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) + 
+         3 $CellContext`\[Eta]^2 (-1 + $CellContext`\[Xi])^2 (1 - 
+           
            2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + \
 $CellContext`\[Xi]^3) + $CellContext`\[Eta] (-1 + 10 $CellContext`\[Xi] + 
            2 $CellContext`\[Xi]^2 - 30 $CellContext`\[Xi]^3 + 
-           27 $CellContext`\[Xi]^4 - 6 $CellContext`\[Xi]^5))^2 - ((
-        3 (2 + 2 $CellContext`\[Eta] - $CellContext`\[Xi])) \
-$CellContext`\[Xi]) ((((-2) (-1 + 2 $CellContext`\[Eta])) (-228 + 
-          E^$CellContext`\[Xi] (
-            228 + (2 (-114 - $CellContext`\[Eta] + $CellContext`\[Eta]^2)) \
+           27 $CellContext`\[Xi]^4 - 6 $CellContext`\[Xi]^5))^2 - 
+      3 (2 + 2 $CellContext`\[Eta] - $CellContext`\[Xi]) $CellContext`\[Xi] \
+((-2) (-1 + 2 $CellContext`\[Eta]) (-228 + 
+         E^$CellContext`\[Xi] (228 + 
+           2 (-114 - $CellContext`\[Eta] + $CellContext`\[Eta]^2) \
 $CellContext`\[Xi] + (114 + 5 $CellContext`\[Eta] - 
-              5 $CellContext`\[Eta]^2) $CellContext`\[Xi]^2 + (
-              2 (-18 - $CellContext`\[Eta] + $CellContext`\[Eta]^2)) \
+             5 $CellContext`\[Eta]^2) $CellContext`\[Xi]^2 + 
+           2 (-18 - $CellContext`\[Eta] + $CellContext`\[Eta]^2) \
 $CellContext`\[Xi]^3 + (
-              6 - $CellContext`\[Eta] + $CellContext`\[Eta]^2) $CellContext`\
-\[Xi]^4))) (1 - 4 $CellContext`\[Xi]^2 + 11 $CellContext`\[Xi]^3 - 
+             6 - $CellContext`\[Eta] + $CellContext`\[Eta]^2) $CellContext`\
+\[Xi]^4)) (1 - 4 $CellContext`\[Xi]^2 + 11 $CellContext`\[Xi]^3 - 
          10 $CellContext`\[Xi]^4 + 
-         3 $CellContext`\[Xi]^5 - ($CellContext`\[Eta]^3 (-1 + $CellContext`\
-\[Xi])^2) (1 - 2 $CellContext`\[Xi] + 
-          3 $CellContext`\[Xi]^2) + ((
-            3 $CellContext`\[Eta]^2) (-1 + $CellContext`\[Xi])^2) (1 - 
+         3 $CellContext`\[Xi]^5 - $CellContext`\[Eta]^3 (-1 + $CellContext`\
+\[Xi])^2 (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) + 
+         3 $CellContext`\[Eta]^2 (-1 + $CellContext`\[Xi])^2 (1 - 
            2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + \
 $CellContext`\[Xi]^3) + $CellContext`\[Eta] (-1 + 10 $CellContext`\[Xi] + 
            2 $CellContext`\[Xi]^2 - 30 $CellContext`\[Xi]^3 + 
            27 $CellContext`\[Xi]^4 - 6 $CellContext`\[Xi]^5)) - (1 - 
         10 $CellContext`\[Xi] - 2 $CellContext`\[Xi]^2 + 
         30 $CellContext`\[Xi]^3 - 27 $CellContext`\[Xi]^4 + 
-        6 $CellContext`\[Xi]^5 + ((
-           3 $CellContext`\[Eta]^2) (-1 + $CellContext`\[Xi])^2) (1 - 
-          2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) - ((
-          6 $CellContext`\[Eta]) (-1 + $CellContext`\[Xi])^2) (1 - 
+        6 $CellContext`\[Xi]^5 + 
+        3 $CellContext`\[Eta]^2 (-1 + $CellContext`\[Xi])^2 (1 - 
+          2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) - 
+        6 $CellContext`\[Eta] (-1 + $CellContext`\[Xi])^2 (1 - 
          2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3)) \
-(156 E - 8 (53 - 57 $CellContext`\[Eta] + 
-         57 $CellContext`\[Eta]^2) + (
-          E^$CellContext`\[Xi] $CellContext`\[Eta]) ((((-2) $CellContext`\
-\[Eta]^2) $CellContext`\[Xi]) (2 - 5 $CellContext`\[Xi] + 
-            2 $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + ($CellContext`\
-\[Eta]^3 $CellContext`\[Xi]) (2 - 5 $CellContext`\[Xi] + 
+(156 E - 8 (53 - 57 $CellContext`\[Eta] + 57 $CellContext`\[Eta]^2) + 
+        E^$CellContext`\[Xi] $CellContext`\[Eta] ((-2) $CellContext`\[Eta]^2 \
+$CellContext`\[Xi] (2 - 5 $CellContext`\[Xi] + 
+            2 $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + $CellContext`\
+\[Eta]^3 $CellContext`\[Xi] (2 - 5 $CellContext`\[Xi] + 
             2 $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) - 
           12 (38 - 38 $CellContext`\[Xi] + 19 $CellContext`\[Xi]^2 - 
            6 $CellContext`\[Xi]^3 + $CellContext`\[Xi]^4) + $CellContext`\
 \[Eta] (456 - 454 $CellContext`\[Xi] + 223 $CellContext`\[Xi]^2 - 
             70 $CellContext`\[Xi]^3 + 13 $CellContext`\[Xi]^4)))) + (3 - 
-        3 $CellContext`\[Xi]^2) ((((
-            E^$CellContext`\[Xi] (-1 + $CellContext`\[Eta])) $CellContext`\
-\[Eta]) ((
-             12 (-1 + $CellContext`\[Xi])^2) $CellContext`\[Xi]^2 - \
-$CellContext`\[Eta] (2 - 8 $CellContext`\[Xi] + $CellContext`\[Xi]^2 + 
-            6 $CellContext`\[Xi]^3 + $CellContext`\[Xi]^4) + $CellContext`\
+        3 $CellContext`\[Xi]^2) (
+        E^$CellContext`\[Xi] (-1 + $CellContext`\[Eta]) $CellContext`\[Eta] (
+          12 (-1 + $CellContext`\[Xi])^2 $CellContext`\[Xi]^2 - $CellContext`\
+\[Eta] (2 - 8 $CellContext`\[Xi] + $CellContext`\[Xi]^2 + 
+           6 $CellContext`\[Xi]^3 + $CellContext`\[Xi]^4) + $CellContext`\
 \[Eta]^2 (2 - 8 $CellContext`\[Xi] + $CellContext`\[Xi]^2 + 
-             6 $CellContext`\[Xi]^3 + $CellContext`\[Xi]^4))) (1 - 
+            6 $CellContext`\[Xi]^3 + $CellContext`\[Xi]^4)) (1 - 
           4 $CellContext`\[Xi]^2 + 11 $CellContext`\[Xi]^3 - 
           10 $CellContext`\[Xi]^4 + 
-          3 $CellContext`\[Xi]^5 - ($CellContext`\[Eta]^3 (-1 + $CellContext`\
-\[Xi])^2) (1 - 2 $CellContext`\[Xi] + 
-           3 $CellContext`\[Xi]^2) + ((
-             3 $CellContext`\[Eta]^2) (-1 + $CellContext`\[Xi])^2) (1 - 
+          3 $CellContext`\[Xi]^5 - $CellContext`\[Eta]^3 (-1 + $CellContext`\
+\[Xi])^2 (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) + 
+          3 $CellContext`\[Eta]^2 (-1 + $CellContext`\[Xi])^2 (1 - 
             2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + \
 $CellContext`\[Xi]^3) + $CellContext`\[Eta] (-1 + 10 $CellContext`\[Xi] + 
             2 $CellContext`\[Xi]^2 - 30 $CellContext`\[Xi]^3 + 
             27 $CellContext`\[Xi]^4 - 
             6 $CellContext`\[Xi]^5)) + ($CellContext`\[Xi] (8 - 
             33 $CellContext`\[Xi] + 40 $CellContext`\[Xi]^2 - 
-            15 $CellContext`\[Xi]^3) + (4 $CellContext`\[Eta]^3) (-1 + 
-            4 $CellContext`\[Xi] - 6 $CellContext`\[Xi]^2 + 
-            3 $CellContext`\[Xi]^3) - (3 $CellContext`\[Eta]^2) (-4 + 
-           8 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2 - 
-           12 $CellContext`\[Xi]^3 + 
-           5 $CellContext`\[Xi]^4) + (2 $CellContext`\[Eta]) (-5 - 
-            2 $CellContext`\[Xi] + 45 $CellContext`\[Xi]^2 - 
-            54 $CellContext`\[Xi]^3 + 15 $CellContext`\[Xi]^4)) (156 E - 
-          8 (53 - 57 $CellContext`\[Eta] + 
-           57 $CellContext`\[Eta]^2) + (
-            E^$CellContext`\[Xi] $CellContext`\[Eta]) ((((-2) $CellContext`\
-\[Eta]^2) $CellContext`\[Xi]) (2 - 5 $CellContext`\[Xi] + 
-              2 $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + ($CellContext`\
-\[Eta]^3 $CellContext`\[Xi]) (2 - 5 $CellContext`\[Xi] + 
+            15 $CellContext`\[Xi]^3) + 
+          4 $CellContext`\[Eta]^3 (-1 + 4 $CellContext`\[Xi] - 
+            6 $CellContext`\[Xi]^2 + 3 $CellContext`\[Xi]^3) - 
+          3 $CellContext`\[Eta]^2 (-4 + 8 $CellContext`\[Xi] + 
+           3 $CellContext`\[Xi]^2 - 12 $CellContext`\[Xi]^3 + 
+           5 $CellContext`\[Xi]^4) + 
+          2 $CellContext`\[Eta] (-5 - 2 $CellContext`\[Xi] + 
+            45 $CellContext`\[Xi]^2 - 54 $CellContext`\[Xi]^3 + 
+            15 $CellContext`\[Xi]^4)) (156 E - 
+          8 (53 - 57 $CellContext`\[Eta] + 57 $CellContext`\[Eta]^2) + 
+          E^$CellContext`\[Xi] $CellContext`\[Eta] ((-2) \
+$CellContext`\[Eta]^2 $CellContext`\[Xi] (2 - 5 $CellContext`\[Xi] + 
+              2 $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + $CellContext`\
+\[Eta]^3 $CellContext`\[Xi] (2 - 5 $CellContext`\[Xi] + 
               2 $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) - 
             12 (38 - 38 $CellContext`\[Xi] + 19 $CellContext`\[Xi]^2 - 
+             
              6 $CellContext`\[Xi]^3 + $CellContext`\[Xi]^4) + $CellContext`\
 \[Eta] (456 - 454 $CellContext`\[Xi] + 223 $CellContext`\[Xi]^2 - 
               70 $CellContext`\[Xi]^3 + 13 $CellContext`\[Xi]^4)))))}]],
@@ -2551,10 +2502,15 @@ $CellContext`\[Xi]^3) + $CellContext`\[Eta] (-1 + 10 $CellContext`\[Xi] +
    3.985119615660777*^9, 3.985119624274507*^9}, {3.985120713087459*^9, 
    3.985120761722177*^9}, 3.985120836659704*^9, {3.985122583226671*^9, 
    3.985122587539214*^9}, {3.985185724392014*^9, 3.985185726817081*^9}, {
-   3.9851857843362494`*^9, 3.985185786295455*^9}},
+   3.9851857843362494`*^9, 3.985185786295455*^9}, {3.986559901023759*^9, 
+   3.9865599043290873`*^9}, {3.9865599509289*^9, 3.9865600722922153`*^9}, 
+   3.986560158993532*^9, {3.98656033454186*^9, 3.9865604310893507`*^9}, {
+   3.986560461914105*^9, 3.986560469690073*^9}, {3.986560556215377*^9, 
+   3.9865605855724993`*^9}, 3.9865606182969637`*^9, {3.98656066361666*^9, 
+   3.98656066797513*^9}, {3.986560756350768*^9, 3.986560787243363*^9}},
  CellLabel->
   "During evaluation of \
-In[277]:=",ExpressionUUID->"640192fd-7782-4fa5-bfab-f6be1377ad20"],
+In[509]:=",ExpressionUUID->"0fce5ab6-8d86-4fe2-a4c5-8077da305192"],
 
 Cell[BoxData[
  InterpretationBox[
@@ -6498,190 +6454,194 @@ Cell[BoxData[
     Function[BoxForm`e$, 
      MatrixForm[BoxForm`e$]]]}],
   SequenceForm["Force_Stokes_CurveDomain: ", 
-   MatrixForm[{(
-      Rational[-1, 27] (-1 + 4 $CellContext`\[Xi]^2 - 11 $CellContext`\[Xi]^3 + 
-        10 $CellContext`\[Xi]^4 - 
-        3 $CellContext`\[Xi]^5 + ($CellContext`\[Eta]^3 (-1 + $CellContext`\
-\[Xi])^2) (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) - ((
-          3 $CellContext`\[Eta]^2) (-1 + $CellContext`\[Xi])^2) (1 - 
-         2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + \
+   MatrixForm[{
+    Rational[-1, 27] (-1 + 4 $CellContext`\[Xi]^2 - 11 $CellContext`\[Xi]^3 + 
+       10 $CellContext`\[Xi]^4 - 
+       3 $CellContext`\[Xi]^5 + $CellContext`\[Eta]^3 (-1 + \
+$CellContext`\[Xi])^2 (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) - 
+       3 $CellContext`\[Eta]^2 (-1 + $CellContext`\[Xi])^2 (1 - 
+        2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + \
 $CellContext`\[Eta] (1 - 10 $CellContext`\[Xi] - 2 $CellContext`\[Xi]^2 + 
-          30 $CellContext`\[Xi]^3 - 27 $CellContext`\[Xi]^4 + 
-          6 $CellContext`\[Xi]^5))^(-5)) ((((-156) 
-         E) (-1 + 4 $CellContext`\[Xi]^2 - 11 $CellContext`\[Xi]^3 + 
-          10 $CellContext`\[Xi]^4 - 
-          3 $CellContext`\[Xi]^5 + ($CellContext`\[Eta]^3 (-1 + $CellContext`\
-\[Xi])^2) (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) - ((
-            3 $CellContext`\[Eta]^2) (-1 + $CellContext`\[Xi])^2) (1 - 
-           2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + \
-$CellContext`\[Xi]^3) + $CellContext`\[Eta] (1 - 10 $CellContext`\[Xi] - 
-            2 $CellContext`\[Xi]^2 + 30 $CellContext`\[Xi]^3 - 
-            27 $CellContext`\[Xi]^4 + 6 $CellContext`\[Xi]^5))^2) (1 - 
-        10 $CellContext`\[Xi] + 5 $CellContext`\[Xi]^2 - 
-        33 $CellContext`\[Xi]^3 + 204 $CellContext`\[Xi]^4 - 
-        338 $CellContext`\[Xi]^5 + 222 $CellContext`\[Xi]^6 - 
-        51 $CellContext`\[Xi]^7 + ((
-           3 $CellContext`\[Eta]^5) (-1 + $CellContext`\[Xi])^4) (-1 + 
-          3 $CellContext`\[Xi]^2) - ((
-          3 $CellContext`\[Eta]^4) (-1 + $CellContext`\[Xi])^3) (5 - 
+         30 $CellContext`\[Xi]^3 - 27 $CellContext`\[Xi]^4 + 
+         6 $CellContext`\[Xi]^5))^(-5) ((-156) 
+       E (-1 + 4 $CellContext`\[Xi]^2 - 11 $CellContext`\[Xi]^3 + 
+         10 $CellContext`\[Xi]^4 - 
+         3 $CellContext`\[Xi]^5 + $CellContext`\[Eta]^3 (-1 + $CellContext`\
+\[Xi])^2 (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) - 
+         3 $CellContext`\[Eta]^2 (-1 + $CellContext`\[Xi])^2 (1 - 
+          2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + \
+$CellContext`\[Eta] (1 - 10 $CellContext`\[Xi] - 2 $CellContext`\[Xi]^2 + 
+           30 $CellContext`\[Xi]^3 - 27 $CellContext`\[Xi]^4 + 
+           6 $CellContext`\[Xi]^5))^2 (1 - 10 $CellContext`\[Xi] + 
+        5 $CellContext`\[Xi]^2 - 33 $CellContext`\[Xi]^3 + 
+        204 $CellContext`\[Xi]^4 - 338 $CellContext`\[Xi]^5 + 
+        222 $CellContext`\[Xi]^6 - 51 $CellContext`\[Xi]^7 + 
+        3 $CellContext`\[Eta]^5 (-1 + $CellContext`\[Xi])^4 (-1 + 
+          3 $CellContext`\[Xi]^2) - 
+        3 $CellContext`\[Eta]^4 (-1 + $CellContext`\[Xi])^3 (5 - 
          5 $CellContext`\[Xi] + $CellContext`\[Xi]^2 - 
-         16 $CellContext`\[Xi]^3 + 
-         9 $CellContext`\[Xi]^4) + ((
-           2 $CellContext`\[Eta]^3) (-1 + $CellContext`\[Xi])^2) (-11 + 
+         16 $CellContext`\[Xi]^3 + 9 $CellContext`\[Xi]^4) + 
+        2 $CellContext`\[Eta]^3 (-1 + $CellContext`\[Xi])^2 (-11 + 
           25 $CellContext`\[Xi] - 66 $CellContext`\[Xi]^2 + 
           189 $CellContext`\[Xi]^3 - 195 $CellContext`\[Xi]^4 + 
-          54 $CellContext`\[Xi]^5) - (3 $CellContext`\[Eta]^2) (-4 + 
-         22 $CellContext`\[Xi] - 102 $CellContext`\[Xi]^2 + 
-         322 $CellContext`\[Xi]^3 - 589 $CellContext`\[Xi]^4 + 
-         582 $CellContext`\[Xi]^5 - 285 $CellContext`\[Xi]^6 + 
+          54 $CellContext`\[Xi]^5) - 
+        3 $CellContext`\[Eta]^2 (-4 + 22 $CellContext`\[Xi] - 
+         102 $CellContext`\[Xi]^2 + 322 $CellContext`\[Xi]^3 - 
+         589 $CellContext`\[Xi]^4 + 582 $CellContext`\[Xi]^5 - 
+         285 $CellContext`\[Xi]^6 + 
          54 $CellContext`\[Xi]^7) + $CellContext`\[Eta] (-7 + 
           34 $CellContext`\[Xi] - 127 $CellContext`\[Xi]^2 + 
           384 $CellContext`\[Xi]^3 - 867 $CellContext`\[Xi]^4 + 
           1062 $CellContext`\[Xi]^5 - 609 $CellContext`\[Xi]^6 + 
-          132 $CellContext`\[Xi]^7)) + (
-        8 (-1 + 4 $CellContext`\[Xi]^2 - 11 $CellContext`\[Xi]^3 + 
-          10 $CellContext`\[Xi]^4 - 
-          3 $CellContext`\[Xi]^5 + ($CellContext`\[Eta]^3 (-1 + $CellContext`\
-\[Xi])^2) (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) - ((
-            3 $CellContext`\[Eta]^2) (-1 + $CellContext`\[Xi])^2) (1 - 
-           2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + \
-$CellContext`\[Xi]^3) + $CellContext`\[Eta] (1 - 10 $CellContext`\[Xi] - 
-            2 $CellContext`\[Xi]^2 + 30 $CellContext`\[Xi]^3 - 
-            27 $CellContext`\[Xi]^4 + 6 $CellContext`\[Xi]^5))^2) (((
-           57 $CellContext`\[Eta]^7) (-1 + $CellContext`\[Xi])^3) (1 + 
+          132 $CellContext`\[Xi]^7)) + 
+      8 (-1 + 4 $CellContext`\[Xi]^2 - 11 $CellContext`\[Xi]^3 + 
+         10 $CellContext`\[Xi]^4 - 
+         3 $CellContext`\[Xi]^5 + $CellContext`\[Eta]^3 (-1 + $CellContext`\
+\[Xi])^2 (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) - 
+         3 $CellContext`\[Eta]^2 (-1 + $CellContext`\[Xi])^2 (1 - 
+          2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + \
+$CellContext`\[Eta] (1 - 10 $CellContext`\[Xi] - 2 $CellContext`\[Xi]^2 + 
+           30 $CellContext`\[Xi]^3 - 27 $CellContext`\[Xi]^4 + 
+           6 $CellContext`\[Xi]^5))^2 (
+        57 $CellContext`\[Eta]^7 (-1 + $CellContext`\[Xi])^3 (1 + 
           7 $CellContext`\[Xi] - 27 $CellContext`\[Xi]^2 + 
-          27 $CellContext`\[Xi]^3) - ((
-          57 $CellContext`\[Eta]^6) (-1 + $CellContext`\[Xi])^3) (5 + 
+          27 $CellContext`\[Xi]^3) - 
+        57 $CellContext`\[Eta]^6 (-1 + $CellContext`\[Xi])^3 (5 + 
          47 $CellContext`\[Xi] - 99 $CellContext`\[Xi]^2 + 
          45 $CellContext`\[Xi]^4) - 
         2 (2 + 265 $CellContext`\[Xi] - 275 $CellContext`\[Xi]^2 + 
          1188 $CellContext`\[Xi]^3 - 5577 $CellContext`\[Xi]^4 + 
          8729 $CellContext`\[Xi]^5 - 5598 $CellContext`\[Xi]^6 + 
-         1266 $CellContext`\[Xi]^7) + (6 $CellContext`\[Eta]^5) (-112 - 
-          787 $CellContext`\[Xi] + 3844 $CellContext`\[Xi]^2 - 
-          1599 $CellContext`\[Xi]^3 - 10826 $CellContext`\[Xi]^4 + 
-          17979 $CellContext`\[Xi]^5 - 10722 $CellContext`\[Xi]^6 + 
-          2223 $CellContext`\[Xi]^7) + (2 $CellContext`\[Eta]) (-100 + 
-          616 $CellContext`\[Xi] - 3736 $CellContext`\[Xi]^2 + 
-          14337 $CellContext`\[Xi]^3 - 34290 $CellContext`\[Xi]^4 + 
-          42393 $CellContext`\[Xi]^5 - 24546 $CellContext`\[Xi]^6 + 
-          5379 $CellContext`\[Xi]^7) - (3 $CellContext`\[Eta]^2) (-155 + 
-         406 $CellContext`\[Xi] - 5691 $CellContext`\[Xi]^2 + 
-         29511 $CellContext`\[Xi]^3 - 69160 $CellContext`\[Xi]^4 + 
-         78916 $CellContext`\[Xi]^5 - 42408 $CellContext`\[Xi]^6 + 
-         8619 $CellContext`\[Xi]^7) - (3 $CellContext`\[Eta]^4) (-398 - 
-         1296 $CellContext`\[Xi] + 4456 $CellContext`\[Xi]^2 + 
-         19984 $CellContext`\[Xi]^3 - 77925 $CellContext`\[Xi]^4 + 
-         96938 $CellContext`\[Xi]^5 - 51641 $CellContext`\[Xi]^6 + 
+         1266 $CellContext`\[Xi]^7) + 
+        6 $CellContext`\[Eta]^5 (-112 - 787 $CellContext`\[Xi] + 
+          3844 $CellContext`\[Xi]^2 - 1599 $CellContext`\[Xi]^3 - 
+          10826 $CellContext`\[Xi]^4 + 17979 $CellContext`\[Xi]^5 - 
+          10722 $CellContext`\[Xi]^6 + 2223 $CellContext`\[Xi]^7) + 
+        2 $CellContext`\[Eta] (-100 + 616 $CellContext`\[Xi] - 
+          3736 $CellContext`\[Xi]^2 + 14337 $CellContext`\[Xi]^3 - 
+          34290 $CellContext`\[Xi]^4 + 42393 $CellContext`\[Xi]^5 - 
+          24546 $CellContext`\[Xi]^6 + 5379 $CellContext`\[Xi]^7) - 
+        3 $CellContext`\[Eta]^2 (-155 + 406 $CellContext`\[Xi] - 
+         5691 $CellContext`\[Xi]^2 + 29511 $CellContext`\[Xi]^3 - 
+         69160 $CellContext`\[Xi]^4 + 78916 $CellContext`\[Xi]^5 - 
+         42408 $CellContext`\[Xi]^6 + 8619 $CellContext`\[Xi]^7) - 
+        3 $CellContext`\[Eta]^4 (-398 - 1296 $CellContext`\[Xi] + 
+         4456 $CellContext`\[Xi]^2 + 19984 $CellContext`\[Xi]^3 - 
+         77925 $CellContext`\[Xi]^4 + 96938 $CellContext`\[Xi]^5 - 
+         51641 $CellContext`\[Xi]^6 + 
          9882 $CellContext`\[Xi]^7) + $CellContext`\[Eta]^3 (-995 + 
           422 $CellContext`\[Xi] - 8845 $CellContext`\[Xi]^2 + 
           109864 $CellContext`\[Xi]^3 - 308445 $CellContext`\[Xi]^4 + 
           361902 $CellContext`\[Xi]^5 - 190293 $CellContext`\[Xi]^6 + 
           36504 $CellContext`\[Xi]^7)) + 
-      E^$CellContext`\[Xi] (((($CellContext`\[Eta]^15 (-1 + \
-$CellContext`\[Xi])^8) $CellContext`\[Xi]) (1 - 2 $CellContext`\[Xi] + 
-            3 $CellContext`\[Xi]^2)^2) (4 + $CellContext`\[Xi] - 
+      E^$CellContext`\[Xi] ($CellContext`\[Eta]^15 (-1 + \
+$CellContext`\[Xi])^8 $CellContext`\[Xi] (1 - 2 $CellContext`\[Xi] + 
+           3 $CellContext`\[Xi]^2)^2 (4 + $CellContext`\[Xi] - 
           71 $CellContext`\[Xi]^2 + 148 $CellContext`\[Xi]^3 - 
           114 $CellContext`\[Xi]^4 + 3 $CellContext`\[Xi]^5 + 
-          9 $CellContext`\[Xi]^6) - (
-         2 (-1 + 5 $CellContext`\[Xi]^2 - 11 $CellContext`\[Xi]^3 + 
-          6 $CellContext`\[Xi]^4 + 8 $CellContext`\[Xi]^5 - 
-          10 $CellContext`\[Xi]^6 + 3 $CellContext`\[Xi]^7)) (
-         228 - (2 (114 + $CellContext`nu)) $CellContext`\[Xi] + (
-           5 (-342 + $CellContext`nu)) $CellContext`\[Xi]^2 + (6804 - 
+          9 $CellContext`\[Xi]^6) - 
+        2 (-1 + 5 $CellContext`\[Xi]^2 - 11 $CellContext`\[Xi]^3 + 
+         6 $CellContext`\[Xi]^4 + 8 $CellContext`\[Xi]^5 - 
+         10 $CellContext`\[Xi]^6 + 3 $CellContext`\[Xi]^7) (228 - 
+         2 (114 + $CellContext`nu) $CellContext`\[Xi] + 
+         5 (-342 + $CellContext`nu) $CellContext`\[Xi]^2 + (6804 - 
            34 $CellContext`nu) $CellContext`\[Xi]^3 + (-6834 + 
-           197 $CellContext`nu) $CellContext`\[Xi]^4 - (
-          3 (4996 + 123 $CellContext`nu)) $CellContext`\[Xi]^5 + (
-           6 (10538 + 71 $CellContext`nu)) $CellContext`\[Xi]^6 - (
-          12 (9211 + 106 $CellContext`nu)) $CellContext`\[Xi]^7 + (
-           2 (59661 + 1790 $CellContext`nu)) $CellContext`\[Xi]^8 - (
-          3 (29024 + 1873 $CellContext`nu)) $CellContext`\[Xi]^9 + (44646 + 
-           5240 $CellContext`nu) $CellContext`\[Xi]^10 - (
-          12 (1361 + 252 $CellContext`nu)) $CellContext`\[Xi]^11 + (
-           2 (2091 + 532 $CellContext`nu)) $CellContext`\[Xi]^12 - (
-          6 (114 + 35 $CellContext`nu)) $CellContext`\[Xi]^13 + (
-           18 (3 + $CellContext`nu)) $CellContext`\[Xi]^14) - ($CellContext`\
-\[Eta]^13 (-1 + $CellContext`\[Xi])^6) (-456 - (
-          20 (35 + 6 $CellContext`nu)) $CellContext`\[Xi] + (23702 - 
-           984 $CellContext`nu) $CellContext`\[Xi]^2 + (
-           4 (-31960 + 1659 $CellContext`nu)) $CellContext`\[Xi]^3 + (379227 - 
-           10488 $CellContext`nu) $CellContext`\[Xi]^4 - (
-          4 (186149 + 90 $CellContext`nu)) $CellContext`\[Xi]^5 + (
-           14 (74657 + 723 $CellContext`nu)) $CellContext`\[Xi]^6 + (
-           2 (-557398 + 2193 $CellContext`nu)) $CellContext`\[Xi]^7 + (958277 - 
+           197 $CellContext`nu) $CellContext`\[Xi]^4 - 
+         3 (4996 + 123 $CellContext`nu) $CellContext`\[Xi]^5 + 
+         6 (10538 + 71 $CellContext`nu) $CellContext`\[Xi]^6 - 
+         12 (9211 + 106 $CellContext`nu) $CellContext`\[Xi]^7 + 
+         2 (59661 + 1790 $CellContext`nu) $CellContext`\[Xi]^8 - 
+         3 (29024 + 
+          1873 $CellContext`nu) $CellContext`\[Xi]^9 + (44646 + 
+           5240 $CellContext`nu) $CellContext`\[Xi]^10 - 
+         12 (1361 + 252 $CellContext`nu) $CellContext`\[Xi]^11 + 
+         2 (2091 + 532 $CellContext`nu) $CellContext`\[Xi]^12 - 
+         6 (114 + 35 $CellContext`nu) $CellContext`\[Xi]^13 + 
+         18 (3 + $CellContext`nu) $CellContext`\[Xi]^14) - \
+$CellContext`\[Eta]^13 (-1 + $CellContext`\[Xi])^6 (-456 - 
+         20 (35 + 6 $CellContext`nu) $CellContext`\[Xi] + (23702 - 
+           984 $CellContext`nu) $CellContext`\[Xi]^2 + 
+         4 (-31960 + 1659 $CellContext`nu) $CellContext`\[Xi]^3 + (379227 - 
+           10488 $CellContext`nu) $CellContext`\[Xi]^4 - 
+         4 (186149 + 90 $CellContext`nu) $CellContext`\[Xi]^5 + 
+         14 (74657 + 723 $CellContext`nu) $CellContext`\[Xi]^6 + 
+         2 (-557398 + 2193 $CellContext`nu) $CellContext`\[Xi]^7 + (958277 - 
            15984 $CellContext`nu) $CellContext`\[Xi]^8 - (685801 + 
-          12 $CellContext`nu) $CellContext`\[Xi]^9 + (
-           9 (41179 + 1324 $CellContext`nu)) $CellContext`\[Xi]^10 - (
-          9 (12141 + 200 $CellContext`nu)) $CellContext`\[Xi]^11 - (
-          36 (17 + 206 $CellContext`nu)) $CellContext`\[Xi]^12 + (
-           27 (271 + 204 $CellContext`nu)) $CellContext`\[Xi]^13 - (
-          27 (9 + 58 $CellContext`nu)) $CellContext`\[Xi]^14 + (
-           81 (-3 + 
-            2 $CellContext`nu)) $CellContext`\[Xi]^15) + \
-($CellContext`\[Eta]^12 (-1 + $CellContext`\[Xi])^6) (-5016 - (
-           4 (2796 + 131 $CellContext`nu)) $CellContext`\[Xi] + (278438 - 
-            6194 $CellContext`nu) $CellContext`\[Xi]^2 + (
-            2 (-670831 + 16864 $CellContext`nu)) $CellContext`\[Xi]^3 + (
-            3429761 - 42146 $CellContext`nu) $CellContext`\[Xi]^4 - (
-           2 (2675191 + 3285 $CellContext`nu)) $CellContext`\[Xi]^5 + (
-            5123413 + 14612 $CellContext`nu) $CellContext`\[Xi]^6 + (-2671234 + 
-            30254 $CellContext`nu) $CellContext`\[Xi]^7 + (
-            4 (86123 + 10050 $CellContext`nu)) $CellContext`\[Xi]^8 + (520797 - 
-            150742 $CellContext`nu) $CellContext`\[Xi]^9 + (
-            21 (-32026 + 4189 $CellContext`nu)) $CellContext`\[Xi]^10 + (
-            276 (2097 + 157 $CellContext`nu)) $CellContext`\[Xi]^11 - (
-           45 (6056 + 1503 $CellContext`nu)) $CellContext`\[Xi]^12 + (
-            243 (185 + 112 $CellContext`nu)) $CellContext`\[Xi]^13 + (5535 - 
-            3159 $CellContext`nu) $CellContext`\[Xi]^14 - (
-           486 (3 + $CellContext`nu)) $CellContext`\[Xi]^15 + (
-            81 (-1 + $CellContext`nu)) $CellContext`\[Xi]^16) - \
-($CellContext`\[Eta]^11 (-1 + $CellContext`\[Xi])^4) (-22800 - (
-          12 (2687 + 108 $CellContext`nu)) $CellContext`\[Xi] - (
-          3 (-523613 + 
-           6400 $CellContext`nu)) $CellContext`\[Xi]^2 + (-8708717 + 
-           142512 $CellContext`nu) $CellContext`\[Xi]^3 - (
-          9 (-2638791 + 35630 $CellContext`nu)) $CellContext`\[Xi]^4 + (
-           12 (-2927143 + 23987 $CellContext`nu)) $CellContext`\[Xi]^5 + (
+          12 $CellContext`nu) $CellContext`\[Xi]^9 + 
+         9 (41179 + 1324 $CellContext`nu) $CellContext`\[Xi]^10 - 
+         9 (12141 + 200 $CellContext`nu) $CellContext`\[Xi]^11 - 
+         36 (17 + 206 $CellContext`nu) $CellContext`\[Xi]^12 + 
+         27 (271 + 204 $CellContext`nu) $CellContext`\[Xi]^13 - 
+         27 (9 + 58 $CellContext`nu) $CellContext`\[Xi]^14 + 
+         81 (-3 + 
+           2 $CellContext`nu) $CellContext`\[Xi]^15) + $CellContext`\[Eta]^12 \
+(-1 + $CellContext`\[Xi])^6 (-5016 - 
+          4 (2796 + 131 $CellContext`nu) $CellContext`\[Xi] + (278438 - 
+            6194 $CellContext`nu) $CellContext`\[Xi]^2 + 
+          2 (-670831 + 16864 $CellContext`nu) $CellContext`\[Xi]^3 + (3429761 - 
+            42146 $CellContext`nu) $CellContext`\[Xi]^4 - 
+          2 (2675191 + 
+           3285 $CellContext`nu) $CellContext`\[Xi]^5 + (5123413 + 
+            14612 $CellContext`nu) $CellContext`\[Xi]^6 + (-2671234 + 
+            30254 $CellContext`nu) $CellContext`\[Xi]^7 + 
+          4 (86123 + 10050 $CellContext`nu) $CellContext`\[Xi]^8 + (520797 - 
+            150742 $CellContext`nu) $CellContext`\[Xi]^9 + 
+          21 (-32026 + 4189 $CellContext`nu) $CellContext`\[Xi]^10 + 
+          276 (2097 + 157 $CellContext`nu) $CellContext`\[Xi]^11 - 
+          45 (6056 + 1503 $CellContext`nu) $CellContext`\[Xi]^12 + 
+          243 (185 + 112 $CellContext`nu) $CellContext`\[Xi]^13 + (5535 - 
+            3159 $CellContext`nu) $CellContext`\[Xi]^14 - 
+          486 (3 + $CellContext`nu) $CellContext`\[Xi]^15 + 
+          81 (-1 + $CellContext`nu) $CellContext`\[Xi]^16) - $CellContext`\
+\[Eta]^11 (-1 + $CellContext`\[Xi])^4 (-22800 - 
+         12 (2687 + 108 $CellContext`nu) $CellContext`\[Xi] - 
+         3 (-523613 + 
+          6400 $CellContext`nu) $CellContext`\[Xi]^2 + (-8708717 + 
+           142512 $CellContext`nu) $CellContext`\[Xi]^3 - 
+         9 (-2638791 + 35630 $CellContext`nu) $CellContext`\[Xi]^4 + 
+         12 (-2927143 + 23987 $CellContext`nu) $CellContext`\[Xi]^5 + (
            18881198 - 195300 $CellContext`nu) $CellContext`\[Xi]^6 + (
            29777765 + 422268 $CellContext`nu) $CellContext`\[Xi]^7 - (
           76260985 + 
           240576 $CellContext`nu) $CellContext`\[Xi]^8 + (84355021 - 
-           981276 $CellContext`nu) $CellContext`\[Xi]^9 + (
-           16 (-3739147 + 118086 $CellContext`nu)) $CellContext`\[Xi]^10 + (
-           31467509 - 1428546 $CellContext`nu) $CellContext`\[Xi]^11 + (
-           24 (-551291 + 26501 $CellContext`nu)) $CellContext`\[Xi]^12 - (
-          6 (-653462 + 65961 $CellContext`nu)) $CellContext`\[Xi]^13 + (
-           9 (-41279 + 39406 $CellContext`nu)) $CellContext`\[Xi]^14 - (
-          9 (22929 + 22786 $CellContext`nu)) $CellContext`\[Xi]^15 + (
-           54 (1237 + 1193 $CellContext`nu)) $CellContext`\[Xi]^16 - (
-          81 (29 + 122 $CellContext`nu)) $CellContext`\[Xi]^17 + (
-           162 (-5 + 3 $CellContext`nu)) $CellContext`\[Xi]^18) + (
-          2 $CellContext`\[Eta]) (-1140 + (7978 - 
+           981276 $CellContext`nu) $CellContext`\[Xi]^9 + 
+         16 (-3739147 + 118086 $CellContext`nu) $CellContext`\[Xi]^10 + (
+           31467509 - 1428546 $CellContext`nu) $CellContext`\[Xi]^11 + 
+         24 (-551291 + 26501 $CellContext`nu) $CellContext`\[Xi]^12 - 
+         6 (-653462 + 65961 $CellContext`nu) $CellContext`\[Xi]^13 + 
+         9 (-41279 + 39406 $CellContext`nu) $CellContext`\[Xi]^14 - 
+         9 (22929 + 22786 $CellContext`nu) $CellContext`\[Xi]^15 + 
+         54 (1237 + 1193 $CellContext`nu) $CellContext`\[Xi]^16 - 
+         81 (29 + 122 $CellContext`nu) $CellContext`\[Xi]^17 + 
+         162 (-5 + 3 $CellContext`nu) $CellContext`\[Xi]^18) + 
+        2 $CellContext`\[Eta] (-1140 + (7978 - 
             12 $CellContext`nu) $CellContext`\[Xi] + (6047 + 
-            54 $CellContext`nu) $CellContext`\[Xi]^2 + (
-            2 (-70575 + 77 $CellContext`nu)) $CellContext`\[Xi]^3 + (359070 - 
+            54 $CellContext`nu) $CellContext`\[Xi]^2 + 
+          2 (-70575 + 77 $CellContext`nu) $CellContext`\[Xi]^3 + (359070 - 
             107 $CellContext`nu) $CellContext`\[Xi]^4 + (180827 - 
             3712 $CellContext`nu) $CellContext`\[Xi]^5 + (-3038387 + 
             11790 $CellContext`nu) $CellContext`\[Xi]^6 + (7451417 - 
             14904 $CellContext`nu) $CellContext`\[Xi]^7 + (-5849627 + 
             25625 $CellContext`nu) $CellContext`\[Xi]^8 - (14236671 + 
-           126748 $CellContext`nu) $CellContext`\[Xi]^9 + (
-            160 (358565 + 2703 $CellContext`nu)) $CellContext`\[Xi]^10 - (
-           2 (54167363 + 476201 $CellContext`nu)) $CellContext`\[Xi]^11 + (
-            139357454 + 1496505 $CellContext`nu) $CellContext`\[Xi]^12 - (
-           133469767 + 
-           1758628 $CellContext`nu) $CellContext`\[Xi]^13 + (
-            2 (49248832 + 785035 $CellContext`nu)) $CellContext`\[Xi]^14 - (
-           4 (14221159 + 268186 $CellContext`nu)) $CellContext`\[Xi]^15 + (
-            25896483 + 570661 $CellContext`nu) $CellContext`\[Xi]^16 - (
-           4 (2328104 + 61593 $CellContext`nu)) $CellContext`\[Xi]^17 + (
-            2631842 + 91250 $CellContext`nu) $CellContext`\[Xi]^18 - (
-           15 (38199 + 1940 $CellContext`nu)) $CellContext`\[Xi]^19 + (
-            423 (216 + 17 $CellContext`nu)) $CellContext`\[Xi]^20 - (
-           27 (353 + 42 $CellContext`nu)) $CellContext`\[Xi]^21 + (
-            81 (6 + $CellContext`nu)) $CellContext`\[Xi]^22) + (((
-            3 $CellContext`\[Eta]^14) (-1 + $CellContext`\[Xi])^8) \
-$CellContext`\[Xi]) (-16 + 51 $CellContext`\[Xi] + 213 $CellContext`\[Xi]^2 - 
+           126748 $CellContext`nu) $CellContext`\[Xi]^9 + 
+          160 (358565 + 2703 $CellContext`nu) $CellContext`\[Xi]^10 - 
+          2 (54167363 + 
+           476201 $CellContext`nu) $CellContext`\[Xi]^11 + (139357454 + 
+            1496505 $CellContext`nu) $CellContext`\[Xi]^12 - (133469767 + 
+           1758628 $CellContext`nu) $CellContext`\[Xi]^13 + 
+          2 (49248832 + 785035 $CellContext`nu) $CellContext`\[Xi]^14 - 
+          4 (14221159 + 
+           268186 $CellContext`nu) $CellContext`\[Xi]^15 + (25896483 + 
+            570661 $CellContext`nu) $CellContext`\[Xi]^16 - 
+          4 (2328104 + 
+           61593 $CellContext`nu) $CellContext`\[Xi]^17 + (2631842 + 
+            91250 $CellContext`nu) $CellContext`\[Xi]^18 - 
+          15 (38199 + 1940 $CellContext`nu) $CellContext`\[Xi]^19 + 
+          423 (216 + 17 $CellContext`nu) $CellContext`\[Xi]^20 - 
+          27 (353 + 42 $CellContext`nu) $CellContext`\[Xi]^21 + 
+          81 (6 + $CellContext`nu) $CellContext`\[Xi]^22) + 
+        3 $CellContext`\[Eta]^14 (-1 + $CellContext`\[Xi])^8 $CellContext`\
+\[Xi] (-16 + 51 $CellContext`\[Xi] + 213 $CellContext`\[Xi]^2 - 
           1666 $CellContext`\[Xi]^3 + 4743 $CellContext`\[Xi]^4 - 
           7289 $CellContext`\[Xi]^5 + 5765 $CellContext`\[Xi]^6 - 
           809 $CellContext`\[Xi]^7 - 2247 $CellContext`\[Xi]^8 + 
@@ -6692,8 +6652,8 @@ $CellContext`\[Xi]) (-16 + 51 $CellContext`\[Xi] + 213 $CellContext`\[Xi]^2 -
             94 $CellContext`\[Xi]^5 + 508 $CellContext`\[Xi]^6 - 
             536 $CellContext`\[Xi]^7 - 36 $CellContext`\[Xi]^8 + 
             264 $CellContext`\[Xi]^9 - 144 $CellContext`\[Xi]^10 + 
-            27 $CellContext`\[Xi]^11)) + ($CellContext`\[Eta]^10 (-1 + \
-$CellContext`\[Xi])^4) (-56544 - 167384 $CellContext`\[Xi] + 
+            27 $CellContext`\[Xi]^11)) + $CellContext`\[Eta]^10 (-1 + \
+$CellContext`\[Xi])^4 (-56544 - 167384 $CellContext`\[Xi] + 
           4741535 $CellContext`\[Xi]^2 - 21808099 $CellContext`\[Xi]^3 + 
           40303609 $CellContext`\[Xi]^4 - 2265287 $CellContext`\[Xi]^5 - 
           140871300 $CellContext`\[Xi]^6 + 310353604 $CellContext`\[Xi]^7 - 
@@ -6712,8 +6672,8 @@ $CellContext`\[Xi])^4) (-56544 - 167384 $CellContext`\[Xi] +
             5554770 $CellContext`\[Xi]^13 + 3461562 $CellContext`\[Xi]^14 - 
             1328022 $CellContext`\[Xi]^15 + 289035 $CellContext`\[Xi]^16 - 
             29484 $CellContext`\[Xi]^17 + 
-            567 $CellContext`\[Xi]^18)) + ($CellContext`\[Eta]^9 (-1 + \
-$CellContext`\[Xi])^2) (84360 + 279580 $CellContext`\[Xi] - 
+            567 $CellContext`\[Xi]^18)) + $CellContext`\[Eta]^9 (-1 + \
+$CellContext`\[Xi])^2 (84360 + 279580 $CellContext`\[Xi] - 
           9952378 $CellContext`\[Xi]^2 + 51693872 $CellContext`\[Xi]^3 - 
           89452652 $CellContext`\[Xi]^4 - 120252034 $CellContext`\[Xi]^5 + 
           883484348 $CellContext`\[Xi]^6 - 1932880096 $CellContext`\[Xi]^7 + 
@@ -6723,8 +6683,8 @@ $CellContext`\[Xi])^2) (84360 + 279580 $CellContext`\[Xi] -
           307297641 $CellContext`\[Xi]^14 + 101661171 $CellContext`\[Xi]^15 - 
           23652531 $CellContext`\[Xi]^16 + 2352753 $CellContext`\[Xi]^17 + 
           522450 $CellContext`\[Xi]^18 - 196560 $CellContext`\[Xi]^19 + 
-          18468 $CellContext`\[Xi]^20 + ((
-             2 $CellContext`nu) (-1 + $CellContext`\[Xi])^2) (72 + 
+          18468 $CellContext`\[Xi]^20 + 
+          2 $CellContext`nu (-1 + $CellContext`\[Xi])^2 (72 + 
             20 $CellContext`\[Xi] + 33916 $CellContext`\[Xi]^2 - 
             185436 $CellContext`\[Xi]^3 + 344406 $CellContext`\[Xi]^4 - 
             441087 $CellContext`\[Xi]^5 + 1441987 $CellContext`\[Xi]^6 - 
@@ -6734,8 +6694,8 @@ $CellContext`\[Xi])^2) (84360 + 279580 $CellContext`\[Xi] -
             8038212 $CellContext`\[Xi]^13 - 4340682 $CellContext`\[Xi]^14 + 
             1352988 $CellContext`\[Xi]^15 - 204768 $CellContext`\[Xi]^16 + 
             4320 $CellContext`\[Xi]^17 + 
-            1701 $CellContext`\[Xi]^18)) - ($CellContext`\[Eta]^8 (-1 + \
-$CellContext`\[Xi])^2) (75240 + 653736 $CellContext`\[Xi] - 
+            1701 $CellContext`\[Xi]^18)) - $CellContext`\[Eta]^8 (-1 + \
+$CellContext`\[Xi])^2 (75240 + 653736 $CellContext`\[Xi] - 
          13574388 $CellContext`\[Xi]^2 + 55548744 $CellContext`\[Xi]^3 - 
          4961138 $CellContext`\[Xi]^4 - 563773988 $CellContext`\[Xi]^5 + 
          1823879774 $CellContext`\[Xi]^6 - 2620615328 $CellContext`\[Xi]^7 + 
@@ -6769,9 +6729,8 @@ $CellContext`\[Xi])^2) (75240 + 653736 $CellContext`\[Xi] -
           3366595842 $CellContext`\[Xi]^15 + 2301566221 $CellContext`\[Xi]^16 - 
           1039400664 $CellContext`\[Xi]^17 + 350906751 $CellContext`\[Xi]^18 - 
           89928828 $CellContext`\[Xi]^19 + 16537860 $CellContext`\[Xi]^20 - 
-          1911006 $CellContext`\[Xi]^21 + 
-          102060 $CellContext`\[Xi]^22 + ((
-             2 $CellContext`nu) (-1 + $CellContext`\[Xi])^2) (402 - 
+          1911006 $CellContext`\[Xi]^21 + 102060 $CellContext`\[Xi]^22 + 
+          2 $CellContext`nu (-1 + $CellContext`\[Xi])^2 (402 - 
             3316 $CellContext`\[Xi] + 32413 $CellContext`\[Xi]^2 - 
             161216 $CellContext`\[Xi]^3 + 427991 $CellContext`\[Xi]^4 - 
             1145303 $CellContext`\[Xi]^5 + 4437434 $CellContext`\[Xi]^6 - 
@@ -6871,18 +6830,18 @@ $CellContext`\[Xi])^2) (75240 + 653736 $CellContext`\[Xi] -
           2431526019 $CellContext`\[Xi]^16 - 875148443 $CellContext`\[Xi]^17 + 
           244486641 $CellContext`\[Xi]^18 - 51899484 $CellContext`\[Xi]^19 + 
           7922466 $CellContext`\[Xi]^20 - 772551 $CellContext`\[Xi]^21 + 
-          35802 $CellContext`\[Xi]^22 + (2 $CellContext`nu) (18 - 
-            288 $CellContext`\[Xi] + 659 $CellContext`\[Xi]^2 + 
-            510 $CellContext`\[Xi]^3 + 12755 $CellContext`\[Xi]^4 - 
-            142905 $CellContext`\[Xi]^5 + 600942 $CellContext`\[Xi]^6 - 
-            1496288 $CellContext`\[Xi]^7 + 2636618 $CellContext`\[Xi]^8 - 
-            4046239 $CellContext`\[Xi]^9 + 7212178 $CellContext`\[Xi]^10 - 
-            15610655 $CellContext`\[Xi]^11 + 32344841 $CellContext`\[Xi]^12 - 
-            54736783 $CellContext`\[Xi]^13 + 71772636 $CellContext`\[Xi]^14 - 
-            71683351 $CellContext`\[Xi]^15 + 53970477 $CellContext`\[Xi]^16 - 
-            30235548 $CellContext`\[Xi]^17 + 12347120 $CellContext`\[Xi]^18 - 
-            3553218 $CellContext`\[Xi]^19 + 680031 $CellContext`\[Xi]^20 - 
-            77463 $CellContext`\[Xi]^21 + 
+          35802 $CellContext`\[Xi]^22 + 
+          2 $CellContext`nu (18 - 288 $CellContext`\[Xi] + 
+            659 $CellContext`\[Xi]^2 + 510 $CellContext`\[Xi]^3 + 
+            12755 $CellContext`\[Xi]^4 - 142905 $CellContext`\[Xi]^5 + 
+            600942 $CellContext`\[Xi]^6 - 1496288 $CellContext`\[Xi]^7 + 
+            2636618 $CellContext`\[Xi]^8 - 4046239 $CellContext`\[Xi]^9 + 
+            7212178 $CellContext`\[Xi]^10 - 15610655 $CellContext`\[Xi]^11 + 
+            32344841 $CellContext`\[Xi]^12 - 54736783 $CellContext`\[Xi]^13 + 
+            71772636 $CellContext`\[Xi]^14 - 71683351 $CellContext`\[Xi]^15 + 
+            53970477 $CellContext`\[Xi]^16 - 30235548 $CellContext`\[Xi]^17 + 
+            12347120 $CellContext`\[Xi]^18 - 3553218 $CellContext`\[Xi]^19 + 
+            680031 $CellContext`\[Xi]^20 - 77463 $CellContext`\[Xi]^21 + 
             3969 $CellContext`\[Xi]^22)) + $CellContext`\[Eta]^5 (-27816 + 
           915732 $CellContext`\[Xi] - 7427118 $CellContext`\[Xi]^2 + 
           11596212 $CellContext`\[Xi]^3 + 112284431 $CellContext`\[Xi]^4 - 
@@ -6898,75 +6857,72 @@ $CellContext`\[Xi])^2) (75240 + 653736 $CellContext`\[Xi] -
           7737495742 $CellContext`\[Xi]^16 - 2842974441 $CellContext`\[Xi]^17 + 
           811052358 $CellContext`\[Xi]^18 - 176642289 $CellContext`\[Xi]^19 + 
           27766809 $CellContext`\[Xi]^20 - 2786373 $CellContext`\[Xi]^21 + 
-          132192 $CellContext`\[Xi]^22 + (2 $CellContext`nu) (228 - 
-            2204 $CellContext`\[Xi] + 12156 $CellContext`\[Xi]^2 - 
-            43184 $CellContext`\[Xi]^3 + 153011 $CellContext`\[Xi]^4 - 
-            796823 $CellContext`\[Xi]^5 + 3703117 $CellContext`\[Xi]^6 - 
-            12018248 $CellContext`\[Xi]^7 + 27211966 $CellContext`\[Xi]^8 - 
-            44083907 $CellContext`\[Xi]^9 + 53232218 $CellContext`\[Xi]^10 - 
-            57186338 $CellContext`\[Xi]^11 + 80747059 $CellContext`\[Xi]^12 - 
-            144245818 $CellContext`\[Xi]^13 + 221263572 $CellContext`\[Xi]^14 - 
-            251340234 $CellContext`\[Xi]^15 + 207225402 $CellContext`\[Xi]^16 - 
-            123819067 $CellContext`\[Xi]^17 + 53082417 $CellContext`\[Xi]^18 - 
-            15889380 $CellContext`\[Xi]^19 + 3141612 $CellContext`\[Xi]^20 - 
-            366525 $CellContext`\[Xi]^21 + 18954 $CellContext`\[Xi]^22)))), (
-      Rational[
-       1, 27] (-1 + 4 $CellContext`\[Xi]^2 - 11 $CellContext`\[Xi]^3 + 
-        10 $CellContext`\[Xi]^4 - 
-        3 $CellContext`\[Xi]^5 + ($CellContext`\[Eta]^3 (-1 + $CellContext`\
-\[Xi])^2) (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) - ((
-          3 $CellContext`\[Eta]^2) (-1 + $CellContext`\[Xi])^2) (1 - 
-         2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + \
+          132192 $CellContext`\[Xi]^22 + 
+          2 $CellContext`nu (228 - 2204 $CellContext`\[Xi] + 
+            12156 $CellContext`\[Xi]^2 - 43184 $CellContext`\[Xi]^3 + 
+            153011 $CellContext`\[Xi]^4 - 796823 $CellContext`\[Xi]^5 + 
+            3703117 $CellContext`\[Xi]^6 - 12018248 $CellContext`\[Xi]^7 + 
+            27211966 $CellContext`\[Xi]^8 - 44083907 $CellContext`\[Xi]^9 + 
+            53232218 $CellContext`\[Xi]^10 - 57186338 $CellContext`\[Xi]^11 + 
+            80747059 $CellContext`\[Xi]^12 - 144245818 $CellContext`\[Xi]^13 + 
+            221263572 $CellContext`\[Xi]^14 - 251340234 $CellContext`\[Xi]^15 + 
+            207225402 $CellContext`\[Xi]^16 - 123819067 $CellContext`\[Xi]^17 + 
+            53082417 $CellContext`\[Xi]^18 - 15889380 $CellContext`\[Xi]^19 + 
+            3141612 $CellContext`\[Xi]^20 - 366525 $CellContext`\[Xi]^21 + 
+            18954 $CellContext`\[Xi]^22)))), 
+     Rational[1, 27] (-1 + 4 $CellContext`\[Xi]^2 - 11 $CellContext`\[Xi]^3 + 
+       10 $CellContext`\[Xi]^4 - 
+       3 $CellContext`\[Xi]^5 + $CellContext`\[Eta]^3 (-1 + \
+$CellContext`\[Xi])^2 (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2) - 
+       3 $CellContext`\[Eta]^2 (-1 + $CellContext`\[Xi])^2 (1 - 
+        2 $CellContext`\[Xi] - $CellContext`\[Xi]^2 + $CellContext`\[Xi]^3) + \
 $CellContext`\[Eta] (1 - 10 $CellContext`\[Xi] - 2 $CellContext`\[Xi]^2 + 
-          30 $CellContext`\[Xi]^3 - 27 $CellContext`\[Xi]^4 + 
-          6 $CellContext`\[Xi]^5))^(-5)) ((((((3 
-            E^$CellContext`\[Xi]) $CellContext`nu) $CellContext`\[Eta]^16) \
-(-1 + $CellContext`\[Xi])^9) $CellContext`\[Xi]^2) (-8 - 
-        82 $CellContext`\[Xi] + 416 $CellContext`\[Xi]^2 - 
-        225 $CellContext`\[Xi]^3 - 1471 $CellContext`\[Xi]^4 + 
-        3057 $CellContext`\[Xi]^5 - 2313 $CellContext`\[Xi]^6 + 
-        369 $CellContext`\[Xi]^7 + 495 $CellContext`\[Xi]^8 - 
-        351 $CellContext`\[Xi]^9 + 
-        81 $CellContext`\[Xi]^10) - (((((6 
-           E^$CellContext`\[Xi]) $CellContext`nu) $CellContext`\[Eta]^15) (-1 + \
-$CellContext`\[Xi])^9) $CellContext`\[Xi]^2) (-44 - 640 $CellContext`\[Xi] + 
+         30 $CellContext`\[Xi]^3 - 27 $CellContext`\[Xi]^4 + 
+         6 $CellContext`\[Xi]^5))^(-5) (
+      3 E^$CellContext`\[Xi] $CellContext`nu $CellContext`\[Eta]^16 (-1 + \
+$CellContext`\[Xi])^9 $CellContext`\[Xi]^2 (-8 - 82 $CellContext`\[Xi] + 
+        416 $CellContext`\[Xi]^2 - 225 $CellContext`\[Xi]^3 - 
+        1471 $CellContext`\[Xi]^4 + 3057 $CellContext`\[Xi]^5 - 
+        2313 $CellContext`\[Xi]^6 + 369 $CellContext`\[Xi]^7 + 
+        495 $CellContext`\[Xi]^8 - 351 $CellContext`\[Xi]^9 + 
+        81 $CellContext`\[Xi]^10) - 6 
+      E^$CellContext`\[Xi] $CellContext`nu $CellContext`\[Eta]^15 (-1 + \
+$CellContext`\[Xi])^9 $CellContext`\[Xi]^2 (-44 - 640 $CellContext`\[Xi] + 
        2435 $CellContext`\[Xi]^2 + 8 $CellContext`\[Xi]^3 - 
        9029 $CellContext`\[Xi]^4 + 12606 $CellContext`\[Xi]^5 - 
        5190 $CellContext`\[Xi]^6 - 1359 $CellContext`\[Xi]^7 + 
        1359 $CellContext`\[Xi]^8 + 54 $CellContext`\[Xi]^9 - 
-       297 $CellContext`\[Xi]^10 + 
-       81 $CellContext`\[Xi]^11) + (((((3 
-            E^$CellContext`\[Xi]) $CellContext`nu) $CellContext`\[Eta]^14) \
-(-1 + $CellContext`\[Xi])^7) $CellContext`\[Xi]^2) (-448 - 
-        7944 $CellContext`\[Xi] + 42792 $CellContext`\[Xi]^2 - 
-        45759 $CellContext`\[Xi]^3 - 88456 $CellContext`\[Xi]^4 + 
-        230391 $CellContext`\[Xi]^5 - 123547 $CellContext`\[Xi]^6 - 
-        107205 $CellContext`\[Xi]^7 + 143217 $CellContext`\[Xi]^8 - 
-        19710 $CellContext`\[Xi]^9 - 49590 $CellContext`\[Xi]^10 + 
-        34452 $CellContext`\[Xi]^11 - 8937 $CellContext`\[Xi]^12 + 
-        567 $CellContext`\[Xi]^13 + 81 $CellContext`\[Xi]^14) - ((
-        E^$CellContext`\[Xi] $CellContext`\[Eta]^13) (-1 + \
-$CellContext`\[Xi])^7) (2 - 
-       10 $CellContext`\[Xi] + (15 - 
+       297 $CellContext`\[Xi]^10 + 81 $CellContext`\[Xi]^11) + 
+      3 E^$CellContext`\[Xi] $CellContext`nu $CellContext`\[Eta]^14 (-1 + \
+$CellContext`\[Xi])^7 $CellContext`\[Xi]^2 (-448 - 7944 $CellContext`\[Xi] + 
+        42792 $CellContext`\[Xi]^2 - 45759 $CellContext`\[Xi]^3 - 
+        88456 $CellContext`\[Xi]^4 + 230391 $CellContext`\[Xi]^5 - 
+        123547 $CellContext`\[Xi]^6 - 107205 $CellContext`\[Xi]^7 + 
+        143217 $CellContext`\[Xi]^8 - 19710 $CellContext`\[Xi]^9 - 
+        49590 $CellContext`\[Xi]^10 + 34452 $CellContext`\[Xi]^11 - 
+        8937 $CellContext`\[Xi]^12 + 567 $CellContext`\[Xi]^13 + 
+        81 $CellContext`\[Xi]^14) - 
+      E^$CellContext`\[Xi] $CellContext`\[Eta]^13 (-1 + $CellContext`\[Xi])^7 \
+(2 - 10 $CellContext`\[Xi] + (15 - 
          4032 $CellContext`nu) $CellContext`\[Xi]^2 + (17 - 
          99216 $CellContext`nu) $CellContext`\[Xi]^3 + (-98 + 
          446676 $CellContext`nu) $CellContext`\[Xi]^4 + (82 - 
          310818 $CellContext`nu) $CellContext`\[Xi]^5 + (204 - 
-         806388 $CellContext`nu) $CellContext`\[Xi]^6 + (
-         4 (-163 + 96027 $CellContext`nu)) $CellContext`\[Xi]^7 + (
-         16 (46 + 192075 $CellContext`nu)) $CellContext`\[Xi]^8 - (
-        24 (15 + 220633 $CellContext`nu)) $CellContext`\[Xi]^9 + (
-         9 (-3 + 371024 $CellContext`nu)) $CellContext`\[Xi]^10 + (27 - 
-         456840 $CellContext`nu) $CellContext`\[Xi]^11 - (
-        470502 $CellContext`nu) $CellContext`\[Xi]^12 + (
-         212004 $CellContext`nu) $CellContext`\[Xi]^13 + (
-         3726 $CellContext`nu) $CellContext`\[Xi]^14 - (
-        18954 $CellContext`nu) $CellContext`\[Xi]^15 + (
-         2916 $CellContext`nu) $CellContext`\[Xi]^16) + ((
-         2 $CellContext`\[Xi]) (1 - 4 $CellContext`\[Xi]^2 + 
-         11 $CellContext`\[Xi]^3 - 10 $CellContext`\[Xi]^4 + 
-         3 $CellContext`\[Xi]^5)) ((156 E) (-5 + 
-          27 $CellContext`\[Xi] + $CellContext`\[Xi]^2 - 
+         806388 $CellContext`nu) $CellContext`\[Xi]^6 + 
+       4 (-163 + 96027 $CellContext`nu) $CellContext`\[Xi]^7 + 
+       16 (46 + 192075 $CellContext`nu) $CellContext`\[Xi]^8 - 
+       24 (15 + 220633 $CellContext`nu) $CellContext`\[Xi]^9 + 
+       9 (-3 + 371024 $CellContext`nu) $CellContext`\[Xi]^10 + (27 - 
+         456840 $CellContext`nu) $CellContext`\[Xi]^11 - 
+       470502 $CellContext`nu $CellContext`\[Xi]^12 + 
+       212004 $CellContext`nu $CellContext`\[Xi]^13 + 
+       3726 $CellContext`nu $CellContext`\[Xi]^14 - 
+       18954 $CellContext`nu $CellContext`\[Xi]^15 + 
+       2916 $CellContext`nu $CellContext`\[Xi]^16) + 
+      2 $CellContext`\[Xi] (1 - 4 $CellContext`\[Xi]^2 + 
+        11 $CellContext`\[Xi]^3 - 10 $CellContext`\[Xi]^4 + 
+        3 $CellContext`\[Xi]^5) (
+        156 E (-5 + 27 $CellContext`\[Xi] + $CellContext`\[Xi]^2 - 
           203 $CellContext`\[Xi]^3 + 485 $CellContext`\[Xi]^4 - 
           361 $CellContext`\[Xi]^5 - 414 $CellContext`\[Xi]^6 + 
           1133 $CellContext`\[Xi]^7 - 1049 $CellContext`\[Xi]^8 + 
@@ -6978,31 +6934,34 @@ $CellContext`\[Xi])^7) (2 -
          80825 $CellContext`\[Xi]^7 - 78362 $CellContext`\[Xi]^8 + 
          35532 $CellContext`\[Xi]^9 - 7320 $CellContext`\[Xi]^10 + 
          441 $CellContext`\[Xi]^11) + 
-        E^$CellContext`\[Xi] (
-          456 + (2 (-342 + 5 $CellContext`nu)) $CellContext`\[Xi] - (
-           21 (152 + 3 $CellContext`nu)) $CellContext`\[Xi]^2 + (15318 + 
-            89 $CellContext`nu) $CellContext`\[Xi]^3 - (
-           4 (5118 + 41 $CellContext`nu)) $CellContext`\[Xi]^4 + (
-            6 (-3857 + 184 $CellContext`nu)) $CellContext`\[Xi]^5 - (
-           4 (-35361 + 715 $CellContext`nu)) $CellContext`\[Xi]^6 + (-284292 + 
-            3083 $CellContext`nu) $CellContext`\[Xi]^7 - (
-           4 (-87294 + 289 $CellContext`nu)) $CellContext`\[Xi]^8 + (-293466 + 
-            475 $CellContext`nu) $CellContext`\[Xi]^9 - (
-           9 (-19596 + 287 $CellContext`nu)) $CellContext`\[Xi]^10 + (-77310 + 
-            4343 $CellContext`nu) $CellContext`\[Xi]^11 - (
-           28 (-882 + 125 $CellContext`nu)) $CellContext`\[Xi]^12 + (
-            2 (-2775 + 776 $CellContext`nu)) $CellContext`\[Xi]^13 + (792 - 
-            366 $CellContext`nu) $CellContext`\[Xi]^14 + (
-            18 (-3 + 2 $CellContext`nu)) $CellContext`\[Xi]^15)) + (
-        E^$CellContext`\[Xi] $CellContext`\[Eta]^12) ((-1 + \
+        E^$CellContext`\[Xi] (456 + 
+          2 (-342 + 5 $CellContext`nu) $CellContext`\[Xi] - 
+          21 (152 + 3 $CellContext`nu) $CellContext`\[Xi]^2 + (15318 + 
+            89 $CellContext`nu) $CellContext`\[Xi]^3 - 
+          4 (5118 + 41 $CellContext`nu) $CellContext`\[Xi]^4 + 
+          6 (-3857 + 184 $CellContext`nu) $CellContext`\[Xi]^5 - 
+          4 (-35361 + 
+           715 $CellContext`nu) $CellContext`\[Xi]^6 + (-284292 + 
+            3083 $CellContext`nu) $CellContext`\[Xi]^7 - 
+          4 (-87294 + 
+           289 $CellContext`nu) $CellContext`\[Xi]^8 + (-293466 + 
+            475 $CellContext`nu) $CellContext`\[Xi]^9 - 
+          9 (-19596 + 
+           287 $CellContext`nu) $CellContext`\[Xi]^10 + (-77310 + 
+            4343 $CellContext`nu) $CellContext`\[Xi]^11 - 
+          28 (-882 + 125 $CellContext`nu) $CellContext`\[Xi]^12 + 
+          2 (-2775 + 776 $CellContext`nu) $CellContext`\[Xi]^13 + (792 - 
+            366 $CellContext`nu) $CellContext`\[Xi]^14 + 
+          18 (-3 + 2 $CellContext`nu) $CellContext`\[Xi]^15)) + 
+      E^$CellContext`\[Xi] $CellContext`\[Eta]^12 ((-1 + \
 $CellContext`\[Xi])^7 (22 - 110 $CellContext`\[Xi] + 141 $CellContext`\[Xi]^2 + 
           189 $CellContext`\[Xi]^3 - 616 $CellContext`\[Xi]^4 - 
           233 $CellContext`\[Xi]^5 + 2501 $CellContext`\[Xi]^6 - 
           2867 $CellContext`\[Xi]^7 - 311 $CellContext`\[Xi]^8 + 
           2895 $CellContext`\[Xi]^9 - 1242 $CellContext`\[Xi]^10 - 
           162 $CellContext`\[Xi]^11 + 
-          81 $CellContext`\[Xi]^12) + ($CellContext`nu (-1 + $CellContext`\
-\[Xi])^5) (-4 - 26 $CellContext`\[Xi] - 6378 $CellContext`\[Xi]^2 - 
+          81 $CellContext`\[Xi]^12) + $CellContext`nu (-1 + \
+$CellContext`\[Xi])^5 (-4 - 26 $CellContext`\[Xi] - 6378 $CellContext`\[Xi]^2 - 
           254925 $CellContext`\[Xi]^3 + 1544707 $CellContext`\[Xi]^4 - 
           2651256 $CellContext`\[Xi]^5 + 808176 $CellContext`\[Xi]^6 - 
           4616980 $CellContext`\[Xi]^7 + 31553696 $CellContext`\[Xi]^8 - 
@@ -7011,9 +6970,9 @@ $CellContext`\[Xi])^7 (22 - 110 $CellContext`\[Xi] + 141 $CellContext`\[Xi]^2 +
           12159324 $CellContext`\[Xi]^13 + 6907491 $CellContext`\[Xi]^14 - 
           3528225 $CellContext`\[Xi]^15 + 1170774 $CellContext`\[Xi]^16 - 
           214245 $CellContext`\[Xi]^17 + 
-          16038 $CellContext`\[Xi]^18)) - ($CellContext`\[Eta]^11 (-1 + \
-$CellContext`\[Xi])^5) ((
-         912 (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2)^2) (-2 + 
+          16038 $CellContext`\[Xi]^18)) - $CellContext`\[Eta]^11 (-1 + \
+$CellContext`\[Xi])^5 (
+       912 (1 - 2 $CellContext`\[Xi] + 3 $CellContext`\[Xi]^2)^2 (-2 + 
          7 $CellContext`\[Xi] - 7 $CellContext`\[Xi]^2 - $CellContext`\[Xi]^3 + 
          3 $CellContext`\[Xi]^4) + 
        E^$CellContext`\[Xi] (1922 - 16214 $CellContext`\[Xi] + 
@@ -7023,20 +6982,20 @@ $CellContext`\[Xi])^5) ((
          52259 $CellContext`\[Xi]^8 + 95989 $CellContext`\[Xi]^9 - 
          65246 $CellContext`\[Xi]^10 + 16068 $CellContext`\[Xi]^11 + 
          3426 $CellContext`\[Xi]^12 - 1548 $CellContext`\[Xi]^13 - 
-         243 $CellContext`\[Xi]^14 + 
-         81 $CellContext`\[Xi]^15 + (6 $CellContext`nu) (-6 - 
-           48 $CellContext`\[Xi] + 51 $CellContext`\[Xi]^2 - 
-           82138 $CellContext`\[Xi]^3 + 422780 $CellContext`\[Xi]^4 - 
-           592562 $CellContext`\[Xi]^5 + 520498 $CellContext`\[Xi]^6 - 
-           4998914 $CellContext`\[Xi]^7 + 19470050 $CellContext`\[Xi]^8 - 
-           35671920 $CellContext`\[Xi]^9 + 38504361 $CellContext`\[Xi]^10 - 
-           29260382 $CellContext`\[Xi]^11 + 20185536 $CellContext`\[Xi]^12 - 
-           14337756 $CellContext`\[Xi]^13 + 8653188 $CellContext`\[Xi]^14 - 
-           3641598 $CellContext`\[Xi]^15 + 963036 $CellContext`\[Xi]^16 - 
-           142830 $CellContext`\[Xi]^17 + 8910 $CellContext`\[Xi]^18))) - ((
-        2 $CellContext`\[Eta]^9) (-1 + $CellContext`\[Xi])^3) ((((156 
-           E) (-1 + $CellContext`\[Xi])^3) (1 - 2 $CellContext`\[Xi] + 
-           3 $CellContext`\[Xi]^2)^2) (-2 + 7 $CellContext`\[Xi] - 
+         243 $CellContext`\[Xi]^14 + 81 $CellContext`\[Xi]^15 + 
+         6 $CellContext`nu (-6 - 48 $CellContext`\[Xi] + 
+           51 $CellContext`\[Xi]^2 - 82138 $CellContext`\[Xi]^3 + 
+           422780 $CellContext`\[Xi]^4 - 592562 $CellContext`\[Xi]^5 + 
+           520498 $CellContext`\[Xi]^6 - 4998914 $CellContext`\[Xi]^7 + 
+           19470050 $CellContext`\[Xi]^8 - 35671920 $CellContext`\[Xi]^9 + 
+           38504361 $CellContext`\[Xi]^10 - 29260382 $CellContext`\[Xi]^11 + 
+           20185536 $CellContext`\[Xi]^12 - 14337756 $CellContext`\[Xi]^13 + 
+           8653188 $CellContext`\[Xi]^14 - 3641598 $CellContext`\[Xi]^15 + 
+           963036 $CellContext`\[Xi]^16 - 142830 $CellContext`\[Xi]^17 + 
+           8910 $CellContext`\[Xi]^18))) - 
+      2 $CellContext`\[Eta]^9 (-1 + $CellContext`\[Xi])^3 (
+       156 E (-1 + $CellContext`\[Xi])^3 (1 - 2 $CellContext`\[Xi] + 
+          3 $CellContext`\[Xi]^2)^2 (-2 + 7 $CellContext`\[Xi] - 
          6 $CellContext`\[Xi]^2 + 3 $CellContext`\[Xi]^3) + 
        4 (-9446 + 77922 $CellContext`\[Xi] - 258453 $CellContext`\[Xi]^2 + 
          391173 $CellContext`\[Xi]^3 - 53796 $CellContext`\[Xi]^4 - 
@@ -7065,21 +7024,21 @@ $CellContext`\[Xi])^5) ((
            1089564900 $CellContext`\[Xi]^14 - 692060280 $CellContext`\[Xi]^15 + 
            310710528 $CellContext`\[Xi]^16 - 94274982 $CellContext`\[Xi]^17 + 
            18234774 $CellContext`\[Xi]^18 - 2015199 $CellContext`\[Xi]^19 + 
-           96228 $CellContext`\[Xi]^20))) + $CellContext`\[Eta]^10 ((
-          912 (-1 + $CellContext`\[Xi])^6) (20 - 115 $CellContext`\[Xi] + 
+           96228 $CellContext`\[Xi]^20))) + $CellContext`\[Eta]^10 (
+        912 (-1 + $CellContext`\[Xi])^6 (20 - 115 $CellContext`\[Xi] + 
           289 $CellContext`\[Xi]^2 - 331 $CellContext`\[Xi]^3 + 
           14 $CellContext`\[Xi]^4 + 379 $CellContext`\[Xi]^5 - 
           291 $CellContext`\[Xi]^6 - 117 $CellContext`\[Xi]^7 + 
-          108 $CellContext`\[Xi]^8) + (
-          E^$CellContext`\[Xi] (-1 + $CellContext`\[Xi])^3) ((-1 + \
-$CellContext`\[Xi])^2 (18474 - 143174 $CellContext`\[Xi] + 
-            504869 $CellContext`\[Xi]^2 - 999353 $CellContext`\[Xi]^3 + 
-            1081993 $CellContext`\[Xi]^4 - 346880 $CellContext`\[Xi]^5 - 
-            639784 $CellContext`\[Xi]^6 + 885299 $CellContext`\[Xi]^7 - 
-            443446 $CellContext`\[Xi]^8 + 20698 $CellContext`\[Xi]^9 + 
-            162035 $CellContext`\[Xi]^10 - 155934 $CellContext`\[Xi]^11 + 
-            62010 $CellContext`\[Xi]^12 - 5922 $CellContext`\[Xi]^13 - 
-            1746 $CellContext`\[Xi]^14 + 162 $CellContext`\[Xi]^15 + 
+          108 $CellContext`\[Xi]^8) + 
+        E^$CellContext`\[Xi] (-1 + $CellContext`\[Xi])^3 ((-1 + $CellContext`\
+\[Xi])^2 (18474 - 143174 $CellContext`\[Xi] + 504869 $CellContext`\[Xi]^2 - 
+            999353 $CellContext`\[Xi]^3 + 1081993 $CellContext`\[Xi]^4 - 
+            346880 $CellContext`\[Xi]^5 - 639784 $CellContext`\[Xi]^6 + 
+            885299 $CellContext`\[Xi]^7 - 443446 $CellContext`\[Xi]^8 + 
+            20698 $CellContext`\[Xi]^9 + 162035 $CellContext`\[Xi]^10 - 
+            155934 $CellContext`\[Xi]^11 + 62010 $CellContext`\[Xi]^12 - 
+            5922 $CellContext`\[Xi]^13 - 1746 $CellContext`\[Xi]^14 + 
+            162 $CellContext`\[Xi]^15 + 
             27 $CellContext`\[Xi]^16) + $CellContext`nu (-132 - 
             1122 $CellContext`\[Xi] + 26820 $CellContext`\[Xi]^2 - 
             727627 $CellContext`\[Xi]^3 + 4238694 $CellContext`\[Xi]^4 - 
@@ -7092,17 +7051,17 @@ $CellContext`\[Xi])^2 (18474 - 143174 $CellContext`\[Xi] +
             1085543553 $CellContext`\[Xi]^14 - 
             688347702 $CellContext`\[Xi]^15 + 317544552 $CellContext`\[Xi]^16 - 
             100291068 $CellContext`\[Xi]^17 + 20359161 $CellContext`\[Xi]^18 - 
-            2377512 $CellContext`\[Xi]^19 + 
-            120285 $CellContext`\[Xi]^20))) - (
-       2 $CellContext`\[Eta]) ((156 E) (-5 - 17 $CellContext`\[Xi] + 
-         261 $CellContext`\[Xi]^2 - 662 $CellContext`\[Xi]^3 - 
-         1498 $CellContext`\[Xi]^4 + 9596 $CellContext`\[Xi]^5 - 
-         13819 $CellContext`\[Xi]^6 - 13028 $CellContext`\[Xi]^7 + 
-         75013 $CellContext`\[Xi]^8 - 109924 $CellContext`\[Xi]^9 + 
-         48789 $CellContext`\[Xi]^10 + 71315 $CellContext`\[Xi]^11 - 
-         138591 $CellContext`\[Xi]^12 + 113103 $CellContext`\[Xi]^13 - 
-         53232 $CellContext`\[Xi]^14 + 14772 $CellContext`\[Xi]^15 - 
-         2214 $CellContext`\[Xi]^16 + 135 $CellContext`\[Xi]^17) - 
+            2377512 $CellContext`\[Xi]^19 + 120285 $CellContext`\[Xi]^20))) - 
+      2 $CellContext`\[Eta] (
+       156 E (-5 - 17 $CellContext`\[Xi] + 261 $CellContext`\[Xi]^2 - 
+         662 $CellContext`\[Xi]^3 - 1498 $CellContext`\[Xi]^4 + 
+         9596 $CellContext`\[Xi]^5 - 13819 $CellContext`\[Xi]^6 - 
+         13028 $CellContext`\[Xi]^7 + 75013 $CellContext`\[Xi]^8 - 
+         109924 $CellContext`\[Xi]^9 + 48789 $CellContext`\[Xi]^10 + 
+         71315 $CellContext`\[Xi]^11 - 138591 $CellContext`\[Xi]^12 + 
+         113103 $CellContext`\[Xi]^13 - 53232 $CellContext`\[Xi]^14 + 
+         14772 $CellContext`\[Xi]^15 - 2214 $CellContext`\[Xi]^16 + 
+         135 $CellContext`\[Xi]^17) - 
        4 (-530 - 1916 $CellContext`\[Xi] + 27039 $CellContext`\[Xi]^2 - 
         70856 $CellContext`\[Xi]^3 - 148528 $CellContext`\[Xi]^4 + 
         1006916 $CellContext`\[Xi]^5 - 1545013 $CellContext`\[Xi]^6 - 
@@ -7112,14 +7071,13 @@ $CellContext`\[Xi])^2 (18474 - 143174 $CellContext`\[Xi] +
         8456856 $CellContext`\[Xi]^13 - 3898962 $CellContext`\[Xi]^14 + 
         1003926 $CellContext`\[Xi]^15 - 127467 $CellContext`\[Xi]^16 + 
         5076 $CellContext`\[Xi]^17) + 
-       E^$CellContext`\[Xi] (((-$CellContext`\[Xi]) (1 - 
-             4 $CellContext`\[Xi]^2 + 11 $CellContext`\[Xi]^3 - 
-             10 $CellContext`\[Xi]^4 + 3 $CellContext`\[Xi]^5)^2) (456 + 
-           2054 $CellContext`\[Xi] + 4104 $CellContext`\[Xi]^2 - 
-           36227 $CellContext`\[Xi]^3 + 72610 $CellContext`\[Xi]^4 - 
-           75487 $CellContext`\[Xi]^5 + 48699 $CellContext`\[Xi]^6 - 
-           20944 $CellContext`\[Xi]^7 + 6074 $CellContext`\[Xi]^8 - 
-           1096 $CellContext`\[Xi]^9 + 
+       E^$CellContext`\[Xi] (-$CellContext`\[Xi] (1 - 4 $CellContext`\[Xi]^2 + 
+            11 $CellContext`\[Xi]^3 - 10 $CellContext`\[Xi]^4 + 
+            3 $CellContext`\[Xi]^5)^2 (456 + 2054 $CellContext`\[Xi] + 
+           4104 $CellContext`\[Xi]^2 - 36227 $CellContext`\[Xi]^3 + 
+           72610 $CellContext`\[Xi]^4 - 75487 $CellContext`\[Xi]^5 + 
+           48699 $CellContext`\[Xi]^6 - 20944 $CellContext`\[Xi]^7 + 
+           6074 $CellContext`\[Xi]^8 - 1096 $CellContext`\[Xi]^9 + 
            93 $CellContext`\[Xi]^10) + $CellContext`nu (-2 + 
            8 $CellContext`\[Xi] + 107 $CellContext`\[Xi]^2 - 
            368 $CellContext`\[Xi]^3 + 195 $CellContext`\[Xi]^4 + 
@@ -7132,14 +7090,14 @@ $CellContext`\[Xi])^2 (18474 - 143174 $CellContext`\[Xi] +
            181736 $CellContext`\[Xi]^17 + 152987 $CellContext`\[Xi]^18 - 
            70536 $CellContext`\[Xi]^19 + 20196 $CellContext`\[Xi]^20 - 
            3348 $CellContext`\[Xi]^21 + 
-           243 $CellContext`\[Xi]^22))) - ($CellContext`\[Eta]^7 (-1 + \
-$CellContext`\[Xi])) (((936 E) (-1 + $CellContext`\[Xi])^3) (-21 + 
-         160 $CellContext`\[Xi] - 475 $CellContext`\[Xi]^2 + 
-         524 $CellContext`\[Xi]^3 + 525 $CellContext`\[Xi]^4 - 
-         2407 $CellContext`\[Xi]^5 + 3147 $CellContext`\[Xi]^6 - 
-         1762 $CellContext`\[Xi]^7 - 42 $CellContext`\[Xi]^8 + 
-         565 $CellContext`\[Xi]^9 - 258 $CellContext`\[Xi]^10 + 
-         36 $CellContext`\[Xi]^11) + 
+           243 $CellContext`\[Xi]^22))) - $CellContext`\[Eta]^7 (-1 + \
+$CellContext`\[Xi]) (
+       936 E (-1 + $CellContext`\[Xi])^3 (-21 + 160 $CellContext`\[Xi] - 
+         475 $CellContext`\[Xi]^2 + 524 $CellContext`\[Xi]^3 + 
+         525 $CellContext`\[Xi]^4 - 2407 $CellContext`\[Xi]^5 + 
+         3147 $CellContext`\[Xi]^6 - 1762 $CellContext`\[Xi]^7 - 
+         42 $CellContext`\[Xi]^8 + 565 $CellContext`\[Xi]^9 - 
+         258 $CellContext`\[Xi]^10 + 36 $CellContext`\[Xi]^11) + 
        24 (-10928 + 107732 $CellContext`\[Xi] - 338112 $CellContext`\[Xi]^2 + 
          91588 $CellContext`\[Xi]^3 + 1810476 $CellContext`\[Xi]^4 - 
          4283688 $CellContext`\[Xi]^5 + 3024420 $CellContext`\[Xi]^6 + 
@@ -7158,12 +7116,13 @@ $CellContext`\[Xi])) (((936 E) (-1 + $CellContext`\[Xi])^3) (-21 +
          39027291 $CellContext`\[Xi]^14 + 11269417 $CellContext`\[Xi]^15 - 
          1690431 $CellContext`\[Xi]^16 - 197595 $CellContext`\[Xi]^17 + 
          163278 $CellContext`\[Xi]^18 - 32544 $CellContext`\[Xi]^19 + 
-         2268 $CellContext`\[Xi]^20 + (2 $CellContext`nu) (-72 - 
-           2444 $CellContext`\[Xi] + 34989 $CellContext`\[Xi]^2 - 
-           228194 $CellContext`\[Xi]^3 + 675921 $CellContext`\[Xi]^4 - 
-           1751719 $CellContext`\[Xi]^5 + 16176995 $CellContext`\[Xi]^6 - 
-           109314129 $CellContext`\[Xi]^7 + 418681296 $CellContext`\[Xi]^8 - 
-           1048124040 $CellContext`\[Xi]^9 + 1942662661 $CellContext`\[Xi]^10 - 
+         2268 $CellContext`\[Xi]^20 + 
+         2 $CellContext`nu (-72 - 2444 $CellContext`\[Xi] + 
+           34989 $CellContext`\[Xi]^2 - 228194 $CellContext`\[Xi]^3 + 
+           675921 $CellContext`\[Xi]^4 - 1751719 $CellContext`\[Xi]^5 + 
+           16176995 $CellContext`\[Xi]^6 - 109314129 $CellContext`\[Xi]^7 + 
+           418681296 $CellContext`\[Xi]^8 - 1048124040 $CellContext`\[Xi]^9 + 
+           1942662661 $CellContext`\[Xi]^10 - 
            3014479089 $CellContext`\[Xi]^11 + 
            4288255947 $CellContext`\[Xi]^12 - 
            5566363745 $CellContext`\[Xi]^13 + 
@@ -7173,13 +7132,14 @@ $CellContext`\[Xi])) (((936 E) (-1 + $CellContext`\[Xi])^3) (-21 +
            1741756929 $CellContext`\[Xi]^17 + 617426775 $CellContext`\[Xi]^18 - 
            152078301 $CellContext`\[Xi]^19 + 24500502 $CellContext`\[Xi]^20 - 
            2307285 $CellContext`\[Xi]^21 + 
-           96228 $CellContext`\[Xi]^22))) + ($CellContext`\[Eta]^8 (-1 + \
-$CellContext`\[Xi])) (((936 E) (-1 + $CellContext`\[Xi])^5) (-6 + 
-          39 $CellContext`\[Xi] - 112 $CellContext`\[Xi]^2 + 
-          163 $CellContext`\[Xi]^3 - 87 $CellContext`\[Xi]^4 - 
-          103 $CellContext`\[Xi]^5 + 190 $CellContext`\[Xi]^6 - 
-          123 $CellContext`\[Xi]^7 + 27 $CellContext`\[Xi]^8) + (
-          24 (-1 + $CellContext`\[Xi])^3) (7286 - 51196 $CellContext`\[Xi] + 
+           96228 $CellContext`\[Xi]^22))) + $CellContext`\[Eta]^8 (-1 + \
+$CellContext`\[Xi]) (
+        936 E (-1 + $CellContext`\[Xi])^5 (-6 + 39 $CellContext`\[Xi] - 
+          112 $CellContext`\[Xi]^2 + 163 $CellContext`\[Xi]^3 - 
+          87 $CellContext`\[Xi]^4 - 103 $CellContext`\[Xi]^5 + 
+          190 $CellContext`\[Xi]^6 - 123 $CellContext`\[Xi]^7 + 
+          27 $CellContext`\[Xi]^8) + 
+        24 (-1 + $CellContext`\[Xi])^3 (7286 - 51196 $CellContext`\[Xi] + 
           101355 $CellContext`\[Xi]^2 + 44790 $CellContext`\[Xi]^3 - 
           436070 $CellContext`\[Xi]^4 + 523631 $CellContext`\[Xi]^5 + 
           81322 $CellContext`\[Xi]^6 - 549331 $CellContext`\[Xi]^7 + 
@@ -7213,8 +7173,8 @@ $CellContext`\[Xi])) (((936 E) (-1 + $CellContext`\[Xi])^5) (-6 +
             1355043924 $CellContext`\[Xi]^18 - 
             339198786 $CellContext`\[Xi]^19 + 55553175 $CellContext`\[Xi]^20 - 
             5316354 $CellContext`\[Xi]^21 + 
-            224532 $CellContext`\[Xi]^22))) + $CellContext`\[Eta]^2 ((312 
-          E) (-16 + 66 $CellContext`\[Xi] + 791 $CellContext`\[Xi]^2 - 
+            224532 $CellContext`\[Xi]^22))) + $CellContext`\[Eta]^2 (
+        312 E (-16 + 66 $CellContext`\[Xi] + 791 $CellContext`\[Xi]^2 - 
           4335 $CellContext`\[Xi]^3 + 3471 $CellContext`\[Xi]^4 + 
           27931 $CellContext`\[Xi]^5 - 87594 $CellContext`\[Xi]^6 + 
           66354 $CellContext`\[Xi]^7 + 139952 $CellContext`\[Xi]^8 - 
@@ -7255,8 +7215,8 @@ $CellContext`\[Xi])) (((936 E) (-1 + $CellContext`\[Xi])^5) (-6 +
             1530115 $CellContext`\[Xi]^17 + 1283588 $CellContext`\[Xi]^18 - 
             797913 $CellContext`\[Xi]^19 + 201033 $CellContext`\[Xi]^20 - 
             19710 $CellContext`\[Xi]^21 - 891 $CellContext`\[Xi]^22 + 
-            243 $CellContext`\[Xi]^23))) - $CellContext`\[Eta]^3 ((312 
-         E) (-49 + 292 $CellContext`\[Xi] + 739 $CellContext`\[Xi]^2 - 
+            243 $CellContext`\[Xi]^23))) - $CellContext`\[Eta]^3 (
+       312 E (-49 + 292 $CellContext`\[Xi] + 739 $CellContext`\[Xi]^2 - 
          10860 $CellContext`\[Xi]^3 + 27608 $CellContext`\[Xi]^4 + 
          13473 $CellContext`\[Xi]^5 - 179696 $CellContext`\[Xi]^6 + 
          310340 $CellContext`\[Xi]^7 - 93499 $CellContext`\[Xi]^8 - 
@@ -7284,21 +7244,21 @@ $CellContext`\[Xi])) (((936 E) (-1 + $CellContext`\[Xi])^5) (-6 +
          114664168 $CellContext`\[Xi]^14 + 61226556 $CellContext`\[Xi]^15 - 
          21244475 $CellContext`\[Xi]^16 + 4955054 $CellContext`\[Xi]^17 - 
          721996 $CellContext`\[Xi]^18 + 39834 $CellContext`\[Xi]^19 + 
-         6003 $CellContext`\[Xi]^20 - 
-         972 $CellContext`\[Xi]^21 + (2 $CellContext`nu) (-26 + 
-           150 $CellContext`\[Xi] - 194 $CellContext`\[Xi]^2 - 
-           4806 $CellContext`\[Xi]^3 + 15132 $CellContext`\[Xi]^4 + 
-           86773 $CellContext`\[Xi]^5 - 790240 $CellContext`\[Xi]^6 + 
-           3146536 $CellContext`\[Xi]^7 - 8985318 $CellContext`\[Xi]^8 + 
-           22358615 $CellContext`\[Xi]^9 - 51765481 $CellContext`\[Xi]^10 + 
-           106087650 $CellContext`\[Xi]^11 - 178862090 $CellContext`\[Xi]^12 + 
-           237500120 $CellContext`\[Xi]^13 - 243672068 $CellContext`\[Xi]^14 + 
-           191537222 $CellContext`\[Xi]^15 - 114821948 $CellContext`\[Xi]^16 + 
-           52466467 $CellContext`\[Xi]^17 - 18441441 $CellContext`\[Xi]^18 + 
-           5117256 $CellContext`\[Xi]^19 - 1155222 $CellContext`\[Xi]^20 + 
-           206577 $CellContext`\[Xi]^21 - 25110 $CellContext`\[Xi]^22 + 
-           1458 $CellContext`\[Xi]^23))) + $CellContext`\[Eta]^4 (((312 
-           E) (-1 + $CellContext`\[Xi])^2) (-86 + 608 $CellContext`\[Xi] + 
+         6003 $CellContext`\[Xi]^20 - 972 $CellContext`\[Xi]^21 + 
+         2 $CellContext`nu (-26 + 150 $CellContext`\[Xi] - 
+           194 $CellContext`\[Xi]^2 - 4806 $CellContext`\[Xi]^3 + 
+           15132 $CellContext`\[Xi]^4 + 86773 $CellContext`\[Xi]^5 - 
+           790240 $CellContext`\[Xi]^6 + 3146536 $CellContext`\[Xi]^7 - 
+           8985318 $CellContext`\[Xi]^8 + 22358615 $CellContext`\[Xi]^9 - 
+           51765481 $CellContext`\[Xi]^10 + 106087650 $CellContext`\[Xi]^11 - 
+           178862090 $CellContext`\[Xi]^12 + 237500120 $CellContext`\[Xi]^13 - 
+           243672068 $CellContext`\[Xi]^14 + 191537222 $CellContext`\[Xi]^15 - 
+           114821948 $CellContext`\[Xi]^16 + 52466467 $CellContext`\[Xi]^17 - 
+           18441441 $CellContext`\[Xi]^18 + 5117256 $CellContext`\[Xi]^19 - 
+           1155222 $CellContext`\[Xi]^20 + 206577 $CellContext`\[Xi]^21 - 
+           25110 $CellContext`\[Xi]^22 + 
+           1458 $CellContext`\[Xi]^23))) + $CellContext`\[Eta]^4 (
+        312 E (-1 + $CellContext`\[Xi])^2 (-86 + 608 $CellContext`\[Xi] + 
           503 $CellContext`\[Xi]^2 - 13307 $CellContext`\[Xi]^3 + 
           30488 $CellContext`\[Xi]^4 + 7080 $CellContext`\[Xi]^5 - 
           116994 $CellContext`\[Xi]^6 + 164082 $CellContext`\[Xi]^7 - 
@@ -7341,8 +7301,8 @@ $CellContext`\[Xi])) (((936 E) (-1 + $CellContext`\[Xi])^5) (-6 +
             785959228 $CellContext`\[Xi]^17 - 322859431 $CellContext`\[Xi]^18 + 
             100002636 $CellContext`\[Xi]^19 - 22675986 $CellContext`\[Xi]^20 + 
             3567105 $CellContext`\[Xi]^21 - 349191 $CellContext`\[Xi]^22 + 
-            16038 $CellContext`\[Xi]^23))) - $CellContext`\[Eta]^5 (((936 
-          E) (-1 + $CellContext`\[Xi])^2) (-39 + 332 $CellContext`\[Xi] - 
+            16038 $CellContext`\[Xi]^23))) - $CellContext`\[Eta]^5 (
+       936 E (-1 + $CellContext`\[Xi])^2 (-39 + 332 $CellContext`\[Xi] - 
          454 $CellContext`\[Xi]^2 - 2968 $CellContext`\[Xi]^3 + 
          12190 $CellContext`\[Xi]^4 - 15287 $CellContext`\[Xi]^5 - 
          5649 $CellContext`\[Xi]^6 + 38189 $CellContext`\[Xi]^7 - 
@@ -7369,14 +7329,13 @@ $CellContext`\[Xi])) (((936 E) (-1 + $CellContext`\[Xi])^5) (-6 +
          320278726 $CellContext`\[Xi]^14 + 231704976 $CellContext`\[Xi]^15 - 
          108139016 $CellContext`\[Xi]^16 + 36226056 $CellContext`\[Xi]^17 - 
          8839911 $CellContext`\[Xi]^18 + 1496652 $CellContext`\[Xi]^19 - 
-         154746 $CellContext`\[Xi]^20 + 
-         7128 $CellContext`\[Xi]^21 + (2 $CellContext`nu) (-48 + 
-           1024 $CellContext`\[Xi] - 8839 $CellContext`\[Xi]^2 + 
-           20031 $CellContext`\[Xi]^3 + 54197 $CellContext`\[Xi]^4 + 
-           342806 $CellContext`\[Xi]^5 - 7341285 $CellContext`\[Xi]^6 + 
-           41864103 $CellContext`\[Xi]^7 - 139333429 $CellContext`\[Xi]^8 + 
-           334380369 $CellContext`\[Xi]^9 - 669355431 $CellContext`\[Xi]^10 + 
-           1232610907 $CellContext`\[Xi]^11 - 
+         154746 $CellContext`\[Xi]^20 + 7128 $CellContext`\[Xi]^21 + 
+         2 $CellContext`nu (-48 + 1024 $CellContext`\[Xi] - 
+           8839 $CellContext`\[Xi]^2 + 20031 $CellContext`\[Xi]^3 + 
+           54197 $CellContext`\[Xi]^4 + 342806 $CellContext`\[Xi]^5 - 
+           7341285 $CellContext`\[Xi]^6 + 41864103 $CellContext`\[Xi]^7 - 
+           139333429 $CellContext`\[Xi]^8 + 334380369 $CellContext`\[Xi]^9 - 
+           669355431 $CellContext`\[Xi]^10 + 1232610907 $CellContext`\[Xi]^11 - 
            2093636653 $CellContext`\[Xi]^12 + 
            3077902880 $CellContext`\[Xi]^13 - 
            3694548156 $CellContext`\[Xi]^14 + 
@@ -7385,22 +7344,22 @@ $CellContext`\[Xi])) (((936 E) (-1 + $CellContext`\[Xi])^5) (-6 +
            1472592340 $CellContext`\[Xi]^17 - 633161697 $CellContext`\[Xi]^18 + 
            201288837 $CellContext`\[Xi]^19 - 45627399 $CellContext`\[Xi]^20 + 
            6950097 $CellContext`\[Xi]^21 - 637389 $CellContext`\[Xi]^22 + 
-           26730 $CellContext`\[Xi]^23))) + $CellContext`\[Eta]^6 (((312 
-           E) (-1 + $CellContext`\[Xi])^4) (-112 + 782 $CellContext`\[Xi] - 
+           26730 $CellContext`\[Xi]^23))) + $CellContext`\[Eta]^6 (
+        312 E (-1 + $CellContext`\[Xi])^4 (-112 + 782 $CellContext`\[Xi] - 
           1291 $CellContext`\[Xi]^2 - 2541 $CellContext`\[Xi]^3 + 
           12577 $CellContext`\[Xi]^4 - 16951 $CellContext`\[Xi]^5 + 
           3751 $CellContext`\[Xi]^6 + 13943 $CellContext`\[Xi]^7 - 
           15495 $CellContext`\[Xi]^8 + 5763 $CellContext`\[Xi]^9 + 
           99 $CellContext`\[Xi]^10 - 522 $CellContext`\[Xi]^11 + 
-          81 $CellContext`\[Xi]^12) + (8 (-1 + $CellContext`\[Xi])^2) (35014 - 
-          290860 $CellContext`\[Xi] + 456888 $CellContext`\[Xi]^2 + 
-          2128808 $CellContext`\[Xi]^3 - 8108064 $CellContext`\[Xi]^4 + 
-          6612108 $CellContext`\[Xi]^5 + 9319205 $CellContext`\[Xi]^6 - 
-          19486994 $CellContext`\[Xi]^7 + 6639468 $CellContext`\[Xi]^8 + 
-          9566152 $CellContext`\[Xi]^9 - 8491776 $CellContext`\[Xi]^10 - 
-          12153 $CellContext`\[Xi]^11 + 2584710 $CellContext`\[Xi]^12 - 
-          1107396 $CellContext`\[Xi]^13 + 143775 $CellContext`\[Xi]^14 + 
-          1539 $CellContext`\[Xi]^15) + 
+          81 $CellContext`\[Xi]^12) + 
+        8 (-1 + $CellContext`\[Xi])^2 (35014 - 290860 $CellContext`\[Xi] + 
+          456888 $CellContext`\[Xi]^2 + 2128808 $CellContext`\[Xi]^3 - 
+          8108064 $CellContext`\[Xi]^4 + 6612108 $CellContext`\[Xi]^5 + 
+          9319205 $CellContext`\[Xi]^6 - 19486994 $CellContext`\[Xi]^7 + 
+          6639468 $CellContext`\[Xi]^8 + 9566152 $CellContext`\[Xi]^9 - 
+          8491776 $CellContext`\[Xi]^10 - 12153 $CellContext`\[Xi]^11 + 
+          2584710 $CellContext`\[Xi]^12 - 1107396 $CellContext`\[Xi]^13 + 
+          143775 $CellContext`\[Xi]^14 + 1539 $CellContext`\[Xi]^15) + 
         E^$CellContext`\[Xi] (-185332 + 2031584 $CellContext`\[Xi] - 
           6219830 $CellContext`\[Xi]^2 - 8722708 $CellContext`\[Xi]^3 + 
           96772616 $CellContext`\[Xi]^4 - 226145482 $CellContext`\[Xi]^5 + 
@@ -7436,10 +7395,15 @@ $CellContext`\[Xi])) (((936 E) (-1 + $CellContext`\[Xi])^5) (-6 +
    3.985119615660777*^9, 3.985119624274507*^9}, {3.985120713087459*^9, 
    3.985120761722177*^9}, 3.985120836659704*^9, {3.985122583226671*^9, 
    3.985122587539214*^9}, {3.985185724392014*^9, 3.985185726817081*^9}, {
-   3.9851857843362494`*^9, 3.985185787544876*^9}},
+   3.9851857843362494`*^9, 3.985185786295455*^9}, {3.986559901023759*^9, 
+   3.9865599043290873`*^9}, {3.9865599509289*^9, 3.9865600722922153`*^9}, 
+   3.986560158993532*^9, {3.98656033454186*^9, 3.9865604310893507`*^9}, {
+   3.986560461914105*^9, 3.986560469690073*^9}, {3.986560556215377*^9, 
+   3.9865605855724993`*^9}, 3.9865606182969637`*^9, {3.98656066361666*^9, 
+   3.98656066797513*^9}, {3.986560756350768*^9, 3.986560796377738*^9}},
  CellLabel->
   "During evaluation of \
-In[277]:=",ExpressionUUID->"18ecbe2c-d170-49bf-9030-450519d5e1b2"]
+In[509]:=",ExpressionUUID->"650b8f46-33c8-4840-a94b-1ae034d52fba"]
 }, Open  ]]
 }, Open  ]],
 
@@ -7480,17 +7444,19 @@ Cell[BoxData[
     RowBox[{"\"\<div_x(vs) [must be 0] = \>\"", ",", "divVs"}], 
     "]"}]}]}]], "Input",
  CellChangeTimes->{{3.99*^9, 3.9900000000007*^9}},
- CellLabel->"In[92]:=",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000007"],
+ CellLabel->
+  "In[160]:=",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000007"],
 
 Cell[BoxData[
  InterpretationBox[
   RowBox[{"\<\"div_x(vs) [must be 0] = \"\>", "\[InvisibleSpace]", "0"}],
   SequenceForm["div_x(vs) [must be 0] = ", 0],
   Editable->False]], "Print",
- CellChangeTimes->{3.9851195514776287`*^9, 3.985120886545125*^9},
+ CellChangeTimes->{3.9851195514776287`*^9, 3.985120886545125*^9, 
+  3.9865599389043617`*^9},
  CellLabel->
   "During evaluation of \
-In[92]:=",ExpressionUUID->"75197de9-0859-448d-96ef-5abc066cda1d"]
+In[160]:=",ExpressionUUID->"1e8a506f-885e-4f9d-96a5-5123a8a134bb"]
 }, Open  ]],
 
 Cell[BoxData[{
@@ -7531,40 +7497,39 @@ CellTagsIndex->{}
 Notebook[{
 Cell[558, 20, 215, 3, 35, "Text",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000001"],
 Cell[CellGroupData[{
-Cell[798, 27, 3440, 94, 305, "Input",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000002"],
-Cell[4241, 123, 9951, 255, 201, "Output",ExpressionUUID->"f2c710f4-60d3-4898-9c9f-d244b0b97281"],
+Cell[798, 27, 3478, 94, 305, "Input",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000002"],
 Cell[CellGroupData[{
-Cell[14217, 382, 3775, 89, 44, "Print",ExpressionUUID->"91425978-ff5b-4561-9bd8-f3be8916d8bf"],
-Cell[17995, 473, 2456, 64, 27, "Print",ExpressionUUID->"bb7de1d3-c8b0-430e-a242-a662012f6210"]
+Cell[4301, 125, 3828, 91, 44, "Print",ExpressionUUID->"f9be2c5e-2873-434f-b6ee-6c61d48fc745"],
+Cell[8132, 218, 2511, 66, 27, "Print",ExpressionUUID->"5fafd70a-a262-4d51-b2b3-9051580d74ff"]
 }, Open  ]]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[20500, 543, 4462, 126, 266, "Input",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000003"],
-Cell[24965, 671, 405, 10, 24, "Print",ExpressionUUID->"cf5af229-5a53-4449-a05d-151723dbb5b9"]
+Cell[10692, 290, 4564, 128, 266, "Input",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000003"],
+Cell[15259, 420, 580, 13, 24, "Print",ExpressionUUID->"27885823-5d1b-4fa4-a5bc-c38dbfb90076"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[25407, 686, 1651, 45, 300, "Input",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000004"],
+Cell[15876, 438, 1926, 52, 300, "Input",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000004"],
 Cell[CellGroupData[{
-Cell[27083, 735, 7582, 190, 98, "Print",ExpressionUUID->"161cb072-d2b0-4270-9a6f-eac8548188f0"],
-Cell[34668, 927, 393, 10, 24, "Print",ExpressionUUID->"f8f5ffa1-465f-40cf-82a7-e31e99976523"]
+Cell[17827, 494, 11268, 262, 86, "Print",ExpressionUUID->"f80e14d6-3bf6-462a-b0b9-a0dcc00d7b45"],
+Cell[29098, 758, 5555, 132, 50, "Print",ExpressionUUID->"927ef618-4ed8-4fb1-88e5-dd9fcb2f19fc"]
 }, Open  ]]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[35110, 943, 5132, 148, 325, "Input",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000005"],
-Cell[40245, 1093, 207, 4, 24, "Print",ExpressionUUID->"cf1f659c-3352-46b6-934b-7bffcf668ca5"]
+Cell[34702, 896, 5245, 152, 346, "Input",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000005"],
+Cell[39950, 1050, 257, 5, 24, "Print",ExpressionUUID->"c6d7906c-397a-405a-8dc0-e8b5a8581836"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[40489, 1102, 2324, 58, 262, "Input",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000006"],
+Cell[40244, 1060, 2860, 68, 283, "Input",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000006"],
 Cell[CellGroupData[{
-Cell[42838, 1164, 65255, 1392, 88, "Print",ExpressionUUID->"640192fd-7782-4fa5-bfab-f6be1377ad20"],
-Cell[108096, 2558, 248625, 4883, 88, "Print",ExpressionUUID->"18ecbe2c-d170-49bf-9030-450519d5e1b2"]
+Cell[43129, 1132, 65152, 1380, 88, "Print",ExpressionUUID->"0fce5ab6-8d86-4fe2-a4c5-8077da305192"],
+Cell[108284, 2514, 248447, 4891, 88, "Print",ExpressionUUID->"650b8f46-33c8-4840-a94b-1ae034d52fba"]
 }, Open  ]]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[356770, 7447, 1269, 35, 73, "Input",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000007"],
-Cell[358042, 7484, 355, 8, 24, "Print",ExpressionUUID->"75197de9-0859-448d-96ef-5abc066cda1d"]
+Cell[356780, 7411, 1273, 36, 73, "Input",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000007"],
+Cell[358056, 7449, 383, 9, 24, "Print",ExpressionUUID->"1e8a506f-885e-4f9d-96a5-5123a8a134bb"]
 }, Open  ]],
-Cell[358412, 7495, 671, 17, 136, "Input",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000008"]
+Cell[358454, 7461, 671, 17, 136, "Input",ExpressionUUID->"aaaaaaaa-0001-0001-0001-000000000008"]
 }
 ]
 *)

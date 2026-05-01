@@ -124,72 +124,11 @@ def forcing_function_ns_1(x, y, nu, sigma=0):
 
 ############# CURVE DOMAIN Section With AI ################
 
-forcing_function_stokes_curve = fs.forcing_function_stokes_curve
+forcing_function_s_1_curve      = fs.forcing_function_stokes_curve
+exact_solution_1_curve          = fs.exact_solution_1_curve
+exact_solution_l2_1_curve       = fs.exact_solution_l2_1_curve
+boundary_value_function_1_curve = fs.boundary_value_function_1_curve
 
-def exact_solution_curve(xi, eta):
-
-    ex = np.exp(xi)
-
-    # Common geometric term (same as before)
-    G = (
-        -1 + 4*xi**2 - 11*xi**3 + 10*xi**4 - 3*xi**5
-        + eta**3 * (xi - 1)**2 * (1 - 2*xi + 3*xi**2)
-        - 3*eta**2 * (xi - 1)**2 * (1 - 2*xi - xi**2 + xi**3)
-        + eta * (1 - 10*xi - 2*xi**2 + 30*xi**3 - 27*xi**4 + 6*xi**5)
-    )
-
-
-    u1_num = (
-        ex * (eta - 1) * eta * (xi - 1)**2 * xi * (
-            -2 * (-2 + xi) * xi**2
-            + eta**2 * (-2 + xi - 4*xi**2 + xi**3)
-            + eta * (2 - xi - 8*xi**2 + 3*xi**3)
-        )
-    )
-    
-    u1 = u1_num / (3 * G)
-
-
-    u2_num = (
-        ex * (eta - 1) * eta * (xi - 1) * xi**2 * (
-            2 * (xi - 1)**2 * (1 + xi)
-            + eta**4 * (xi - 1)**2 * (-2 - 3*xi + 3*xi**2)
-            - eta**3 * (xi - 1)**2 * (-4 - 15*xi + 9*xi**2)
-            + eta * (-4 + 13*xi - 14*xi**2 + 10*xi**3 - 3*xi**4)
-            + eta**2 * (-4 - 19*xi + 56*xi**2 - 44*xi**3 + 9*xi**4)
-        )
-    )
-
-    u2 = - u2_num / (3 * G)
-
-    return u1, u2
-
-def exact_solution_l2_curve(xi, eta):
-
-    ex = np.exp(xi)
-
-    # Common geometric denominator term (same as before)
-    G = (
-        -1 + 4*xi**2 - 11*xi**3 + 10*xi**4 - 3*xi**5
-        + eta**3 * (xi - 1)**2 * (1 - 2*xi + 3*xi**2)
-        - 3*eta**2 * (xi - 1)**2 * (1 - 2*xi - xi**2 + xi**3)
-        + eta * (1 - 10*xi - 2*xi**2 + 30*xi**3 - 27*xi**4 + 6*xi**5)
-    )
-
-    numerator = (
-        156*np.e
-        - 8*(53 - 57*eta + 57*eta**2)
-        + ex * eta * (
-            -2*eta**2 * xi * (2 - 5*xi + 2*xi**2 + xi**3)
-            + eta**3 * xi * (2 - 5*xi + 2*xi**2 + xi**3)
-            - 12*(38 - 38*xi + 19*xi**2 - 6*xi**3 + xi**4)
-            + eta*(456 - 454*xi + 223*xi**2 - 70*xi**3 + 13*xi**4)
-        )
-    )
-
-    ps = - numerator / (9 * G)
-
-    return ps
 
 ################### From John Evans ################
 def exact_solution_1(x, y):
@@ -340,12 +279,12 @@ quad                = gq_nD.GaussQuadrature2D(n_quad, n_quad, interval, interval
 quad_1D             = gq_nD.GaussQuadrature1D(n_quad, start_pt=interval[0], end_pt=interval[1])
 gamma               =  5 * (degree1 + 1) # 20 * max(degree1, degree2)**3
 ifID                = True 
-USE_CURVED_GEOMETRY = False
-option_number       = 3
+USE_CURVED_GEOMETRY = True
+option_number       = 0
 is_L2Projection     = False
-is_Stokes           = False
+is_Stokes           = True
 is_NavierStokes     = False
-is_JetNavierStokes  = True
+is_JetNavierStokes  = False
 
 
 ######## Square domain

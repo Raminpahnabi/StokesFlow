@@ -29,7 +29,7 @@ import BoundaryConditions as bc
 ################################################################################
 ##############     L2Projection_div_free     ###################################
 ################################################################################
-def L2Projection(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions, boundary_value_function, ifID, nu,use_curve_geometry):  #ns added nu so the Stokes solver (used as NS initial guess) uses the correct viscosity throughout
+def L2Projection(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_conditions, boundary_value_function, ifID, nu ,use_curve_geometry):  #ns added nu so the Stokes solver (used as NS initial guess) uses the correct viscosity throughout
     
     if ifID:
         
@@ -79,7 +79,7 @@ def L2Projection(basis, deg, gaussian, quad_1D, gamma, f, u_exact, boundary_cond
 
             for a in range(0,n_local_hdiv):
                 A = local_IEN_HDIV[a]
-                P = ID[A]
+                P = ID[A] 
                 
                 if P == -1:
                     continue
