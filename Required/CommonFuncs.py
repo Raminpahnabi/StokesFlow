@@ -30,6 +30,17 @@ sys.path.append(str(PROJECT_ROOT / 'Required'))
 
 
 
+def _boundary_element_sets(basis):  #CS
+    """Topological boundary detection — correct for both straight-sided and curved domains.
+    Returns {BoundaryFace: set_of_element_dart_ids}. Call once per solve (O(n_elems))."""  
+    bdry_elems = find_boundary_elements(basis)  
+    return {  
+        gq_bc.BoundaryFace.BOTTOM: bdry_elems['bottom'][1],  
+        gq_bc.BoundaryFace.TOP:    bdry_elems['top'][1],  
+        gq_bc.BoundaryFace.LEFT:   bdry_elems['left'][1],  
+        gq_bc.BoundaryFace.RIGHT:  bdry_elems['right'][1],  
+    }  
+
 def _physical_domain_bounds(basis):
     control_points = np.asarray(basis.control_points)
     x_min = float(np.min(control_points[0]))
@@ -39,7 +50,9 @@ def _physical_domain_bounds(basis):
     return x_min, x_max, y_min, y_max
 
 
-def _is_boundary_face(basis, elem, bdry, quad_1D, bounds):
+def _is_boundary_face(basis, elem, bdry, quad_1D, bounds, boundary_sets=None):
+    if boundary_sets is not None:  # curved domain: topological detection via DOF connectivity
+        return elem.dart in boundary_sets[bdry]  # avoids physical bounding-box check that fails for curved domains
     xi_vals = gq_bc.GetFaceQuadraturePoints(quad_1D, bdry)
     face_midpoint = xi_vals[len(xi_vals) // 2]
 

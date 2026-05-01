@@ -8,7 +8,7 @@ Created on Tue Mar 24 14:17:49 2026
 
 import numpy as np
 
-def LocalForceStokes(basis, deg, quad, quad_1D, gamma, elem, forcing_function, nu):  
+def LocalForceStokes(basis, deg, quad, quad_1D, gamma, elem, forcing_function, nu):  #CSn removed unused use_curve_geometry param
     local_IEN_HDIV = basis.HDIV.connectivity(elem)
     n_local_hdiv = len(local_IEN_HDIV)
     local_IEN_L2 = basis.L2.connectivity(elem)
@@ -16,7 +16,7 @@ def LocalForceStokes(basis, deg, quad, quad_1D, gamma, elem, forcing_function, n
     n_local_total = n_local_hdiv + n_local_L2
 
     fe = np.zeros(n_local_total)
-    
+
     for g in range(len(quad.quad_wts)):
         quad_wts = quad.quad_wts[g]
         quad_pts = quad.quad_pts[g]
@@ -25,15 +25,14 @@ def LocalForceStokes(basis, deg, quad, quad_1D, gamma, elem, forcing_function, n
         jac_det = basis.jacobianDeterminant()
 
         transformed_basis = basis.piolaTransformedHDIVBasis()
-        
-        # Mapping from reference space to global space
+
         qpt_mapped = basis.mapping()
         x_g, y_g = qpt_mapped[0], qpt_mapped[1]
-        force = np.array(forcing_function(x_g, y_g, nu))   
+        force = np.array(forcing_function(x_g, y_g, nu)) 
 
         for a in range(n_local_hdiv):
             fe[a] += np.dot(transformed_basis[a], force) * jac_det * quad_wts * quad_jacobian
-    
+
     return fe
     
     
@@ -518,8 +517,12 @@ def LocalForceStokesL2Projection(basis, deg, quad, quad_1D, gamma, elem, forcing
         transformed_basis = basis.piolaTransformedHDIVBasis()
         
         qpt_mapped = basis.mapping()
-        x_g, y_g = qpt_mapped[0], qpt_mapped[1]
-        force = np.array(forcing_function(x_g, y_g, nu))  
+        x_g, y_g = qpt_mapped[0], qpt_mapped[1] 
+        force = np.array(forcing_function(x_g, y_g, nu))
+        # if use_curve_geometry:  #CS curved domain: forcing function defined in parametric space
+        #     force = np.array(forcing_function(quad_pts[0], quad_pts[1], nu))  
+        # else:  
+        #     force = np.array(forcing_function(x_g, y_g, nu))
 
         for a in range(n_local_hdiv):
             fe[a] += np.dot(transformed_basis[a], force) * jac_det * quad_wts * quad_jacobian

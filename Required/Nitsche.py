@@ -32,7 +32,7 @@ _FACE_NAME = {
 #   Nitsche functions modified to act ONLY on TANGENTIAL DOFs
 # ===========================================================================
 def LocalForceVector_Nitsche_IGA_2D(basis, deg, quad,quad_1D, gamma, elem, forcing_function,u_exact, boundary_value_function, nu=1,
-                                    skip_faces=None):  # skip_faces: outflow faces only (e.g. ['right']); tangential Nitsche applied on all other boundaries
+                                    skip_faces=None, boundary_sets=None): 
     kinematic_viscosity = nu 
 
     local_IEN_HDIV = basis.HDIV.connectivity(elem)
@@ -51,7 +51,7 @@ def LocalForceVector_Nitsche_IGA_2D(basis, deg, quad,quad_1D, gamma, elem, forci
         if _FACE_NAME[bdry] in _skip:  # outflow: no weak tangential Dirichlet on this face
             continue
         xi_vals = gq_bc.GetFaceQuadraturePoints(quad_1D, bdry)
-        if not cf._is_boundary_face(basis, elem, bdry, quad_1D, bounds):
+        if not cf._is_boundary_face(basis, elem, bdry, quad_1D, bounds, boundary_sets):
             continue
 
         basis.localizeElement(elem)
@@ -83,7 +83,7 @@ def LocalForceVector_Nitsche_IGA_2D(basis, deg, quad,quad_1D, gamma, elem, forci
 
             x_g, y_g = qpt_mapped_bdry[0], qpt_mapped_bdry[1]
             if boundary_value_function is not None:
-                u_boundary = np.array(boundary_value_function(x_g, y_g))
+                u_boundary = np.array(boundary_value_function(x_g, y_g))  
             else:
                 u_boundary = np.array([0.0, 0.0])  # Default: no-slip
 
@@ -116,7 +116,7 @@ def LocalForceVector_Nitsche_IGA_2D(basis, deg, quad,quad_1D, gamma, elem, forci
 
 
 def LocalStiffnessMatrix_Nitsche_IGA_2D(basis, deg, quad, quad_1D, gamma, elem, boundary_value_function=None, nu=1,
-                                        skip_faces=None): 
+                                        skip_faces=None, boundary_sets=None): 
     kinematic_viscosity = nu  
 
     local_IEN_HDIV = basis.HDIV.connectivity(elem)
@@ -238,7 +238,7 @@ def LocalStiffnessMatrix_Nitsche_IGA_2D_L2Projection(basis, deg, quad, quad_1D, 
     return ke
 
 
-def LocalForceVector_Nitsche_IGA_2D_L2Projection(basis, deg, quad, quad_1D, gamma, elem, boundary_value_function,use_curve_geometry):
+def LocalForceVector_Nitsche_IGA_2D_L2Projection(basis, deg, quad, quad_1D, gamma, elem, boundary_value_function, boundary_sets=None):  #CSn removed use_curve_geometry, added boundary_sets
     """
     Nitsche force for L2-projection (penalty-only, no viscous consistency term).
     Adds: (gamma/h) * (phi_a · t̂) * g_t
@@ -258,7 +258,7 @@ def LocalForceVector_Nitsche_IGA_2D_L2Projection(basis, deg, quad, quad_1D, gamm
 
     for bdry in bdries:
         xi_vals = gq_bc.GetFaceQuadraturePoints(quad_1D, bdry)
-        if not cf._is_boundary_face(basis, elem, bdry, quad_1D, bounds):
+        if not cf._is_boundary_face(basis, elem, bdry, quad_1D, bounds, boundary_sets):  #CSn pass boundary_sets for curved-domain topological detection
             continue
         basis.localizeElement(elem)
         face_length = cf.compute_face_length(basis, xi_vals, quad_1D, bdry)
@@ -279,10 +279,7 @@ def LocalForceVector_Nitsche_IGA_2D_L2Projection(basis, deg, quad, quad_1D, gamm
             x_g, y_g   = qpt_mapped[0], qpt_mapped[1]
 
             if boundary_value_function is not None:
-                if not use_curve_geometry :
-                    u_boundary = np.array(boundary_value_function(x_g, y_g))
-                elif use_curve_geometry :
-                    u_boundary = np.array(boundary_value_function(quad_pts[0], quad_pts[1]))
+                u_boundary = np.array(boundary_value_function(x_g, y_g))  #CSn always physical coords
             else:
                 u_boundary = np.array([0.0, 0.0])        
 
