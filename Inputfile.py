@@ -140,6 +140,30 @@ def exact_solution_l2_1(x, y):
     p = -424+156*np.exp(1)+(-y+y**2)*(-456+np.exp(x)*(456+x**2*(228-5*(-y+y**2))+2*x*(-228+(-y+y**2))+2*x**3*(-36+(-y+y**2))+x**4*(12+(-y+y**2))))
     return p
 
+def forcing_function_l2projection_1ai(x, y, nu=1, sigma=0):
+    expx = np.exp(x)
+
+    f1 = expx * (y - 1) * y * (
+        2 * (y - 1) * y
+        - 8 * x * (y - 1) * y
+        + x**2 * (10 + 3*y + y**2)
+        + x**4 * (10 + 3*y + y**2)
+        + 2 * x**3 * (-10 - 7*y + 3*y**2)
+    )
+
+    f2 = (
+        456 - 912*y
+        - expx * (
+            456 - 912*y
+            + x**2 * (228 - 446*y - 35*y**2 + 30*y**3 - 5*y**4)
+            + x**4 * (12 - 26*y + 7*y**2 - 6*y**3 + y**4)
+            + 2 * x**3 * (-36 + 70*y + 7*y**2 - 6*y**3 + y**4)
+            + 2 * x * (-228 + 454*y + 7*y**2 - 6*y**3 + y**4)
+        )
+    )
+
+    return f1, f2
+
 def forcing_function_l2projection_1(x, y, nu=1, sigma=0):
     """
     # L2-projection mixed problem: u + grad(p) = f, div(u) = 0.
@@ -273,16 +297,16 @@ unit_max_knot_xi = 1
 unit_max_knot_eta = 1
 
 
-n_quad              = max(degree1+1, degree2+2)+1
+n_quad              = 2*max(degree1+1, degree2+1)+1
 interval            = [0, 1]
 quad                = gq_nD.GaussQuadrature2D(n_quad, n_quad, interval, interval)
 quad_1D             = gq_nD.GaussQuadrature1D(n_quad, start_pt=interval[0], end_pt=interval[1])
 gamma               =  5 * (degree1 + 1) # 20 * max(degree1, degree2)**3
-ifID                = True 
+ifID                = True # this is True if we are strongly enforcing BCs for normal DoFs, false if use Nitsche
 USE_CURVED_GEOMETRY = True
 option_number       = 0
-is_L2Projection     = False
-is_Stokes           = True
+is_L2Projection     = True
+is_Stokes           = False
 is_NavierStokes     = False
 is_JetNavierStokes  = False
 

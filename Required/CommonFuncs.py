@@ -187,18 +187,56 @@ def ID_array_l2projection(HDiv, L2, boundary_dofs):
     ID = np.zeros(total_basis, dtype=int)
 
     counter = 0
-    
+
     for i in range(total_basis_functions_HDIV):
         ID[i] = counter
         counter += 1
 
     ID[total_basis_functions_HDIV] = -1
-    
-    for i in range(total_basis_functions_HDIV + 1, total_basis):
+
+    for i in range(total_basis_functions_HDIV, total_basis):
         ID[i] = counter
         counter += 1
 
     return ID
+
+def ID_array_l2projection_new(HDiv, L2, boundary_dofs, all_pressure_bc, free_faces=None):
+    total_basis_functions_HDIV = HDiv.numTotalFunctions()
+    total_basis_functions_L2 = L2.numTotalFunctions()
+    total_basis = total_basis_functions_HDIV + total_basis_functions_L2
+
+    ID = np.zeros(total_basis, dtype=int)
+
+    counter = 0
+    
+    for i in range(total_basis_functions_HDIV):
+        ID[i] = counter
+        counter += 1
+
+    # #build constrained set: all normal DOFs minus those on free faces
+    # free = set(free_faces or [])
+    # constrained_normal = set(boundary_dofs['all_normal'])
+    # for face in free:
+    #     constrained_normal -= set(boundary_dofs[face]['normal'])  #remove free-face DOFs so they are solved, not prescribed
+
+    # for i in range(total_basis_functions_HDIV):
+    #     if i in constrained_normal:
+    #         ID[i] = -1
+    #     else:
+    #         ID[i] = counter
+    #         counter += 1
+
+
+    prescribed_p = set(int(x) for x in all_pressure_bc)
+    for i in range(total_basis_functions_HDIV, total_basis):
+        if i in prescribed_p:
+            ID[i] = -1
+        else:
+            ID[i] = counter
+            counter += 1
+
+    return ID
+
 
 def ExtractTotalD(ID, d_reduced, prescribed, n_hdiv, n_l2):
     d_total = np.zeros(len(ID))

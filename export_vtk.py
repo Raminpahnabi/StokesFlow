@@ -356,14 +356,14 @@ exact_solution          = inpfe.exact_solution
 exact_solution_l2       = inpfe.exact_solution_l2
 boundary_value_function = inpfe.boundary_value_function
 if NavierStokes or JetNavierStokes:
-    f_ns                = inpfe.forcing_function_ns
+    f_ns                = inpfe.f_ns
 
 
 ############# Stokes ############
 def problem(L2Projection,Stokes,NavierStokes,JetNavierStokes,nu):
     if L2Projection:
         basis = spline.NavierStokesTPDiscretization(kv1, kv2, degree1, degree2, cpts)
-        nref = 2**2
+        nref = 2**3
         refined_basis = spline.globallyHRefine(basis, nelem1*nelem2*nref, parametric_tolerance=1e-5)
     
         print(f"Solving L2_Projection system — EXPONENTIAL solution (degree={degree1}) ...")
@@ -380,15 +380,19 @@ def problem(L2Projection,Stokes,NavierStokes,JetNavierStokes,nu):
     
         n_div = 2**2
         refined_basis = spline.globallyHRefine(basis, n_div, parametric_tolerance=1e-5)
+    
         
-        # kv1_d, kv2_d = global_refined_basis.knotVectors()
-        # cpts_d = global_refined_basis.control_points
-        # elems_to_refine = []
-        # elems_to_refine.append([[1,1],[1,2],[1,3],[1,4],[2,1],[2,2],[2,3],[2,4],[3,1],[3,2],[3,3],[3,4],[4,1],[4,2],[4,3],[4,4]])#, [q, 5], [q, 6]])  # Refine one element column
-      
-        # refined_basis = spline.NavierStokesHierarchicalDiscretization(
-        #     kv2_d, kv1_d, degree1, degree2, cpts_d, elems_to_refine
-        # )
+        kv1_d, kv2_d = refined_basis.knotVectors()
+        cpts_d = refined_basis.control_points
+        
+        r_start = n_div // 8
+        r_end   = 5 * n_div // 8
+        L1 = [[r, c] for r in range(r_start, r_end) for c in range(r_start, r_end)]
+        elems_to_refine = [L1]
+        
+        refined_basis = spline.NavierStokesHierarchicalDiscretization(
+            kv2_d, kv1_d, degree1, degree2, cpts_d, elems_to_refine
+        )
     
     
         print("\nSolving Stokes (initial guess) ...")
@@ -476,6 +480,6 @@ def problem(L2Projection,Stokes,NavierStokes,JetNavierStokes,nu):
 
     if __name__ == '__main__':
         export_as_vtk(refined_basis, dtotal, true_velocity=exact_solution, true_pressure=exact_solution_l2)
-        export_bezier_mesh_vtk(refined_basis)
+        # export_bezier_mesh_vtk(refined_basis)
         
 problem(L2Projection,Stokes,NavierStokes,JetNavierStokes,nu)

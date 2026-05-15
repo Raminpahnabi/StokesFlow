@@ -111,6 +111,9 @@ def LocalForceVector_Nitsche_IGA_2D(basis, deg, quad,quad_1D, gamma, elem, forci
                 + (gamma * 2 * kinematic_viscosity / face_length) * (phi @ u_val)
             )
 
+            # pressure-test symmetry: +∫_Γ ψ_a (n·g)  — from σ = (2ν∇ˢu - pI)·n
+            fe[n_local_hdiv:] += scale * np.dot(u_boundary, normal_unit) * transformed_basis_L2_bc.ravel()
+
     return fe
 
 
@@ -177,16 +180,16 @@ def LocalStiffnessMatrix_Nitsche_IGA_2D(basis, deg, quad, quad_1D, gamma, elem, 
             quad_wt_1d = quad_1D.quad_wts[g]
             scale = quad_1D.jacobian * quad_wt_1d * jac_1d
 
-            # velocity-velocity coupling (vectorized)
+            penalty = gamma * 2 * kinematic_viscosity / face_length
             ke[:n_local_hdiv, :n_local_hdiv] += scale * (
-                -(sigma_n @ phi.T)                                                # consistency
-                -(phi @ sigma_n.T)                                                # symmetry
-                + (gamma * 2 * kinematic_viscosity / face_length) * (phi @ phi.T)    # penalty
+                -(sigma_n @ phi.T)       # consistency
+                -(phi @ sigma_n.T)       # symmetry
+                + penalty * (phi @ phi.T)  # penalty
             )
 
-            # pressure-velocity coupling (vectorized)
-            phi_dot_n = phi @ normal_unit  # (n_local_hdiv,)
+            phi_dot_n = phi @ normal_unit  # shape (n_local_hdiv,)
             ke[:n_local_hdiv, n_local_hdiv:] += scale * np.outer(phi_dot_n, transformed_basis_L2_bc)
+            ke[n_local_hdiv:, :n_local_hdiv] += scale * np.outer(transformed_basis_L2_bc, phi_dot_n)
 
     return ke
 
@@ -231,8 +234,7 @@ def LocalStiffnessMatrix_Nitsche_IGA_2D_L2Projection(basis, deg, quad, quad_1D, 
             quad_wt_1d = quad_1D.quad_wts[g]
             scale = quad_1D.jacobian * quad_wt_1d * jac_1d
 
-            # Project each basis function onto the tangential direction
-            phi_t = phi @ tangent_unit                   # (n_local_hdiv,) — tangential component
+            phi_t = phi @ tangent_unit  # shape (n_local_hdiv,)
             ke[:n_local_hdiv, :n_local_hdiv] += (gamma / face_length) * scale * np.outer(phi_t, phi_t)
 
     return ke
@@ -289,7 +291,6 @@ def LocalForceVector_Nitsche_IGA_2D_L2Projection(basis, deg, quad, quad_1D, gamm
             quad_wt_1d = quad_1D.quad_wts[g]
             scale      = quad_1D.jacobian * quad_wt_1d * jac_1d
 
-            # Penalty RHS: (gamma/h) * (phi_a · t̂) * g_t
             fe[:n_local_hdiv] += (gamma / face_length) * scale * (phi @ u_val)
 
     return fe

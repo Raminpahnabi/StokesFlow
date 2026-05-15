@@ -21,11 +21,10 @@ import Gaussian_Quadrature_2D_Solution as gq_nD
 import Convergence as cn
 import matplotlib.pyplot as plt  
 import NormalizedPressure as npre
-import Plotting as pl
 import Solver_L2Projection as ls
 import Solver_StokesFlow as ss
 import Solver_NonlinearNavierStokes as nss
-import export_vtk as vtk
+# import export_vtk as vtk
 import Inputfile_force_exactsol as inpfe
 
 max_knot_xi        = inp.max_knot_xi
@@ -57,63 +56,7 @@ exact_solution          = inpfe.exact_solution
 exact_solution_l2       = inpfe.exact_solution_l2
 boundary_value_function = inpfe.boundary_value_function
 if NavierStokes or JetNavierStokes:
-    f_ns                = inpfe.forcing_function_ns
-        
-
-
-def check_local_refinement_vtk():
-    """
-    Build a 3-level hierarchically refined mesh on a unit-square domain
-    and export it as a Bezier-cell VTK (one cell per Bezier element,
-    colored by 'refinement_level': 0 = base, 1 = once refined, etc.)
-
-    Open 'bezier_mesh_refinement_check.vtk' in ParaView and colour by
-    'refinement_level' to visually verify the nested refinement pattern.
-
-    Index scheme (0-based, virtualised grids):
-      Level 1 elements live in the  8×8 base grid  → rows/cols 2–5
-      Level 2 elements live in a 16×16 virtual grid → rows/cols 6–9
-      Level 3 elements live in a 32×32 virtual grid → rows/cols 14–17
-    Each finer level subdivides the inner 4×4 block of the previous one,
-    producing three concentric nested squares.
-    """
-    # -- Unit-square base with 2 elements per direction --
-    kv_1d = spline.KnotVector(
-        [0]*degree1 + list(np.linspace(0, 1, 3)) + [1]*degree1, 1e-9
-    )
-    kv_2d = spline.KnotVector(
-        [0]*degree2 + list(np.linspace(0, 1, 3)) + [1]*degree2, 1e-9
-    )
-    cpts_sq = spline.grevillePoints(kv_1d, kv_2d, degree1, degree2)
-    basis_sq = spline.NavierStokesTPDiscretization(kv_1d, kv_2d, degree1, degree2, cpts_sq)
-
-    # -- Globally refine to 8×8 elements (4 divisions × 2 base elements) --
-    rb = spline.globallyHRefine(basis_sq, 4, parametric_tolerance=1e-5)
-    kv1_r, kv2_r = rb.knotVectors()
-    cpts_r = rb.control_points
-
-    # -- Three-level concentric local refinement --
-    # Level 1: 4×4 central block on the 8×8 base grid (rows/cols 2–5, 0-indexed)
-    L1 = [[r, c] for r in range(2, 6) for c in range(2, 6)]
-
-    # Level 2: inner 4×4 block on the 16×16 virtual grid.
-    # Level-1 element [r,c] spawns children at [2r,2c]…[2r+1,2c+1] in the 16×16 grid.
-    # The inner 2×2 of the L1 block (base rows 3–4) maps to 16×16 rows 6–9.
-    L2 = [[r, c] for r in range(6, 10) for c in range(6, 10)]
-
-    # Level 3: inner 4×4 block on the 32×32 virtual grid.
-    # Level-2 element [r,c] spawns children at [2r,2c]…[2r+1,2c+1] in the 32×32 grid.
-    # The inner 2×2 of the L2 block (16×16 rows 7–8) maps to 32×32 rows 14–17.
-    L3 = [[r, c] for r in range(14, 18) for c in range(14, 18)]
-
-    hier = spline.NavierStokesHierarchicalDiscretization(
-        kv2_r, kv1_r, degree1, degree2, cpts_r, [L1, L2, L3]
-    )
-
-    n_elems = len(list(hier.elements()))
-    print(f"Refinement check mesh: {n_elems} total Bezier elements")
-    vtk.export_bezier_mesh_vtk(hier, vtk_path='bezier_mesh_refinement_check.vtk')
-
+    f_ns                = inpfe.f_ns
 
 def manufactured_sol_degrees_clean():
     degrees = [2,3,4]  
@@ -138,11 +81,22 @@ def manufactured_sol_degrees_clean():
         quad_1D_d = gq_nD.GaussQuadrature1D(n_quad_d, start_pt=interval_d[0], end_pt=interval_d[1])  
         gamma_d   = 20 * deg**3  
 
-        # Build coarsest single-element basis for this degree  
+        ############ NON_Uniform Knot Vectors ################
+        # kv1_d = spline.KnotVector(
+        #     [0]*deg + [0, 0.2*max_knot_d_xi, 0.5*max_knot_d_xi, max_knot_d_xi] + [max_knot_d_xi]*deg,1e-9)
+        
+        # kv2_d = spline.KnotVector(
+        #     [0]*deg + [0, 0.1*max_knot_d_eta, 0.7*max_knot_d_eta, max_knot_d_eta] + [max_knot_d_eta]*deg,1e-9)
+        
+        # unitkv1_d = spline.KnotVector([0]*deg + [0,0.2, 0.5,1] + [1]*deg,1e-9)
+        # unitkv2_d = spline.KnotVector([0]*deg + [0,0.1, 0.7,1] + [1]*deg,1e-9)
+        
+        ############ Uniform Knot Vectors ################
         kv1_d = spline.KnotVector([0]*deg + [0, max_knot_d_xi] + [max_knot_d_xi]*deg, 1e-9)  
         kv2_d = spline.KnotVector([0]*deg + [0, max_knot_d_eta] + [max_knot_d_eta]*deg, 1e-9)  
         unitkv1_d = spline.KnotVector([0]*deg + [0, 1] + [1]*deg, 1e-9)
         unitkv2_d = spline.KnotVector([0]*deg + [0, 1] + [1]*deg, 1e-9)
+        
         cpts_d = inp.make_cpts(unitkv1_d, unitkv2_d, deg, deg, min_knot, 1, 1)
         basis_d = spline.NavierStokesTPDiscretization(kv1_d, kv2_d, deg, deg, cpts_d)  
         
@@ -161,19 +115,30 @@ def manufactured_sol_degrees_clean():
             
             kv1_d, kv2_d = rb.knotVectors()
             cpts_d = rb.control_points
-            # Scale indices with n_div so the locally refined region stays at
-            # the same physical fraction [1/8, 5/8] of the domain for every n_div.
-            # At n_div=8: indices 1–4 → physical [0.125, 0.625].
-            # At n_div=16: indices 2–9 → same physical region.
-            # At n_div=32: indices 4–19 → same physical region.
-            r_start = n_div // 8
-            r_end   = 1 * n_div // 8
-            L1 = [[r, c] for r in range(r_start, r_end) for c in range(r_start, r_end)]
+            
+            # count distinct knot spans = number of elements per direction
+            N_xi  = sum(1 for i in range(kv1_d.size()-1) if kv1_d.knot(i+1) - kv1_d.knot(i) > 1e-9)
+            N_eta = sum(1 for i in range(kv2_d.size()-1) if kv2_d.knot(i+1) - kv2_d.knot(i) > 1e-9)
+            
+            N = N_xi          # elements per direction on this mesh (2-elem base × n_div)
+            buf = deg - 1     # admissibility buffer for 2-admissible, degree p
+        
+            # Central quarter of the mesh, padded by buf to ensure admissibility
+            # Target inner zone: [N//4, 3*N//4], outer zone adds buf on each side
+            inner_s = max(0,   N // 8 - buf)
+            inner_e = min(N,   3 * N // 8 + buf)
+            L1 = [[r, c] for r in range(inner_s, inner_e)
+                          for c in range(inner_s, inner_e)]
             elems_to_refine = [L1]
             
+            # r_start = n_div // 8
+            # r_end   = 3 * n_div // 8
+            # L1 = [[r, c] for r in range(r_start, r_end) for c in range(r_start, r_end)]
+            # elems_to_refine = [L1]
+            
             # elems_to_refine = []
-            # # elems_to_refine.append([[1,1],[1,2],[1,3],[1,4],[2,1],[2,2],[2,3],[2,4],[3,1],[3,2],[3,3],[3,4],[4,1],[4,2],[4,3],[4,4]])#, [q, 5], [q, 6]])  # Refine one element column
-            # elems_to_refine.append([[1,1],[1,2],[1,3],[2,1],[2,2],[2,3],[3,1],[3,2],[3,3]])
+            # elems_to_refine.append([[1,1],[1,2],[1,3],[1,4],[2,1],[2,2],[2,3],[2,4],[3,1],[3,2],[3,3],[3,4],[4,1],[4,2],[4,3],[4,4]])#, [q, 5], [q, 6]])  # Refine one element column
+            # # elems_to_refine.append([[1,1],[1,2],[1,3],[2,1],[2,2],[2,3],[3,1],[3,2],[3,3]])
           
             rb_local = spline.NavierStokesHierarchicalDiscretization(
                 kv2_d, kv1_d, deg, deg, cpts_d, elems_to_refine
@@ -252,5 +217,4 @@ def manufactured_sol_degrees_clean():
     fig_pres.show()                                                                   
 
 if __name__ == '__main__':
-    # check_local_refinement_vtk()
     manufactured_sol_degrees_clean()

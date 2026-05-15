@@ -234,7 +234,7 @@ def ComputePrescribedNormalDOFValues(basis, boundary_dofs, boundary_value_functi
     for A in all_normal:
         if abs(mass_vec[A]) > 1e-14:
             prescribed[A] = rhs_vec[A] / mass_vec[A]
-        else:
-            prescribed[A] = 0.0
+        # else:
+        #     prescribed[A] = 0.0
     
     return prescribed
