@@ -380,7 +380,6 @@ def problem(L2Projection,Stokes,NavierStokes,JetNavierStokes,nu):
     
         n_div = 2**2
         refined_basis = spline.globallyHRefine(basis, n_div, parametric_tolerance=1e-5)
-    
         
         kv1_d, kv2_d = refined_basis.knotVectors()
         cpts_d = refined_basis.control_points
